@@ -27,6 +27,7 @@ Note, that for most of the deployed resources, names are automatically created u
 ## Template Parameters
 
 | CFT Label | Parameter Name |  Description |
+|---------------|------------|---------------------|
 | Auto-Scaling Group Name | ASGName | Name of ASG to be created. Will be also used as prefix for other resource names. |
 | Minimum Size | InitialSize | Minimum (and initial) size of ASG. |
 | Maximum Size | MaxSize | Maximum size the ASG is allowed to reach. |
@@ -45,5 +46,8 @@ Note, that for most of the deployed resources, names are automatically created u
 
 
 ## Launching the template
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
 ## Additional Documentation
+[Implementation Guide - NextGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWS/)
+[AWS Reference Architecture - NextGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWSRefAutoScaling/)
