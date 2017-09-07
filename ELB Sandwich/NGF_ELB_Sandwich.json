@@ -9,7 +9,6 @@
                     "default": "Auto Scaling Group Settings"
                 },
                 "Parameters" : [
-                    "ASGName",
                     "InitialSize",
                     "MaxSize",
                     "HighThreshold",
@@ -53,9 +52,6 @@
               }
             ],
             "ParameterLabels" : {
-              "ASGName": {
-                "default": "Auto-Scaling Group Name"
-              },
               "ILBName": {
                 "default": "Internal Load Balancer name"
               },
@@ -98,10 +94,6 @@
     },
 
     "Parameters": {
-        "ASGName": {
-            "Description": "Name of the Auto Scaling Group (will be also used as prefix for created AWS services).",
-            "Type": "String"
-        },
         "ILBName": {
             "Description": "Name of the internal Load Balancer. Must not be longer than 18 characters.",
             "Type": "String",
@@ -262,7 +254,13 @@
             "Properties": {
                 "CidrBlock": {
                     "Ref": "VpcAddress"
-                }
+                },
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": { "Fn::Join": ["-", [{ "Ref": "AWS::StackName" }, "VPC" ]]}
+              }
+            ]
             }
         },
         "PrivateSubnetA": {
@@ -547,7 +545,7 @@
                         "",
                         [
                             {
-                                "Ref": "ASGName"
+                                "Ref": "AWS::StackName"
                             },
                             "-ELBFront"
                         ]
@@ -663,7 +661,7 @@
                         "",
                         [
                             {
-                                "Ref": "ASGName"
+                                "Ref": "AWS::StackName"
                             },
                             "-MGMT"
                         ]
@@ -724,7 +722,7 @@
                             [
                                 "#!/bin/bash",
                                 {"Fn::Sub": "/opt/aws/bin/aws s3 ls s3://${S3}/opt/phion/config >> /dev/null ||  curl -s https://raw.githubusercontent.com/bartekmo/ngf-aws/elbsandwich/elb-sandwich-placeholder.fwrule | sed 's/placeholder.elb.amazonaws.com/${InternalLoadBalancer.DNSName}/g' > /tmp/active.fwrule && acpfrule check /tmp/active.fwrule && cp /tmp/active.fwrule /opt/phion/config/configroot/servers/S1/services/NGFW/ && cp /tmp/active.fwrule /opt/phion/config/active/servers/S1/services/NGFW/ && /opt/phion/modules/server/firewall/bin/activate"},
-                                {"Fn::Sub": "/opt/phion/bin/aws-asg-provision --bucket ${S3} --topic ${ASGName}"}
+                                {"Fn::Sub": "/opt/phion/bin/aws-asg-provision --bucket ${S3} --topic ${AWS::StackName}"}
                             ]
                         ]
                     }
@@ -735,10 +733,10 @@
             "Type": "AWS::SNS::Topic",
             "Properties": {
                 "DisplayName": {
-                    "Ref": "ASGName"
+                    "Ref": "AWS::StackName"
                 },
                 "TopicName": {
-                    "Ref": "ASGName"
+                    "Ref": "AWS::StackName"
                 }
             }
         },
@@ -779,16 +777,7 @@
                     }
                 ],
                 "HealthCheckType": "ELB",
-                "HealthCheckGracePeriod": 300,
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": {
-                            "Ref": "ASGName"
-                        },
-                        "PropagateAtLaunch": "True"
-                    }
-                ]
+                "HealthCheckGracePeriod": 300
             },
             "DependsOn": [
                 "IGWAttachment",
@@ -875,7 +864,7 @@
                 "ComparisonOperator": "LessThanThreshold"
             },
             "DependsOn": "FirewallScaleDownPolicy"
-        },
+        }
     },
     "Outputs": {
         "ELBFront": {
