@@ -28,7 +28,6 @@ Note, that for most of the deployed resources, names are automatically created u
 
 | CFT Label | Parameter Name |  Description |
 |---------------|------------|---------------------|
-| Auto-Scaling Group Name | ASGName | Name of ASG to be created. Will be also used as prefix for other resource names. |
 | Minimum Size | InitialSize | Minimum (and initial) size of ASG. |
 | Maximum Size | MaxSize | Maximum size the ASG is allowed to reach. |
 | Scale-out Trigger | HighThreshold | Maximum average VPN clients per instance triggering scaling out of ASG. |
