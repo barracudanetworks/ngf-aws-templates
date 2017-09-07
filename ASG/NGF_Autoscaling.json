@@ -37,7 +37,6 @@
                   "default": "Networking - Zone A"
                 },
                 "Parameters": [
-                  "AZone",
                   "PrivateSubnetAAddress",
                   "PublicSubnetAAddress"
                 ]
@@ -47,7 +46,6 @@
                   "default": "Networking - Zone B"
                 },
                 "Parameters": [
-                  "BZone",
                   "PrivateSubnetBAddress",
                   "PublicSubnetBAddress"
                 ]
@@ -82,12 +80,6 @@
               },
               "VpcAddress": {
                 "default": "VPC Address"
-              },
-              "AZone": {
-                "default": "Zone A Region"
-              },
-              "BZone": {
-                "default": "Zone B Region"
               },
               "PrivateSubnetAAddress": {
                 "default": "Private Subnet in Zone A"
@@ -293,7 +285,12 @@
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": {
-                  "Ref": "AZone"
+                  "Fn::Select": [
+                      "0",
+                      {
+                          "Fn::GetAZs": ""
+                      }
+                  ]
                 },
                 "CidrBlock": {
                   "Ref": "PrivateSubnetAAddress"
@@ -308,7 +305,12 @@
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": {
-                    "Ref": "AZone"
+                  "Fn::Select": [
+                      "0",
+                      {
+                          "Fn::GetAZs": ""
+                      }
+                  ]
                 },
                 "CidrBlock": {
                   "Ref": "PublicSubnetAAddress"
@@ -322,7 +324,12 @@
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": {
-                    "Ref": "BZone"
+                  "Fn::Select": [
+                      "1",
+                      {
+                          "Fn::GetAZs": ""
+                      }
+                  ]
                 },
                 "CidrBlock": {
                   "Ref": "PrivateSubnetBAddress"
@@ -337,7 +344,12 @@
             "Type": "AWS::EC2::Subnet",
             "Properties": {
                 "AvailabilityZone": {
-                    "Ref": "BZone"
+                  "Fn::Select": [
+                      "1",
+                      {
+                          "Fn::GetAZs": ""
+                      }
+                  ]
                 },
                 "CidrBlock": {
                   "Ref": "PublicSubnetBAddress"
