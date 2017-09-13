@@ -22,8 +22,6 @@ Following resources will be created by the template:
 - Auto Scaling Group with proper Launch Configuration and Scaling Policies
 - additional helper elements: routes, Internet Gateway, NAT Gateways, SNS topic and SQS queues.
 
-Note, that for most of the deployed resources, names are automatically created using ASG name parameter as prefix.
-
 ## Template Parameters
 
 | CFT Label | Parameter Name |  Description |
@@ -35,8 +33,6 @@ Note, that for most of the deployed resources, names are automatically created u
 | Instance Type | InstanceType | Instance type to use for NGF instances. Please choose one available in your region. |
 | IAM Profile | IAMProfile | IAM profile to be assigned to instances. |
 | VPC Address | VpcAddress | IP address space for newly created VPC. |
-| Zone A Availability Zone | AZone | Availability Zone to use for "Zone A" |
-| Zone B Availability Zone | BZone | Availability Zone to use for "Zone B" |
 | Private Subnet in Zone A | PrivateSubnetAAddress | Subnet address for hosting NGF instances in zone A. |
 | Private Subnet in Zone B | PrivateSubnetBAddress | Subnet address for hosting NGF instances in zone B. |
 | Public Subnet in Zone A | PublicSubnetAAddress | Subnet address for hosting load balancer internal IPs in zone A. |
