@@ -540,17 +540,6 @@
                     }
                 ],
                 "CrossZone": "True",
-                "LoadBalancerName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "-ELBFront"
-                        ]
-                    ]
-                },
                 "LBCookieStickinessPolicy": [
                     {
                         "PolicyName": "LBStickyPolicy",
@@ -582,7 +571,13 @@
                     "Target": "TCP:80",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
-                }
+                },
+                "Tags": [
+                  {
+                    "Key": "Description",
+                    "Value": "External Service Load Balancer"
+                  }
+                ]
             },
             "DependsOn": [
                 "IGWAttachment",
@@ -656,17 +651,6 @@
                     }
                 ],
                 "CrossZone": "True",
-                "LoadBalancerName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "-MGMT"
-                        ]
-                    ]
-                },
                 "ConnectionSettings": {
                     "IdleTimeout": 1200
                 },
@@ -683,7 +667,13 @@
                     "Target": "TCP:22",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
-                }
+                },
+                "Tags": [
+                  {
+                    "Key": "Description",
+                    "Value": "Management load balancer"
+                  }
+                ]
             },
             "DependsOn": [
                 "IGWAttachment",
