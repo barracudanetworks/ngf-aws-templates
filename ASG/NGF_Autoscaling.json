@@ -558,17 +558,6 @@
                     }
                 ],
                 "CrossZone": "True",
-                "LoadBalancerName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "-VPN"
-                        ]
-                    ]
-                },
                 "LBCookieStickinessPolicy": [
                     {
                         "PolicyName": "LBStickyPolicy",
@@ -617,7 +606,10 @@
                     "Target": "TCP:691",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
-                }
+                },
+				"Tags": [
+					{ "Key": "Description", "Value": "External Service Load Balancer" }
+				]
             },
             "DependsOn": [
                 "IGWAttachment",
@@ -642,17 +634,6 @@
                     }
                 ],
                 "CrossZone": "True",
-                "LoadBalancerName": {
-                    "Fn::Join": [
-                        "",
-                        [
-                            {
-                                "Ref": "AWS::StackName"
-                            },
-                            "-MGMT"
-                        ]
-                    ]
-                },
                 "ConnectionSettings": {
                     "IdleTimeout": 1200
                 },
@@ -669,8 +650,11 @@
                     "Target": "TCP:22",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
-                }
-            },
+                },
+				"Tags": [
+					{ "Key": "Description", "Value": "Management load balancer" }
+				]
+			},
             "DependsOn": [
                 "IGWAttachment",
                 "NATGWA",
