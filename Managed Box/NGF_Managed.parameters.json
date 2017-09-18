@@ -1,0 +1,50 @@
+[
+  {
+    "ParameterKey": "LicenceMode",
+    "ParameterValue": "BYOL"
+  },
+  {
+    "ParameterKey": "InstanceType",
+    "ParameterValue": "c4.large"
+  },
+  {
+    "ParameterKey": "IAMProfile",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "CCIPAddress",
+    "ParameterValue": "1.2.3.4"
+  },
+  {
+    "ParameterKey": "CCRange",
+    "ParameterValue": "1"
+  },
+  {
+    "ParameterKey": "CCCluster",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "CCBoxname",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "CCUser",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "CCPassword",
+    "ParameterValue": ""
+  },
+  {
+    "ParameterKey": "VPCId",
+    "ParameterValue": "vpc-1234567"
+  },
+  {
+    "ParameterKey": "SubnetId",
+    "ParameterValue": "subnet-1234567"
+  },
+  {
+    "ParameterKey": "PrivateIpAddress",
+    "ParameterValue": "10.0.0.5"
+  }
+]

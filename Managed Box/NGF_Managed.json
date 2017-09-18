@@ -1,0 +1,317 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Barracuda NextGen Firewall 7.1.0 - Managed Box",
+    "Metadata" : {
+        "AWS::CloudFormation::Interface" : {
+            "ParameterGroups" : [
+              {
+                "Label" : {
+                    "default": "Instance Settings"
+                },
+                "Parameters" : [
+                    "InstanceType",
+                    "LicenceMode",
+                    "PrivateIpAddress",
+                    "VPCId",
+                    "SubnetId",
+                    "IAMProfile"
+                ]
+              },
+              {
+                "Label" : {
+                    "default": "NextGen Control Center Settings"
+                },
+                "Parameters" : [
+                    "CCIPAddress",
+                    "CCRange",
+                    "CCCluster",
+                    "CCBoxname",
+                    "CCUser",
+                    "CCPassword"
+                ]
+              }
+            ],
+            "ParameterLabels": {
+              "InstanceType": {
+                "default": "Instance Type"
+              },
+              "LicenceMode": {
+                "default": "License Mode"
+              },
+              "PrivateIpAddress": {
+                "default": "Private IP Address"
+              },
+              "VPCId": {
+                "default": "VPC physical ID"
+              },
+              "SubnetId": {
+                "default": "Subnet physical ID"
+              },
+              "IAMProfile": {
+                "default": "IAM Profile"
+              },
+              "CCIPAddress": {
+                "default": "Control Center IP address"
+              },
+              "CCRange": {
+                "default": "Control Center Range ID"
+              },
+              "CCCluster": {
+                "default": "Control Center Cluster Name"
+              },
+              "CCBoxname": {
+                "default": "Box Name"
+              },
+              "CCUser": {
+                "default": "Control Center username"
+              },
+              "CCPassword": {
+                "default": "Control Center password/key"
+              }
+            }
+        }
+    },
+    "Parameters": {
+        "LicenceMode": {
+            "Description": "License Type",
+            "Type": "String",
+            "Default": "PAYG",
+            "AllowedValues": [
+                "PAYG",
+                "BYOL"
+            ]
+        },
+        "InstanceType": {
+            "Description": "EC2 instance type",
+            "Type": "String",
+            "Default": "c4.large",
+            "AllowedValues": [
+                "t2.small",
+                "t2.medium",
+                "t2.large",
+                "t2.xlarge",
+                "t2.2xlarge",
+                "m3.medium",
+                "m3.large",
+                "m3.xlarge",
+                "m3.2xlarge",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "c4.large",
+                "c4.xlarge",
+                "c4.2xlarge"
+            ],
+            "ConstraintDescription": "must be a valid EC2 instance type available in your region."
+        },
+        "IAMProfile": {
+          "Description": "(optional) Select the IAM Role for the NextGen Firewall.",
+          "Type": "String",
+          "Default": "NextGenFirewallRole"
+        },
+        "CCIPAddress": {
+            "Description": "IP Address or hostname of the CC",
+            "Type": "String"
+        },
+        "CCUser": {
+            "Description": "(optional) User on the CC used to retrieve the PAR file. Leave empty to use PAR File Retrieval Key.",
+            "Type": "String"
+        },
+        "CCPassword": {
+            "Description": "Password of the CC User / PAR File Retrieval Key",
+            "Type": "String",
+            "NoEcho": "true"
+        },
+        "CCCluster": {
+            "Description": "Name of the Cluster on the CC",
+            "Type": "String"
+        },
+        "CCRange": {
+            "Description": "Name of the Range on the CC",
+            "Type": "Number",
+            "Default": "1"
+        },
+        "CCBoxname": {
+            "Description": "Name of the Box on the CC",
+            "Type": "String"
+        },
+        "PrivateIpAddress": {
+            "Description": "Private IP of the Box in the AWS subnet. Leave empty to auto-assign.",
+            "Type": "String",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})"
+        },
+        "VPCId": {
+            "Type": "AWS::EC2::VPC::Id",
+            "Description": "The Id of the VPC in which this instance is being created"
+        },
+        "SubnetId": {
+            "Description": "The Id of the subnet in which the managed box is deployed",
+            "Type": "AWS::EC2::Subnet::Id"
+        }
+    },
+    "Mappings": {
+        "AMINGF": {
+          "ap-south-1": {
+            "PAYG": "ami-038cf66c",
+            "BYOL": "ami-998cf6f6"
+          },
+          "eu-west-2": {
+            "PAYG": "ami-268a9b42",
+            "BYOL": "ami-d88a9bbc"
+          },
+          "eu-west-1": {
+            "PAYG": "ami-36a3514f",
+            "BYOL": "ami-74a4560d"
+          },
+          "ap-northeast-2": {
+            "PAYG": "ami-ed934b83",
+            "BYOL": "ami-73964e1d"
+          },
+          "ap-northeast-1": {
+            "PAYG": "ami-9cf80efa",
+            "BYOL": "ami-43e51325"
+          },
+          "sa-east-1": {
+            "PAYG": "ami-59403135",
+            "BYOL": "ami-f643329a"
+          },
+          "ca-central-1": {
+            "PAYG": "ami-f0ba0494",
+            "BYOL": "ami-0eb8066a"
+          },
+          "ap-southeast-1": {
+            "PAYG": "ami-bd0461de",
+            "BYOL": "ami-ca0663a9"
+          },
+          "ap-southeast-2": {
+            "PAYG": "ami-8ec1d9ed",
+            "BYOL": "ami-f2cfd791"
+          },
+          "eu-central-1": {
+            "PAYG": "ami-9f268ff0",
+            "BYOL": "ami-a43891cb"
+          },
+          "us-east-1": {
+            "PAYG": "ami-96af9eed",
+            "BYOL": "ami-98ad9ce3"
+          },
+          "us-east-2": {
+            "PAYG": "ami-2595b540",
+            "BYOL": "ami-d992b2bc"
+          },
+          "us-west-1": {
+            "PAYG": "ami-605d7700",
+            "BYOL": "ami-ea507a8a"
+          },
+          "us-west-2": {
+            "PAYG": "ami-8e00e2f6",
+            "BYOL": "ami-2005e758"
+          }
+        }
+    },
+    "Conditions": {
+        "NoBoxPrivateIp": {
+            "Fn::Equals": [
+                {
+                    "Ref": "PrivateIpAddress"
+                },
+                ""
+            ]
+        },
+        "SharedKeyAuth": {
+          "Fn::Equals": [
+            {
+              "Ref": "CCUser"
+            },
+            ""
+          ]
+        }
+    },
+    "Resources": {
+        "ManagedBox": {
+            "Type": "AWS::EC2::Instance",
+            "CreationPolicy": {
+              "ResourceSignal": {
+                "Count": "1",
+                "Timeout": "PT15M"
+              }
+            },
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        "AMINGF",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Ref": "LicenceMode"
+                        }
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                  },
+                "IamInstanceProfile": {
+                    "Ref": "IAMProfile"
+                  },
+                "SourceDestCheck": "false",
+                "NetworkInterfaces": [
+                    {
+                        "AssociatePublicIpAddress": "true",
+                        "DeleteOnTermination": "true",
+                        "DeviceIndex": "0",
+                        "PrivateIpAddress": {
+                            "Fn::If": [
+                                "NoBoxPrivateIp",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "Ref": "PrivateIpAddress"
+                                }
+                            ]
+                        },
+                        "SubnetId": {
+                            "Ref": "SubnetId"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "CCBoxname"
+                        }
+                    }
+                ],
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                              "#!/bin/bash\n\n",
+                              { "Fn::Sub": "echo \"${CCPassword}\" | /opt/phion/bin/getpar" },
+                              { "Fn::Sub": " -a ${CCIPAddress}" },
+                              { "Fn::Sub": " -r ${CCRange}" },
+                              { "Fn::Sub": " -c ${CCCluster}" },
+                              { "Fn::Sub": " -b ${CCBoxname}" },
+                              { "Fn::If": [
+                                "SharedKeyAuth",
+                                "",
+                                { "Fn::Join": [ "", [ " -u ", { "Ref": "CCUser" }]]}
+                              ]},
+                              " -d /opt/phion/update/box.par -s",
+                              " --verbosity 10 ",
+                              " >> /tmp/getpar.log",
+                              " && /opt/aws/bin/cfn-signal --success true --resource ManagedBox ",
+                              { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"},
+                              " || /opt/aws/bin/cfn-signal -e 1 --resource ManagedBox  ",
+                              { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"}
+                            ]
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
