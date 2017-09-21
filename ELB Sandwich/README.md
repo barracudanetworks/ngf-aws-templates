@@ -19,6 +19,8 @@ Following resources will be created by the template:
 - Auto Scaling Group with proper Launch Configuration and Scaling Policies
 - additional helper elements: routes, Internet Gateway, NAT Gateways, SNS topic and SQS queues.
 
+**Note** The backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished.
+
 
 ## Template Parameters
 Parameter Label | Parameter Name | Description
