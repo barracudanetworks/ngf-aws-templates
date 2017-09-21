@@ -95,11 +95,11 @@
 
     "Parameters": {
         "ILBName": {
-            "Description": "Name of the internal Load Balancer. Must not be longer than 18 characters.",
+            "Description": "Name of the internal Load Balancer. Must not be longer than 15 characters.",
             "Type": "String",
             "Default": "NGFsandwich-ILB",
             "MaxLength": 15,
-            "ConstraintDescription": "ILB name for this architecture is limited to 18 characters."
+            "ConstraintDescription": "ILB name for this architecture is limited to 15 characters."
         },
         "InitialSize": {
             "Description": "Initial size of the Auto Scaling Group.",
