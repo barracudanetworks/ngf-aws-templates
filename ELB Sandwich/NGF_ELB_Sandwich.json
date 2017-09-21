@@ -568,7 +568,7 @@
                 "HealthCheck": {
                     "HealthyThreshold": "3",
                     "Interval": "60",
-                    "Target": "TCP:80",
+                    "Target": "TCP:807",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
                 },
@@ -628,7 +628,7 @@
                 "HealthCheck": {
                     "HealthyThreshold": "3",
                     "Interval": "60",
-                    "Target": "TCP:80",
+                    "Target": "TCP:807",
                     "Timeout": "10",
                     "UnhealthyThreshold": "3"
                 }
