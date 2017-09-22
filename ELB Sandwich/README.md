@@ -3,7 +3,7 @@
 ## Introduction
 This template deploys an Auto-Scaling Group of NextGen Firewalls into a new VPC, together with a downstream ILB forming a complete ELB Sandwich architecture. Firewall policy is automatically adjusted to allow connectivity through the sandwich for TCP ports 80 and 443. The auto scaling policy based on network packets metrics is installed by default.
 
-![ELB Sandwich Netowork Architecture](https://campus.barracuda.com/resources/attachments/image/70584069/aws_remote_access_autoscaling_group.png)
+![ELB Sandwich Network Architecture](aws_remote_access_autoscaling_group.png)
 
 ## Prerequisites
 Before attempting to deploy the solution you must create an IAM Role for Barracuda NextGen Firewalls. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
