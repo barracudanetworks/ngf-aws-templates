@@ -92,6 +92,9 @@
               },
               "PublicSubnetBAddress": {
                 "default": "Public Subnet in Zone B"
+              },
+              "MgmtACL": {
+                "default": "Management ACL"
               }
 
             }
@@ -187,6 +190,12 @@
           "Type": "String",
           "Default": "192.168.1.0/24",
           "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+        },
+        "MgmtACL": {
+          "Description": "Allow access to management IP only from these addresses (CIDR notation)",
+          "Type": "String",
+          "Default": "0.0.0.0/0",
+          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
         }
     },
     "Mappings": {
@@ -259,10 +268,63 @@
                 },
                 "SecurityGroupIngress": [
                     {
-                        "IpProtocol": "-1",
-                        "FromPort": "-1",
-                        "ToPort": "-1",
+                        "IpProtocol": "udp",
+                        "FromPort": "1",
+                        "ToPort": "65535",
                         "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                      "IpProtocol": "tcp",
+                      "FromPort": "1",
+                      "ToPort": "21",
+                      "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                      "IpProtocol": "tcp",
+                      "FromPort": "23",
+                      "ToPort": "800",
+                      "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                      "IpProtocol": "tcp",
+                      "FromPort": "802",
+                      "ToPort": "805",
+                      "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                      "IpProtocol": "tcp",
+                      "FromPort": "808",
+                      "ToPort": "65535",
+                      "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                      "IpProtocol": "icmp",
+                      "FromPort": "-1",
+                      "ToPort": "-1",
+                      "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        },
+        "MgmtSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Security group for the Management ELB",
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "807",
+                        "ToPort": "807",
+                        "CidrIp": { "Ref": "MgmtACL" }
+                    },
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": { "Ref": "MgmtACL" }
                     }
                 ]
             }
@@ -630,7 +692,7 @@
                 ],
                 "SecurityGroups": [
                     {
-                        "Ref": "PublicSecurityGroup"
+                        "Ref": "MgmtSecurityGroup"
                     }
                 ],
                 "CrossZone": "True",
