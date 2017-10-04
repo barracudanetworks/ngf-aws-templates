@@ -195,50 +195,50 @@
         }
     },
     "Mappings": {
-        "AMINGF": {
-            "us-east-1": {
-                "PAYG": "ami-96af9eed"
-            },
-            "us-east-2": {
-                "PAYG": "ami-5691b133"
-            },
-            "us-west-1": {
-                "PAYG": "ami-605d7700"
-            },
-            "us-west-2": {
-                "PAYG": "ami-8e00e2f6"
-            },
-            "ca-central-1": {
-                "PAYG": "ami-f0ba0494"
-            },
-            "eu-west-1": {
-                "PAYG": "ami-36a3514f"
-            },
-            "eu-west-2": {
-                "PAYG": "ami-268a9b42"
-            },
-            "eu-central-1": {
-                "PAYG": "ami-9f268ff0"
-            },
-            "ap-northeast-1": {
-                "PAYG": "ami-9cf80efa"
-            },
-            "ap-northeast-2": {
-                "PAYG": "ami-ed934b83"
-            },
-            "ap-southeast-1": {
-                "PAYG": "ami-bd0461de"
-            },
-            "ap-southeast-2": {
-                "PAYG": "ami-8ec1d9ed"
-            },
-            "ap-south-1": {
-                "PAYG": "ami-038cf66c"
-            },
-            "sa-east-1": {
-                "PAYG": "ami-59403135"
-            }
-        }
+      "AMINGF": {
+          "us-east-1": {
+              "PAYG": "ami-96af9eed"
+          },
+          "us-east-2": {
+              "PAYG": "ami-5691b133"
+          },
+          "us-west-1": {
+              "PAYG": "ami-605d7700"
+          },
+          "us-west-2": {
+              "PAYG": "ami-8e00e2f6"
+          },
+          "ca-central-1": {
+              "PAYG": "ami-f0ba0494"
+          },
+          "eu-west-1": {
+              "PAYG": "ami-36a3514f"
+          },
+          "eu-west-2": {
+              "PAYG": "ami-268a9b42"
+          },
+          "eu-central-1": {
+              "PAYG": "ami-9f268ff0"
+          },
+          "ap-northeast-1": {
+              "PAYG": "ami-9cf80efa"
+          },
+          "ap-northeast-2": {
+              "PAYG": "ami-ed934b83"
+          },
+          "ap-southeast-1": {
+              "PAYG": "ami-bd0461de"
+          },
+          "ap-southeast-2": {
+              "PAYG": "ami-8ec1d9ed"
+          },
+          "ap-south-1": {
+              "PAYG": "ami-038cf66c"
+          },
+          "sa-east-1": {
+              "PAYG": "ami-59403135"
+          }
+      }
     },
     "Resources": {
         "PublicSecurityGroup": {
@@ -250,40 +250,10 @@
                 },
                 "SecurityGroupIngress": [
                   {
-                      "IpProtocol": "udp",
-                      "FromPort": "1",
-                      "ToPort": "65535",
+                      "IpProtocol": "-1",
+                      "FromPort": "-1",
+                      "ToPort": "-1",
                       "CidrIp": "0.0.0.0/0"
-                  },
-                  {
-                    "IpProtocol": "tcp",
-                    "FromPort": "1",
-                    "ToPort": "21",
-                    "CidrIp": "0.0.0.0/0"
-                  },
-                  {
-                    "IpProtocol": "tcp",
-                    "FromPort": "23",
-                    "ToPort": "800",
-                    "CidrIp": "0.0.0.0/0"
-                  },
-                  {
-                    "IpProtocol": "tcp",
-                    "FromPort": "802",
-                    "ToPort": "805",
-                    "CidrIp": "0.0.0.0/0"
-                  },
-                  {
-                    "IpProtocol": "tcp",
-                    "FromPort": "808",
-                    "ToPort": "65535",
-                    "CidrIp": "0.0.0.0/0"
-                  },
-                  {
-                    "IpProtocol": "icmp",
-                    "FromPort": "-1",
-                    "ToPort": "-1",
-                    "CidrIp": "0.0.0.0/0"
                   }
                 ]
             }
@@ -310,6 +280,39 @@
                     }
                 ]
             }
+        },
+        "NGFSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Security group for the Management ELB",
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "807",
+                        "ToPort": "807",
+                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
+                    },
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
+                    },
+                    {
+                      "IpProtocol": "-1",
+                      "FromPort": "-1",
+                      "ToPort": "-1",
+                      "SourceSecurityGroupId": { "Ref": "PublicSecurityGroup" }
+                    }
+                ]
+            },
+            "DependsOn": [
+                "PublicSecurityGroup",
+                "MgmtSecurityGroup"
+            ]
         },
         "VPC": {
             "Type": "AWS::EC2::VPC",

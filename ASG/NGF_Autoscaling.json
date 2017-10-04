@@ -268,40 +268,10 @@
                 },
                 "SecurityGroupIngress": [
                     {
-                        "IpProtocol": "udp",
-                        "FromPort": "1",
-                        "ToPort": "65535",
+                        "IpProtocol": "-1",
+                        "FromPort": "-1",
+                        "ToPort": "-1",
                         "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                      "IpProtocol": "tcp",
-                      "FromPort": "1",
-                      "ToPort": "21",
-                      "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                      "IpProtocol": "tcp",
-                      "FromPort": "23",
-                      "ToPort": "800",
-                      "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                      "IpProtocol": "tcp",
-                      "FromPort": "802",
-                      "ToPort": "805",
-                      "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                      "IpProtocol": "tcp",
-                      "FromPort": "808",
-                      "ToPort": "65535",
-                      "CidrIp": "0.0.0.0/0"
-                    },
-                    {
-                      "IpProtocol": "icmp",
-                      "FromPort": "-1",
-                      "ToPort": "-1",
-                      "CidrIp": "0.0.0.0/0"
                     }
                 ]
             }
@@ -328,6 +298,39 @@
                     }
                 ]
             }
+        },
+        "NGFSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Security group for the Management ELB",
+                "VpcId": {
+                    "Ref": "VPC"
+                },
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "807",
+                        "ToPort": "807",
+                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
+                    },
+                    {
+                        "IpProtocol": "TCP",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
+                    },
+                    {
+                      "IpProtocol": "-1",
+                      "FromPort": "-1",
+                      "ToPort": "-1",
+                      "SourceSecurityGroupId": { "Ref": "PublicSecurityGroup" }
+                    }
+                ]
+            },
+            "DependsOn": [
+                "PublicSecurityGroup",
+                "MgmtSecurityGroup"
+            ]
         },
         "VPC": {
             "Type": "AWS::EC2::VPC",
@@ -737,7 +740,7 @@
                 },
                 "SecurityGroups": [
                     {
-                        "Ref": "PublicSecurityGroup"
+                        "Ref": "NGFSecurityGroup"
                     }
                 ],
                 "InstanceType": {
