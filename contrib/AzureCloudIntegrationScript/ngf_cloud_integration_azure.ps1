@@ -27,7 +27,7 @@ function Greeting
 {
 clear;
 Write-Host "*****************************************************************************"
-Write-Host "Cloud Integration for NextGen Firewall in Azure"
+Write-Host " Cloud Integration for NextGen Firewall in Azure"
 Write-Host "*****************************************************************************"
 Write-Host " "
 }
@@ -86,7 +86,7 @@ function GetAzureRmAppId
 	while (! $valid)
 	{
         $valid=$TRUE;
-        Write-Host ("Please enter a unique Azure Rm Ad App Id (homepage) for this service: ");
+        Write-Host ("Enter a unique Azure Rm Ad App Id (homepage) for this service: ");
         Write-Host ("Example: http://localhost:xxxx");
         $name = Read-Host;
         while($name -eq '')
@@ -126,7 +126,7 @@ function GetAzureRmAppId
                 }
             }
         }
-Write-Host ("Name is unique! Continuing")-ForegroundColor Green;
+Write-Host ("Name is unique - continuing")-ForegroundColor Green;
 return $name;
 }
 #----- Gets AzureAppRole Name from user and verifies it is unique.
@@ -222,19 +222,19 @@ $pathToCERfile = CheckCERFile;
 #-----Set Subscription to default subscription for the current login. Exit on error (no subscription found)
 try
 {
-$subcriptionID = (Get-AzureRmContext -ErrorVariable err -ErrorAction Stop).Subscription.SubscriptionId;
+	$subcriptionID = (Get-AzureRmContext -ErrorVariable err -ErrorAction Stop).Subscription.SubscriptionId;
 }
 catch
 {
-Write-Host ($err);
-exit;
+	Write-Host ($err);
+	exit;
 }# If there is no SubscriptionId script exit.
 
 #-----Set Azure RM Subscription.
 Write-Host("Setting current Azure Rm Subscription...");
 try
 {
-$azureSubscription = Select-AzureRmSubscription -SubscriptionId $subcriptionID -ErrorVariable err -ErrorAction Stop;
+	$azureSubscription = Select-AzureRmSubscription -SubscriptionId $subcriptionID -ErrorVariable err -ErrorAction Stop;
 }
 catch
 {
@@ -308,12 +308,12 @@ write-host("Generating Service Principal for Azure.");
 $newRole=New-AzureRmRoleAssignment -RoleDefinitionName $firewallRole.Name -ServicePrincipalName $prince.ServicePrincipalNames[0]
 write-host("Generating Service Pricipal Completed.")-ForegroundColor Green;
 #-----Exit Successfuly
-write-host ("Please save the below data for later use in NG deployment.");
-write-host ("Subscription ID:");
+Write-Host ("Use the following information to configure Azure Cloud Integration on your NextGen Firewall F:");
+write-host ("Subscription ID: ");
 write-host (Get-AzureRmContext).Subscription.SubscriptionId -ForegroundColor Green;
-write-host ("Tenant ID:");
+write-host ("Tenant ID: ");
 write-host (Get-AzureRmContext).Tenant.TenantId -ForegroundColor Green;
-write-host ("Application ID:");
+write-host ("Application ID: ");
 write-host ($app.ApplicationId) -ForegroundColor Green;
-write-host ("Group name:");
+write-host ("Resource Group: ");
 write-host ($resourceGroupName) -ForegroundColor Green;
