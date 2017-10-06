@@ -1,12 +1,11 @@
 ﻿#
-# Script.ps1
+# ngf_cloud_integration_azure.ps1
 #
 # This script uploads a certificate to Azure
 # and creates an Azure Rm Role For use with the UDR updating via the load balancers.
-# Written by Jeremy MacDonald
+# Written by Jeremy MacDonald and modified Michael Zoller
 #-----Variables
 $ADAppName = 'NGF';  #String used to hold App Name for Azure Back End, Can always be NGF;
-$validNumDays = 730; #2 years long, Azure Standard, and needs to match expdate of cert.
 $pathToCERfile;      #String used to hold file path;
 $resourceGroupName;  #String used to hold Reource Group that the firewalls are contained in;
 $subcriptionID;      #Sting used to hold Subcription ID of Azure Account.
@@ -28,10 +27,7 @@ function Greeting
 {
 clear;
 Write-Host "*****************************************************************************"
-Write-Host "Welcome to Azure-Certificate Development"
-Write-Host "This script will create the needed certificates and Azure Service object for"
-Write-Host "HA-Fail over on the NG Firewall."
-Write-Host "Written by Jeremy MacDonald 9/25/2017"
+Write-Host "Cloud Integration for NextGen Firewall in Azure"
 Write-Host "*****************************************************************************"
 Write-Host " "
 }
@@ -41,16 +37,16 @@ function CheckCERFile
 	$exist = 0; 	#Variable to check if file exists, set to does not exist.
 	while (!$exist)
 {
-	Write-Host "Input certificate location and name."; 
-	$pathToCERfile = Read-Host("Typically C:\path\arm.cer") #Prompts user to enter patch and name of cert file.
+	Write-Host "Enter the complete path to the certificate includng file name";
+	$pathToCERfile = Read-Host("Typically C:\pathToCERfile\arm.cer") #Prompts user to enter patch and name of cert file.
 	$exist = [System.IO.File]::Exists($pathToCERfile);
 	if (! $exist) #Check if certificate exists and loop on error.
 		{
-		 Write-Host "File was not found @ $pathToCERfile, please ensure correct path." -ForegroundColor Yellow;
+		 Write-Host "File not found @ $pathToCERfile, verify the path." -ForegroundColor Yellow;
 		}
 	else
 		{
-		 Write-Host "File was found @ $pathToCERfile, continuing." -ForegroundColor Green;
+		 Write-Host "Using certificate file found at @ $pathToCERfile" -ForegroundColor Green;
 		}
 }
 
@@ -61,12 +57,12 @@ function GetResourceGroup
 {
 #-----Can display all know Resource Groups if requested.
     $exists = $FALSE;
-	$groupname = Read-Host("Please enter Resource group name");
+	$groupname = Read-Host("Enter Resource group name for the VNET");
 	Get-AzureRmResourceGroup -Name $groupname -ev exists -ea 0;
 	while ($exists)
 	{
     $RGList = Get-AzureRmResourceGroup;
-    Write-Host("Group not found. Please try again.")-ForegroundColor Yellow;
+    Write-Host("Resource Group not found. Please try again.")-ForegroundColor Yellow;
     Write-Host("Show List of Resource Groups? y/n")-ForegroundColor White;
     $bool = Read-Host;
     if($bool -eq 'y') #---- If desired dispalys all known Resoure Groups.
@@ -76,7 +72,7 @@ function GetResourceGroup
             Write-Host $i.ResourceGroupName;
         }
     }
-	$groupname = Read-Host("Please enter Resource group name.");
+	$groupname = Read-Host("Enter Resource group name.");
 	Get-AzureRmResourceGroup -Name $groupname -ev exists -ea 0;
 	}
 	Write-Host("Resource group $groupname found. Continuing.")-Foregroundcolor green;
@@ -174,32 +170,21 @@ function GetAzureApplicationRoleName
     Write-Host ("Name is unique! Continuing")-ForegroundColor Green;
     return $name;
 }
-#----- Generates the End day for the uploaded certificate
+#----- Generates the End day for the uploaded certificate from the certificate end date
 function Generate_EndDate
 {
-	Param($validNumDays);
-	Write-Host ("Generation of Certificate end date started...");
+	Param($cert);
+	Write-Host ("Fetching end date from certificate...");
 	Write-Host ("");
-	$endDate = [System.DateTime]::Parse((date).ToString("yyyy.MM.dd"));
-    $timespan = New-TimeSpan -Days $validNumDays;
-    $endDate = $endDate + $timespan;
-  	Write-Host ("...Generation of Certificate end date completed")-ForegroundColor Green;
+	$endDate = [System.DateTime]::Parse($cert.GetExpirationDateString())
+	## subtract a day
+	$subtractNumDays = 1
+	$timespan = New-TimeSpan -Days $subtractNumDays
+	$endDate = $endDate - $timespan
+  	Write-Host ("... end date retrieved successfuly")-ForegroundColor Green;
 	return $endDate;
 }
-#----- Generates new Azure Rm Service Princial
-function Upload_Prince
-{
-	param($firewallRole,$prince);
-	
-	try
-{
-	
-}
-catch
-{
-	"An error occured!";
-}
-}
+
 #----- Leaves program after successful resolution
 function Leave_Script
 {
@@ -207,13 +192,12 @@ function Leave_Script
 
     write-host("Sensitive data is about to be displayed. Press return when ready.");
     Read-Host(" ");
-    Write-Host("Please save the following for later use in the NG deployment.");
-    write-Host("Subscription ID: ", $subcriptionID);
-    Write-Host("Login result: ", $loginResult.Account);
-    Write-Host("ApplicationID: ", $identifier);
-    write-host("Resoure Group: ", $resourceGroupName);
-    Write-Host("Role Created: ",$newRole);
-	Read-Host("Press Return to exit");
+		Write-Host ('Use the following information to configure Azure Cloud Integration on your NextGen Firewall F:')
+		Write-Host ('Subscription ID ''{0}''' -f $subcriptionID)
+		Write-Host ('Tenant ID ''{0}''' -f (Get-AzureRmSubscription).TenantId)
+		Write-Host ('Application ID ''{0}''' -f $identifier)
+  	Write-host("Resoure Group: ", $resourceGroupName);
+	  Read-Host("Press Return to exit");
 }
 #----- End of Functions
 
@@ -291,27 +275,37 @@ $role.Id = $null
 $role.Name = $roleName
 $role.Description = "Barracuda NextGen Firewall Cloud Integration"
 $role.Actions.Clear()
-# Add role definitions to the empty role 
+# Add role definitions to the empty role
 $role.Actions.Add("Microsoft.Compute/virtualMachines/*")
 $role.Actions.Add("Microsoft.Network/*")
 $role.AssignableScopes.Clear()
 $role.AssignableScopes.Add("/subscriptions/"+$subcriptionID.ToString());
 #-----
 
-#----- Converts teh role definttion to legitimate role object.
+#----- Converts the role definttion to legitimate role object.
 $firewallRole = New-AzureRmRoleDefinition -Role $role
 
-#-----Certificate Generation
-$endDate= Generate_EndDate($validNumDays); #-----Expire date for certificate.
 #-----Generates certificate and pulls key from certificate.
 $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate($pathToCERfile)
 $key = [System.Convert]::ToBase64String($cert.GetRawCertData())
 
+#-----Certificate Generation
+$endDate= Generate_EndDate($cert); #-----Expire date for certificate.
+
 #---Creating Princial account for use in Azure.
-Write-Host ("Generation of Principal account started...");
-$app = New-AzureRmADApplication -DisplayName $ADAppName -HomePage $identifier.ToString() -IdentifierUris $identifier -CertValue $key -EndDate $endDate;
-$prince = New-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId
-Write-Host ("...Generation of Principal account completed")-ForegroundColor Green;
+Write-Host ("Generation of Service Principal account started...");
+try{
+$app = New-AzureRmADApplication -DisplayName $ADAppName -HomePage $identifier.ToString() -IdentifierUris $identifier -CertValue $key -EndDate $endDate -ErrorAction Stop;
+$prince = New-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId -ErrorAction Stop;
+}
+catch
+{
+	Write-Host ("Error generating Service Principal")-ForegroundColor Green;
+	Write-Host ("'Exception Message ''{0}''' -f $_.Exception.Message");
+	Write-Host ("'Exception Item Name ''{0}''' -f $_.Exception.ItemName");
+	Break;
+}
+Write-Host ("...Generation of Serivce Principal account completed")-ForegroundColor Green;
 
 # Wait for Azure to generate service principal
 Write-Host("Sleeping for 35 seconds while Azure generates new service principal remotely.")
