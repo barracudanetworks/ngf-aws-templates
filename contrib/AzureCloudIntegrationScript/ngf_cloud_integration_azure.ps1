@@ -185,22 +185,6 @@ function Generate_EndDate
 	return $endDate;
 }
 
-#----- Leaves program after successful resolution
-function Leave_Script
-{
-    Param ($subcriptionID,$identifier,$resourceGroupName,$loginResult,$newRole);
-
-    write-host("Sensitive data is about to be displayed. Press return when ready.");
-    Read-Host(" ");
-		Write-Host ('Use the following information to configure Azure Cloud Integration on your NextGen Firewall F:')
-		Write-Host ('Subscription ID ''{0}''' -f $subcriptionID)
-		Write-Host ('Tenant ID ''{0}''' -f (Get-AzureRmSubscription).TenantId)
-		Write-Host ('Application ID ''{0}''' -f $identifier)
-  	Write-host("Resoure Group: ", $resourceGroupName);
-	  Read-Host("Press Return to exit");
-}
-#----- End of Functions
-
 ############################
 #Main program starts here. #
 ############################
@@ -210,6 +194,8 @@ Greeting;
 #------Login to Azure
 #------Login is done here and not in a function, as it seems the login creds are lost after the data is returned. Seems to be a bug on Azure end.
 $successful=$FALSE; #Sets succeful to false for while loop.
+$num_tries=0;
+$max_auth_tries = 3;
 while(!$successful) # Repeats until user is able to log into Azure correctly.
 {
 $successful = $TRUE; # successful is now true unless otherwise found to be false inside the loop.
@@ -220,10 +206,17 @@ $successful = $TRUE; # successful is now true unless otherwise found to be false
     catch #catch login error and prompt for another attempt.
     {
         $successful=$FALSE;
-        Write-Host ("It appears that we were unable to login properly. Please Try again.")-ForegroundColor Yellow;
+				$num_tries++;
+        Write-Host ("Authentication failed.")-ForegroundColor Yellow;
+				if($num_tries -eq $max_auth_tries)
+				{
+					Write-Host ("Authentication failed too many times.")-ForegroundColor Red;
+					exit;
+				}
+
     }
 }
-write-host ("Meow: ", $loginResult);
+Write-host ($loginResult);
 #-----Check for certificate file (Arm.cer)
 $pathToCERfile = CheckCERFile;
 #-----Set Subscription to default subscription for the current login. Exit on error (no subscription found)
@@ -295,31 +288,26 @@ $endDate= Generate_EndDate($cert); #-----Expire date for certificate.
 #---Creating Princial account for use in Azure.
 Write-Host ("Generation of Service Principal account started...");
 try{
-$app = New-AzureRmADApplication -DisplayName $ADAppName -HomePage $identifier.ToString() -IdentifierUris $identifier -CertValue $key -EndDate $endDate -ErrorAction Stop;
-$prince = New-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId -ErrorAction Stop;
+	$app = New-AzureRmADApplication -DisplayName $ADAppName -HomePage $identifier.ToString() -IdentifierUris $identifier -CertValue $key -EndDate $endDate -ErrorAction Stop;
+	$prince = New-AzureRmADServicePrincipal -ApplicationId $app.ApplicationId -ErrorAction Stop;
 }
 catch
 {
 	Write-Host ("Error generating Service Principal")-ForegroundColor Green;
 	Write-Host ("'Exception Message ''{0}''' -f $_.Exception.Message");
 	Write-Host ("'Exception Item Name ''{0}''' -f $_.Exception.ItemName");
-	Break;
+	exit;
 }
 Write-Host ("...Generation of Serivce Principal account completed")-ForegroundColor Green;
 
 # Wait for Azure to generate service principal
-Write-Host("Sleeping for 35 seconds while Azure generates new service principal remotely.")
-Start-Sleep -Seconds 35;
-Write-Host("...Sleeping completed.")
+Write-Host("Sleeping for 30 seconds while Azure generates new service principal remotely.")
+Start-Sleep -Seconds 30;
 #Upload Service Principal
 write-host("Generating Service Principal for Azure.");
 $newRole=New-AzureRmRoleAssignment -RoleDefinitionName $firewallRole.Name -ServicePrincipalName $prince.ServicePrincipalNames[0]
 write-host("Generating Service Pricipal Completed.")-ForegroundColor Green;
 #-----Exit Successfuly
-write-host ("**NOTICE**")-ForegroundColor Yellow;
-write-host ("Sensitive data about to be displayed to screen press enter when ready.")-ForegroundColor Yellow;
-write-host ("**NOTICE**")-ForegroundColor Yellow;
-read-host;
 write-host ("Please save the below data for later use in NG deployment.");
 write-host ("Subscription ID:");
 write-host (Get-AzureRmContext).Subscription.SubscriptionId -ForegroundColor Green;
