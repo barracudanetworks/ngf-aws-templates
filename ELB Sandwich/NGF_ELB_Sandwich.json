@@ -776,7 +776,7 @@
                             "\n",
                             [
                                 "#!/bin/bash",
-                                {"Fn::Sub": "/opt/aws/bin/aws s3 ls s3://${S3}/opt/phion/config >> /dev/null ||  curl -s https://github.com/barracudanetworks/ngf-aws-templates/blob/master/ELB%20Sandwich/elb-sandwich-placeholder.fwrule | sed 's/placeholder.elb.amazonaws.com/${InternalLoadBalancer.DNSName}/g' > /tmp/active.fwrule && acpfrule check /tmp/active.fwrule && cp /tmp/active.fwrule /opt/phion/config/configroot/servers/S1/services/NGFW/ && cp /tmp/active.fwrule /opt/phion/config/active/servers/S1/services/NGFW/ && /opt/phion/modules/server/firewall/bin/activate"},
+                                {"Fn::Sub": "/opt/aws/bin/aws s3 ls s3://${S3}/opt/phion/config >> /dev/null ||  curl -s https://raw.githubusercontent.com/barracudanetworks/ngf-aws-templates/master/ELB%20Sandwich/elb-sandwich-placeholder.fwrule | sed 's/placeholder.elb.amazonaws.com/${InternalLoadBalancer.DNSName}/g' > /tmp/active.fwrule && acpfrule check /tmp/active.fwrule && cp /tmp/active.fwrule /opt/phion/config/configroot/servers/S1/services/NGFW/ && cp /tmp/active.fwrule /opt/phion/config/active/servers/S1/services/NGFW/ && /opt/phion/modules/server/firewall/bin/activate"},
                                 {"Fn::Sub": "/opt/phion/bin/aws-asg-provision --bucket ${S3} --topic ${AWS::StackName}"}
                             ]
                         ]
