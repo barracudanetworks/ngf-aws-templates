@@ -9,6 +9,7 @@
                     "default": "Instance Settings"
                 },
                 "Parameters" : [
+                    "ReleaseVer",
                     "InstanceType",
                     "LicenceMode",
                     "PrivateIpAddress",
@@ -32,6 +33,9 @@
               }
             ],
             "ParameterLabels": {
+              "ReleaseVer": {
+                "default": "Release Version"
+              },
               "InstanceType": {
                 "default": "Instance Type"
               },
@@ -91,10 +95,6 @@
                 "t2.large",
                 "t2.xlarge",
                 "t2.2xlarge",
-                "m3.medium",
-                "m3.large",
-                "m3.xlarge",
-                "m3.2xlarge",
                 "m4.large",
                 "m4.xlarge",
                 "m4.2xlarge",
@@ -147,67 +147,193 @@
         "SubnetId": {
             "Description": "The Id of the subnet in which the managed box is deployed",
             "Type": "AWS::EC2::Subnet::Id"
+        },
+        "ReleaseVer": {
+          "Type": "String",
+          "AllowedValues": [ "7.1.1", "7.0.3", "6.2.4" ],
+          "Default": "7.1.1"
         }
     },
     "Mappings": {
-        "AMINGF": {
-          "ap-south-1": {
-            "PAYG": "ami-038cf66c",
-            "BYOL": "ami-998cf6f6"
-          },
-          "eu-west-2": {
-            "PAYG": "ami-268a9b42",
-            "BYOL": "ami-d88a9bbc"
-          },
-          "eu-west-1": {
-            "PAYG": "ami-36a3514f",
-            "BYOL": "ami-74a4560d"
-          },
-          "ap-northeast-2": {
-            "PAYG": "ami-ed934b83",
-            "BYOL": "ami-73964e1d"
-          },
-          "ap-northeast-1": {
-            "PAYG": "ami-9cf80efa",
-            "BYOL": "ami-43e51325"
-          },
-          "sa-east-1": {
-            "PAYG": "ami-59403135",
-            "BYOL": "ami-f643329a"
-          },
-          "ca-central-1": {
-            "PAYG": "ami-f0ba0494",
-            "BYOL": "ami-0eb8066a"
-          },
-          "ap-southeast-1": {
-            "PAYG": "ami-bd0461de",
-            "BYOL": "ami-ca0663a9"
-          },
-          "ap-southeast-2": {
-            "PAYG": "ami-8ec1d9ed",
-            "BYOL": "ami-f2cfd791"
-          },
-          "eu-central-1": {
-            "PAYG": "ami-9f268ff0",
-            "BYOL": "ami-a43891cb"
-          },
-          "us-east-1": {
-            "PAYG": "ami-96af9eed",
-            "BYOL": "ami-98ad9ce3"
-          },
-          "us-east-2": {
-            "PAYG": "ami-2595b540",
-            "BYOL": "ami-d992b2bc"
-          },
-          "us-west-1": {
-            "PAYG": "ami-605d7700",
-            "BYOL": "ami-ea507a8a"
-          },
-          "us-west-2": {
-            "PAYG": "ami-8e00e2f6",
-            "BYOL": "ami-2005e758"
-          }
+      "AMINGFversions": {
+        "7.1.1": { "MapName": "AMINGF711" },
+        "7.0.3": { "MapName": "AMINGF703" },
+        "6.2.4": { "MapName": "AMINGF624" }
+      },
+      "AMINGF711": {
+        "ap-south-1": {
+          "PAYG": "ami-e445058b",
+          "BYOL": "ami-0342026c"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-992b39fd",
+          "BYOL": "ami-16253772"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-0643947f",
+          "BYOL": "ami-7445920d"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-a32af0cd",
+          "BYOL": "ami-9b2bf1f5"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-b95181df",
+          "BYOL": "ami-b65383d0"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-08b6c964",
+          "BYOL": "ami-07b4cb6b"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-13259c77",
+          "BYOL": "ami-ae2891ca"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-fa9fe099",
+          "BYOL": "ami-0da1de6e"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-17c72475",
+          "BYOL": "ami-2ac52648"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-fdb20f92",
+          "BYOL": "ami-09ad1066"
+        },
+        "us-east-1": {
+          "PAYG": "ami-695a9e13",
+          "BYOL": "ami-af5b9fd5"
+        },
+        "us-east-2": {
+          "PAYG": "ami-ccc5e8a9",
+          "BYOL": "ami-90cae7f5"
+        },
+        "us-west-1": {
+          "PAYG": "ami-e5546785",
+          "BYOL": "ami-77546717"
+        },
+        "us-west-2": {
+          "PAYG": "ami-2d925755",
+          "BYOL": "ami-cf9c59b7"
         }
+      },
+      "AMINGF703": {
+        "ap-south-1": {
+          "PAYG": "ami-e445058b",
+          "BYOL": "ami-0342026c"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-992b39fd",
+          "BYOL": "ami-16253772"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-0643947f",
+          "BYOL": "ami-7445920d"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-a32af0cd",
+          "BYOL": "ami-9b2bf1f5"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-b95181df",
+          "BYOL": "ami-b65383d0"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-08b6c964",
+          "BYOL": "ami-07b4cb6b"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-13259c77",
+          "BYOL": "ami-ae2891ca"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-fa9fe099",
+          "BYOL": "ami-0da1de6e"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-17c72475",
+          "BYOL": "ami-2ac52648"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-fdb20f92",
+          "BYOL": "ami-09ad1066"
+        },
+        "us-east-1": {
+          "PAYG": "ami-695a9e13",
+          "BYOL": "ami-af5b9fd5"
+        },
+        "us-east-2": {
+          "PAYG": "ami-ccc5e8a9",
+          "BYOL": "ami-90cae7f5"
+        },
+        "us-west-1": {
+          "PAYG": "ami-e5546785",
+          "BYOL": "ami-77546717"
+        },
+        "us-west-2": {
+          "PAYG": "ami-2d925755",
+          "BYOL": "ami-cf9c59b7"
+        }
+      },
+      "AMINGF624": {
+        "ap-south-1": {
+          "PAYG": "ami-dd90eab2",
+          "BYOL": "ami-2290ea4d"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-8e8899ea",
+          "BYOL": "ami-6a84950e"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-b76f9cce",
+          "BYOL": "ami-0752a17e"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-f29e469c",
+          "BYOL": "ami-6d914903"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-d845b2be",
+          "BYOL": "ami-5744b331"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-eb572687",
+          "BYOL": "ami-aa5627c6"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-2dbb0549",
+          "BYOL": "ami-e6bd0382"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-e7069c84",
+          "BYOL": "ami-e5069c86"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-cfd9c1ac",
+          "BYOL": "ami-acd8c0cf"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-9252fbfd",
+          "BYOL": "ami-1d52fb72"
+        },
+        "us-east-1": {
+          "PAYG": "ami-4f6a5b34",
+          "BYOL": "ami-066a5b7d"
+        },
+        "us-east-2": {
+          "PAYG": "ami-988eaefd",
+          "BYOL": "ami-088eae6d"
+        },
+        "us-west-1": {
+          "PAYG": "ami-06436966",
+          "BYOL": "ami-09436969"
+        },
+        "us-west-2": {
+          "PAYG": "ami-e7c82a9f",
+          "BYOL": "ami-3ece2c46"
+        }
+      }
     },
     "Conditions": {
         "NoBoxPrivateIp": {
@@ -239,7 +365,9 @@
             "Properties": {
                 "ImageId": {
                     "Fn::FindInMap": [
-                        "AMINGF",
+                        {
+                          "Fn::FindInMap": [ "AMINGFversions", { "Ref": "ReleaseVer" }, "MapName" ]
+                        },
                         {
                             "Ref": "AWS::Region"
                         },
