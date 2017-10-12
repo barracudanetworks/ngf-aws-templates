@@ -23,8 +23,11 @@ Following resources will be created by the template:
 
 
 ## Launching the Template
+<<<<<<< HEAD
 Use NGF_HA.json file to launch the solution.
 
+=======
+>>>>>>> d7061dd628cbea9178ceccd3facd9bf30e7cc7fb
 For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
 ## Additional Resources
