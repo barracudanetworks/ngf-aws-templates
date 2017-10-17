@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Barracuda NextGen Firewall - HA Cluster",
+    "Description": "Barracuda NextGen Firewall 7.1.1 - HA Cluster",
     "Metadata" : {
         "AWS::CloudFormation::Interface" : {
             "ParameterGroups" : [
@@ -9,7 +9,6 @@
                     "default": "Instance Settings"
                 },
                 "Parameters" : [
-                    "ReleaseVer",
                     "InstanceType",
                     "LicenceMode",
                     "IAMProfile"
@@ -31,9 +30,6 @@
             "ParameterLabels": {
               "InstanceType": {
                 "default": "Instance Type"
-              },
-              "ReleaseVer": {
-                "default": "Release Version"
               },
               "IAMProfile": {
                 "default": "IAM Profile Name"
@@ -62,7 +58,7 @@
         "InstanceType": {
             "Description": "Select the EC2 instance type",
             "Type": "String",
-            "Default": "m4.large",
+            "Default": "c4.large",
             "AllowedValues": [
                 "t2.small",
                 "t2.medium",
@@ -85,11 +81,6 @@
                 "PAYG",
                 "BYOL"
             ]
-        },
-        "ReleaseVer": {
-          "Type": "String",
-          "AllowedValues": [ "7.1.1", "7.0.3", "6.2.4" ],
-          "Default": "7.1.1"
         },
         "IAMProfile": {
             "Description": "Select the IAM Role for the NextGen Firewall.",
@@ -615,7 +606,7 @@
                 "ImageId": {
                   "Fn::FindInMap": [
                     {
-                      "Fn::FindInMap": [ "AMINGFversions", { "Ref": "ReleaseVer" }, "MapName" ]
+                      "Fn::FindInMap": [ "AMINGFversions", "7.1.1", "MapName" ]
                     },
                     {
                       "Ref": "AWS::Region"
@@ -755,7 +746,7 @@
                 "ImageId": {
                   "Fn::FindInMap": [
                     {
-                      "Fn::FindInMap": [ "AMINGFversions", { "Ref": "ReleaseVer" }, "MapName" ]
+                      "Fn::FindInMap": [ "AMINGFversions", "7.1.1", "MapName" ]
                     },
                     {
                       "Ref": "AWS::Region"
