@@ -402,6 +402,15 @@
                                             "--destination-cidr-block 0.0.0.0/0 --instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
                                         ]
                                     ]
+                                },
+                                {
+                                    "Fn::Join": [
+                                      " ",
+                                      [
+                                        "/opt/aws/bin/cfn-signal --success true --resource ASG ",
+                                        { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"}
+                                      ]
+                                    ]
                                 }
                             ]
                         ]
@@ -422,6 +431,12 @@
         },
         "ASG": {
             "Type": "AWS::AutoScaling::AutoScalingGroup",
+            "CreationPolicy": {
+              "ResourceSignal": {
+                "Count": "1",
+                "Timeout": "PT15M"
+              }
+            },
             "Properties": {
                 "VPCZoneIdentifier": [
                     {
