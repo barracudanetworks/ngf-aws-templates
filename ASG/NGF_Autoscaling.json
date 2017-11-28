@@ -288,7 +288,7 @@
         "PublicSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "GroupDescription": "Security group for the ASG",
+                "GroupDescription": "Security group for the Service ELB",
                 "VpcId": {
                     "Ref": "VPC"
                 },
@@ -328,7 +328,7 @@
         "NGFSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
-                "GroupDescription": "Security group for the Management ELB",
+                "GroupDescription": "Security group for the ASG",
                 "VpcId": {
                     "Ref": "VPC"
                 },
