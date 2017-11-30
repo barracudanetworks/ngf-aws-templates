@@ -1,6 +1,6 @@
 ## Deploy Cold Standby cluster into an existing VpcId
 
-[NGF_Coldstandby-PAYG-existing-VPC.json](NGF_Coldstandby-PAYG-existing-VPC.json) allows you to deploy the cold standby cluster with managed NGF into an already existing VPC. This template is design to work with BYOL NGF instance with pool license managed by NGCC.
+[NGF_Coldstandby-BYOL-existing-VPC.json](NGF_Coldstandby-BYOL-existing-VPC.json) allows you to deploy the cold standby cluster with managed NGF into an already existing VPC. This template is design to work with BYOL NGF instance with pool license managed by NGCC.
 
 This template reports status of PAR file retrieval as a custom tag assigned to ASG.
 
