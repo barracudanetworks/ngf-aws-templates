@@ -417,7 +417,7 @@
                             "",
                             [
                               "#!/bin/bash\n\n",
-                              { "Fn::Sub": "echo \"${CCPassword}\" | /opt/phion/bin/getpar" },
+                              { "Fn::Sub": "echo '${CCPassword}' | /opt/phion/bin/getpar" },
                               { "Fn::Sub": " -a ${CCIPAddress}" },
                               { "Fn::Sub": " -r ${CCRange}" },
                               { "Fn::Sub": " -c ${CCCluster}" },
