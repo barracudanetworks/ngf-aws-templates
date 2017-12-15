@@ -3,7 +3,7 @@
 ## Introduction
 This solution deploys to AWS EC2 an auto scaling group of Barracuda NextGen Firewalls (NGF). Firewall instances are synchronized and deployed behind an Elastic Load Balancer, which makes them visible and acting as a single system. The ASG is by default automatically scaled out/in based on number of concurrent VPN connections.
 
-![ASG architecture diagram](https://campus.barracuda.com/resources/attachments/image/70584069/aws_autoscale_cluster_plain.png)
+![ASG architecture diagram](https://campus.barracuda.com/resources/attachments/image/70584069/1/aws_autoscale_cluster_plain-01.png)
 
 ## Prerequisites
 
