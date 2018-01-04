@@ -13,6 +13,9 @@ New instance sill be assigned a public IP, no changes to subnet routing is perfo
 ## Deployed resources
 One EC2 Instance with a single NIC and a public IP attached.
 
+## Note
+Authentication using PAR File Retrieval Key is currently supported for BYOL instances only. When deploying a managed PAYG instance, you must use username and password to bind to NGCC.
+
 ## Template Parameters
 
 CFT Label | Parameter Name |  Description
@@ -27,7 +30,7 @@ Control Center IP Address | CCIPAddress | IP address or FQDN of the Control Cent
 Control Center Range ID | CCRange | Id of NGCC Range hosting box configuration.
 Control Center Cluster Name | CCCluster | Name of NGCC cluster hosting box configuration.
 Box Name | CCBoxname | Box name as defined in NGCC.
-Control Center username | CCUser | (optional) Username to use to authenticate against NGCC.
+Control Center username | CCUser | (optional for BYOL) Username to use to authenticate against NGCC.
 Control Center Password/key | CCPassword | Password to use to authenticate against NGCC. If username is empty, password value will be used as a shared key to bind instance to NGCC (see Box Properties/Operational/PAR File Retrieval Key).
 
 
