@@ -1,0 +1,444 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Barracuda NextGen Firewall - Managed Box",
+    "Metadata" : {
+        "AWS::CloudFormation::Interface" : {
+            "ParameterGroups" : [
+              {
+                "Label" : {
+                    "default": "Instance Settings"
+                },
+                "Parameters" : [
+                    "ReleaseVer",
+                    "InstanceType",
+                    "LicenceMode",
+                    "PrivateIpAddress",
+                    "VPCId",
+                    "SubnetId",
+                    "IAMProfile"
+                ]
+              },
+              {
+                "Label" : {
+                    "default": "NextGen Control Center Settings"
+                },
+                "Parameters" : [
+                    "CCIPAddress",
+                    "CCRange",
+                    "CCCluster",
+                    "CCBoxname",
+                    "CCUser",
+                    "CCPassword"
+                ]
+              }
+            ],
+            "ParameterLabels": {
+              "ReleaseVer": {
+                "default": "Release Version"
+              },
+              "InstanceType": {
+                "default": "Instance Type"
+              },
+              "LicenceMode": {
+                "default": "License Mode"
+              },
+              "PrivateIpAddress": {
+                "default": "Private IP Address"
+              },
+              "VPCId": {
+                "default": "VPC physical ID"
+              },
+              "SubnetId": {
+                "default": "Subnet physical ID"
+              },
+              "IAMProfile": {
+                "default": "IAM Profile"
+              },
+              "CCIPAddress": {
+                "default": "Control Center IP address"
+              },
+              "CCRange": {
+                "default": "Control Center Range ID"
+              },
+              "CCCluster": {
+                "default": "Control Center Cluster Name"
+              },
+              "CCBoxname": {
+                "default": "Box Name"
+              },
+              "CCUser": {
+                "default": "Control Center username"
+              },
+              "CCPassword": {
+                "default": "Control Center password/key"
+              }
+            }
+        }
+    },
+    "Parameters": {
+        "LicenceMode": {
+            "Description": "License Type",
+            "Type": "String",
+            "Default": "PAYG",
+            "AllowedValues": [
+                "PAYG",
+                "BYOL"
+            ]
+        },
+        "InstanceType": {
+            "Description": "EC2 instance type",
+            "Type": "String",
+            "Default": "c4.large",
+            "AllowedValues": [
+                "t2.small",
+                "t2.medium",
+                "t2.large",
+                "t2.xlarge",
+                "t2.2xlarge",
+                "m4.large",
+                "m4.xlarge",
+                "m4.2xlarge",
+                "c4.large",
+                "c4.xlarge",
+                "c4.2xlarge"
+            ],
+            "ConstraintDescription": "must be a valid EC2 instance type available in your region."
+        },
+        "IAMProfile": {
+          "Description": "(optional) Select the IAM Role for the NextGen Firewall.",
+          "Type": "String",
+          "Default": "NextGenFirewallRole"
+        },
+        "CCIPAddress": {
+            "Description": "IP Address or hostname of the CC",
+            "Type": "String"
+        },
+        "CCUser": {
+            "Description": "(optional) User on the CC used to retrieve the PAR file. Leave empty to use PAR File Retrieval Key.",
+            "Type": "String"
+        },
+        "CCPassword": {
+            "Description": "Password of the CC User / PAR File Retrieval Key",
+            "Type": "String",
+            "NoEcho": "true"
+        },
+        "CCCluster": {
+            "Description": "Name of the Cluster on the CC",
+            "Type": "String"
+        },
+        "CCRange": {
+            "Description": "Name of the Range on the CC",
+            "Type": "Number",
+            "Default": "1"
+        },
+        "CCBoxname": {
+            "Description": "Name of the Box on the CC",
+            "Type": "String"
+        },
+        "PrivateIpAddress": {
+            "Description": "Private IP of the Box in the AWS subnet. Leave empty to auto-assign.",
+            "Type": "String"
+        },
+        "VPCId": {
+            "Type": "AWS::EC2::VPC::Id",
+            "Description": "The Id of the VPC in which this instance is being created"
+        },
+        "SubnetId": {
+            "Description": "The Id of the subnet in which the managed box is deployed",
+            "Type": "AWS::EC2::Subnet::Id"
+        },
+        "ReleaseVer": {
+          "Type": "String",
+          "AllowedValues": [ "7.1.1", "7.0.3", "6.2.3" ],
+          "Default": "7.1.1"
+        }
+    },
+    "Mappings": {
+      "AMINGFversions": {
+        "7.1.1": { "MapName": "AMINGF711" },
+        "7.0.3": { "MapName": "AMINGF703" },
+        "6.2.3": { "MapName": "AMINGF623" }
+      },
+      "AMINGF711": {
+        "ap-south-1": {
+          "PAYG": "ami-e445058b",
+          "BYOL": "ami-0342026c"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-992b39fd",
+          "BYOL": "ami-16253772"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-0643947f",
+          "BYOL": "ami-7445920d"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-a32af0cd",
+          "BYOL": "ami-9b2bf1f5"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-b95181df",
+          "BYOL": "ami-b65383d0"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-08b6c964",
+          "BYOL": "ami-07b4cb6b"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-13259c77",
+          "BYOL": "ami-ae2891ca"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-fa9fe099",
+          "BYOL": "ami-0da1de6e"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-17c72475",
+          "BYOL": "ami-2ac52648"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-fdb20f92",
+          "BYOL": "ami-09ad1066"
+        },
+        "us-east-1": {
+          "PAYG": "ami-695a9e13",
+          "BYOL": "ami-af5b9fd5"
+        },
+        "us-east-2": {
+          "PAYG": "ami-ccc5e8a9",
+          "BYOL": "ami-90cae7f5"
+        },
+        "us-west-1": {
+          "PAYG": "ami-e5546785",
+          "BYOL": "ami-77546717"
+        },
+        "us-west-2": {
+          "PAYG": "ami-2d925755",
+          "BYOL": "ami-cf9c59b7"
+        }
+      },
+      "AMINGF703": {
+        "ap-south-1": {
+          "PAYG": "ami-3982f856",
+          "BYOL": "ami-858df7ea"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-568d9c32",
+          "BYOL": "ami-578d9c33"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-b1a351c8",
+          "BYOL": "ami-76a7550f"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-29944c47",
+          "BYOL": "ami-38934b56"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-edf80e8b",
+          "BYOL": "ami-48f80e2e"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-f343329f",
+          "BYOL": "ami-b44332d8"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-77bb0513",
+          "BYOL": "ami-93bd03f7"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-473a5f24",
+          "BYOL": "ami-990560fa"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-87c0d8e4",
+          "BYOL": "ami-64ced607"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-003b926f",
+          "BYOL": "ami-013b926e"
+        },
+        "us-east-1": {
+          "PAYG": "ami-8ea899f5",
+          "BYOL": "ami-aaab9ad1"
+        },
+        "us-east-2": {
+          "PAYG": "ami-5691b133",
+          "BYOL": "ami-4b93b32e"
+        },
+        "us-west-1": {
+          "PAYG": "ami-5a52783a",
+          "BYOL": "ami-9e5278fe"
+        },
+        "us-west-2": {
+          "PAYG": "ami-5806e420",
+          "BYOL": "ami-0401e37c"
+        }
+      },
+      "AMINGF624": {
+        "ap-south-1": {
+          "PAYG": "ami-dd90eab2",
+          "BYOL": "ami-2290ea4d"
+        },
+        "eu-west-2": {
+          "PAYG": "ami-8e8899ea",
+          "BYOL": "ami-6a84950e"
+        },
+        "eu-west-1": {
+          "PAYG": "ami-b76f9cce",
+          "BYOL": "ami-0752a17e"
+        },
+        "ap-northeast-2": {
+          "PAYG": "ami-f29e469c",
+          "BYOL": "ami-6d914903"
+        },
+        "ap-northeast-1": {
+          "PAYG": "ami-d845b2be",
+          "BYOL": "ami-5744b331"
+        },
+        "sa-east-1": {
+          "PAYG": "ami-eb572687",
+          "BYOL": "ami-aa5627c6"
+        },
+        "ca-central-1": {
+          "PAYG": "ami-2dbb0549",
+          "BYOL": "ami-e6bd0382"
+        },
+        "ap-southeast-1": {
+          "PAYG": "ami-e7069c84",
+          "BYOL": "ami-e5069c86"
+        },
+        "ap-southeast-2": {
+          "PAYG": "ami-cfd9c1ac",
+          "BYOL": "ami-acd8c0cf"
+        },
+        "eu-central-1": {
+          "PAYG": "ami-9252fbfd",
+          "BYOL": "ami-1d52fb72"
+        },
+        "us-east-1": {
+          "PAYG": "ami-4f6a5b34",
+          "BYOL": "ami-066a5b7d"
+        },
+        "us-east-2": {
+          "PAYG": "ami-988eaefd",
+          "BYOL": "ami-088eae6d"
+        },
+        "us-west-1": {
+          "PAYG": "ami-06436966",
+          "BYOL": "ami-09436969"
+        },
+        "us-west-2": {
+          "PAYG": "ami-e7c82a9f",
+          "BYOL": "ami-3ece2c46"
+        }
+      }
+    },
+    "Conditions": {
+        "NoBoxPrivateIp": {
+            "Fn::Equals": [
+                {
+                    "Ref": "PrivateIpAddress"
+                },
+                ""
+            ]
+        },
+        "SharedKeyAuth": {
+          "Fn::Equals": [
+            {
+              "Ref": "CCUser"
+            },
+            ""
+          ]
+        }
+    },
+    "Resources": {
+        "ManagedBox": {
+            "Type": "AWS::EC2::Instance",
+            "CreationPolicy": {
+              "ResourceSignal": {
+                "Count": "1",
+                "Timeout": "PT15M"
+              }
+            },
+            "Properties": {
+                "ImageId": {
+                    "Fn::FindInMap": [
+                        {
+                          "Fn::FindInMap": [ "AMINGFversions", { "Ref": "ReleaseVer" }, "MapName" ]
+                        },
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        {
+                            "Ref": "LicenceMode"
+                        }
+                    ]
+                },
+                "InstanceType": {
+                    "Ref": "InstanceType"
+                  },
+                "IamInstanceProfile": {
+                    "Ref": "IAMProfile"
+                  },
+                "SourceDestCheck": "false",
+                "NetworkInterfaces": [
+                    {
+                        "AssociatePublicIpAddress": "true",
+                        "DeleteOnTermination": "true",
+                        "DeviceIndex": "0",
+                        "PrivateIpAddress": {
+                            "Fn::If": [
+                                "NoBoxPrivateIp",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "Ref": "PrivateIpAddress"
+                                }
+                            ]
+                        },
+                        "SubnetId": {
+                            "Ref": "SubnetId"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Ref": "CCBoxname"
+                        }
+                    }
+                ],
+                "UserData": {
+                    "Fn::Base64": {
+                        "Fn::Join": [
+                            "",
+                            [
+                              "#!/bin/bash\n\n",
+                              { "Fn::Sub": "echo '${CCPassword}' | /opt/phion/bin/getpar" },
+                              { "Fn::Sub": " -a ${CCIPAddress}" },
+                              { "Fn::Sub": " -r ${CCRange}" },
+                              { "Fn::Sub": " -c ${CCCluster}" },
+                              { "Fn::Sub": " -b ${CCBoxname}" },
+                              { "Fn::If": [
+                                "SharedKeyAuth",
+                                "",
+                                { "Fn::Join": [ "", [ " -u ", { "Ref": "CCUser" }]]}
+                              ]},
+                              " -d /opt/phion/update/box.par -s",
+                              " --verbosity 10 ",
+                              " >> /tmp/getpar.log",
+                              " && /opt/aws/bin/cfn-signal --success true --resource ManagedBox ",
+                              { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"},
+                              " || /opt/aws/bin/cfn-signal -e 1 --resource ManagedBox  ",
+                              { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"}
+                            ]
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}
