@@ -358,6 +358,51 @@
                 "MgmtSecurityGroup"
             ]
         },
+        "NGFSecurityGroupIngressToControl": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "DependsOn": "NGFSecurityGroup",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "NGFSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "801",
+                "ToPort": "801",
+                "SourceSecurityGroupId": {
+                    "Ref": "NGFSecurityGroup"
+                }
+            }
+        },
+        "NGFSecurityGroupIngressToConfig": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "DependsOn": "NGFSecurityGroup",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "NGFSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "809",
+                "ToPort": "809",
+                "SourceSecurityGroupId": {
+                    "Ref": "NGFSecurityGroup"
+                }
+            }
+        },
+        "NGFSecurityGroupIngressToMgmtAccess": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "DependsOn": "NGFSecurityGroup",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "NGFSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "807",
+                "ToPort": "807",
+                "SourceSecurityGroupId": {
+                    "Ref": "NGFSecurityGroup"
+                }
+            }
+        },
         "VPC": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
