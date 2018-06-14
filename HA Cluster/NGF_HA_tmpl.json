@@ -685,6 +685,10 @@
                                 "#!/bin/bash",
                                 "/opt/phion/bin/editconf -f /opt/phion/config/active/boxadm.conf -p RPASSWDENFORCE -v 0",
                                 "/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxadm.conf -p RPASSWDENFORCE -v 0",
+
+                                "echo \"[[ \\\"_\\$1\\\" != \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "echo \"exit 0\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 {
                                     "Fn::Join": [
                                         " ",
