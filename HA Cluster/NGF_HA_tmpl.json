@@ -448,7 +448,15 @@
                   "Ref": "IAMProfile"
                 },
                 "ImageId": {
-                  "Fn::FindInMap": [ "amis", { "Ref": "ReleaseVersion"}, { "Ref": "AWS::Region"}, { "Ref": "LicenceMode" }]
+                  "Fn::FindInMap": [
+                    { "Fn::FindInMap": [ "amiMapMap", { "Ref": "ReleaseVersion" }, "mapName" ]},
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    {
+                      "Ref": "LicenceMode"
+                    }
+                  ]
                 },
                 "InstanceType": {
                     "Ref": "InstanceType"
@@ -598,7 +606,15 @@
                     "Ref": "IAMProfile"
                 },
                 "ImageId": {
-                  "Fn::FindInMap": [ "amis", { "Ref": "ReleaseVersion"}, { "Ref": "AWS::Region"}, { "Ref": "LicenceMode" }]
+                  "Fn::FindInMap": [
+                    { "Fn::FindInMap": [ "amiMapMap", { "Ref": "ReleaseVersion" }, "mapName" ]},
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    {
+                      "Ref": "LicenceMode"
+                    }
+                  ]
                 },
                 "InstanceType": {
                     "Ref": "InstanceType"
