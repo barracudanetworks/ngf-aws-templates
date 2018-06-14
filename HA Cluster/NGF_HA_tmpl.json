@@ -564,7 +564,7 @@
                                     ]
                                 },
 
-                                "echo \"[[ \\\"_$1\\\" != \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "echo \"[[ \\\"_\\$1\\\" != \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
 	                              "echo \"exit 0\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 {
