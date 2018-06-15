@@ -11,7 +11,7 @@
                 "Parameters" : [
                     "InstanceType",
                     "LicenceMode",
-                    "IAMProfile"
+                    "ReleaseVersion"
                 ]
               },
               {
