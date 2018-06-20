@@ -573,10 +573,10 @@
                                 },
 
                                 "echo << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
-                                ". /etc/phion/bin/cloud-logapi.sh
-                                init_log box_Cloud_control aws-eip-shift
-                                ilog \"hook script called with $1\"
-                                EOF",
+                                ". /etc/phion/bin/cloud-logapi.sh",
+                                "init_log box_Cloud_control aws-eip-shift",
+                                "ilog \"hook script called with $1\"",
+                                "EOF",
                                 "echo \"[[ \\\"_\\$1\\\" == \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 {
                                     "Fn::Join": [
@@ -605,7 +605,7 @@
                                             "--instance-id ",
                                             {
                                               "Ref": "instanceNGF2"
-                                            }
+                                            },
                                             "--allocation-id ",
                                             {
                                                 "Fn::GetAtt": [ "floatingEIP", "AllocationId" ]
@@ -714,10 +714,10 @@
                                 "/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxadm.conf -p RPASSWDENFORCE -v 0",
 
                                 "echo << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
-                                ". /etc/phion/bin/cloud-logapi.sh
-                                init_log box_Cloud_control aws-eip-shift
-                                ilog \"hook script called with $1\"
-                                EOF",
+                                ". /etc/phion/bin/cloud-logapi.sh",
+                                "init_log box_Cloud_control aws-eip-shift",
+                                "ilog \"hook script called with $1\"",
+                                "EOF",
                                 "echo \"[[ \\\"_\\$1\\\" == \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
 
                                 {
