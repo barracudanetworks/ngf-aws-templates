@@ -20,8 +20,8 @@
                 },
                 "Parameters" : [
                     "VpcAddress",
-                    "NGF1MIP",
-                    "NGF2MIP",
+                    "CGF1MIP",
+                    "CGF2MIP",
                     "Zone1",
                     "Zone2"
                 ]
@@ -34,17 +34,17 @@
               "IAMProfile": {
                 "default": "IAM Profile Name"
               },
-              "NGF1MIP": {
+              "CGF1MIP": {
                 "default": "Primary Firewall IP"
               },
-              "NGF2MIP": {
+              "CGF2MIP": {
                 "default": "Secondary Firewall IP"
               },
               "Zone1": {
-                "default": "AZ for Primary NGF"
+                "default": "AZ for Primary CGF"
               },
               "Zone2": {
-                "default": "AZ for Secondary NGF"
+                "default": "AZ for Secondary CGF"
               }
             }
         }
@@ -52,7 +52,7 @@
     "Parameters": {
         "Prefix": {
             "Type": "String",
-            "Default": "NGFHA",
+            "Default": "CGFHA",
             "Description": "Enter the prefix prepended to resources of this template"
         },
         "InstanceType": {
@@ -92,16 +92,16 @@
           ]
         },
         "IAMProfile": {
-            "Description": "Select the IAM Role for the NextGen Firewall.",
+            "Description": "Select the IAM Role for the Firewall. Check Barracuda Campus (https://campus.barracuda.com/doc/73719778/) for more details",
             "Type": "String",
             "Default": "NextGenFirewallRole"
         },
-        "NGF1MIP": {
+        "CGF1MIP": {
           "Type": "String",
           "Default": "192.168.1.10",
           "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})"
         },
-        "NGF2MIP": {
+        "CGF2MIP": {
           "Type": "String",
           "Default": "192.168.2.10",
           "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})"
@@ -126,7 +126,7 @@
       "amis": {}
     },
     "Resources": {
-        "vpcNGF": {
+        "vpcCGF": {
             "Type": "AWS::EC2::VPC",
             "Properties": {
                 "CidrBlock": {
@@ -167,14 +167,14 @@
                 },
                 "CidrBlock": {
                     "Fn::Join": [ ".", [
-                      {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
-                      {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
-                      {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
+                      {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
+                      {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
+                      {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
                       "0/24"
                       ]]
                 },
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "Tags": [
                     {
@@ -208,14 +208,14 @@
                 },
                 "CidrBlock": {
                   "Fn::Join": [ ".", [
-                    {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
-                    {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
-                    {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
+                    {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
+                    {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
+                    {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
                     "0/24"
                     ]]
                 },
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "Tags": [
                     {
@@ -272,7 +272,7 @@
             "Type": "AWS::EC2::VPCGatewayAttachment",
             "Properties": {
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "InternetGatewayId": {
                     "Ref": "igw"
@@ -283,7 +283,7 @@
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "Tags": [
                     {
@@ -348,7 +348,7 @@
             "Type": "AWS::EC2::RouteTable",
             "Properties": {
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "Tags": [
                     {
@@ -376,23 +376,23 @@
         },
         "PrivateRoute": {
             "Type": "AWS::EC2::Route",
-            "DependsOn": "instanceNGF1",
+            "DependsOn": "instanceCGF1",
             "Properties": {
                 "RouteTableId": {
                     "Ref": "routeTablePrivate"
                 },
                 "DestinationCidrBlock": "0.0.0.0/0",
                 "InstanceId": {
-                    "Ref": "instanceNGF1"
+                    "Ref": "instanceCGF1"
                 }
             }
         },
-        "securityGroupNGF": {
+        "securityGroupCGF": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
                 "GroupDescription": "Allow All Traffic.",
                 "VpcId": {
-                    "Ref": "vpcNGF"
+                    "Ref": "vpcCGF"
                 },
                 "SecurityGroupIngress": [
                     {
@@ -436,10 +436,10 @@
           "Type": "AWS::EC2::EIPAssociation",
           "Properties": {
             "AllocationId": { "Fn::GetAtt": [ "floatingEIP", "AllocationId" ]},
-            "InstanceId": { "Ref": "instanceNGF1" }
+            "InstanceId": { "Ref": "instanceCGF1" }
           }
         },
-        "instanceNGF1": {
+        "instanceCGF1": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
                 "DisableApiTermination": "false",
@@ -470,7 +470,7 @@
                             "Fn::Join": [
                                 "",
                                 [
-                                    "NIC NGF1 ",
+                                    "NIC CGF1 ",
                                     {
                                         "Ref": "Prefix"
                                     }
@@ -484,14 +484,14 @@
                         "PrivateIpAddresses": [
                             {
                                 "PrivateIpAddress": {
-                                  "Ref": "NGF1MIP"
+                                  "Ref": "CGF1MIP"
                                 },
                                 "Primary": "true"
                             }
                         ],
                         "GroupSet": [
                             {
-                                "Ref": "securityGroupNGF"
+                                "Ref": "securityGroupCGF"
                             }
                         ],
                         "AssociatePublicIpAddress": "true"
@@ -507,7 +507,7 @@
                                     {
                                         "Ref": "Prefix"
                                     },
-                                    "-NGF1"
+                                    "-CGF1"
                                 ]
                             ]
                         }
@@ -531,14 +531,14 @@
                                         [
                                             "/opt/phion/bin/cloud-setmip",
                                             {
-                                                "Ref": "NGF1MIP"
+                                                "Ref": "CGF1MIP"
                                             },
                                             "24",
                                             {
                                               "Fn::Join": [ ".", [
-                                                {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
-                                                {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
-                                                {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "NGF1MIP" }]} ]},
+                                                {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
+                                                {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
+                                                {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "CGF1MIP" }]} ]},
                                                 "1"
                                                 ]]
                                             }
@@ -551,20 +551,20 @@
                                         [
                                             "echo",
                                             {
-                                                "Ref": "instanceNGF2"
+                                                "Ref": "instanceCGF2"
                                             },
                                             "|/opt/phion/bin/create-dha -s S1 -c -o",
                                             {
-                                                "Ref": "NGF2MIP"
+                                                "Ref": "CGF2MIP"
                                             },
                                             "-n",
                                             "24",
                                             "-g",
                                             {
                                               "Fn::Join": [ ".", [
-                                                {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
-                                                {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
-                                                {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "NGF2MIP" }]} ]},
+                                                {"Fn::Select": [ 0, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
+                                                {"Fn::Select": [ 1, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
+                                                {"Fn::Select": [ 2, {"Fn::Split": [ ".", {"Ref": "CGF2MIP" }]} ]},
                                                 "1"
                                                 ]]
                                             }
@@ -575,7 +575,7 @@
                                 "cat << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 ". /etc/phion/bin/cloud-logapi.sh",
                                 "init_log box_Cloud_control aws-eip-shift",
-                                "ilog \"hook script called with $1\"",
+                                "ilog \"hook script called with \\$1\"",
                                 "EOF",
                                 "echo \"[[ \\\"_\\$1\\\" == \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 {
@@ -593,7 +593,7 @@
                                         ]
                                     ]
                                 },
-                                "echo \"ilog \\\"EIP shifting to primary initiated: ${aws_handle}\\\"\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "echo \"ilog \\\"EIP shifting to primary initiated: \\${aws_handle}\\\"\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "chmod +x /opt/phion/hooks/ha/aws-shift-eip.sh",
 
@@ -626,7 +626,7 @@
                 }
             }
         },
-        "instanceNGF2": {
+        "instanceCGF2": {
             "Type": "AWS::EC2::Instance",
             "Properties": {
                 "DisableApiTermination": "false",
@@ -657,7 +657,7 @@
                             "Fn::Join": [
                                 "",
                                 [
-                                    "NIC NGF2 ",
+                                    "NIC CGF2 ",
                                     {
                                         "Ref": "Prefix"
                                     }
@@ -671,14 +671,14 @@
                         "PrivateIpAddresses": [
                             {
                                 "PrivateIpAddress": {
-                                  "Ref": "NGF2MIP"
+                                  "Ref": "CGF2MIP"
                                 },
                                 "Primary": "true"
                             }
                         ],
                         "GroupSet": [
                             {
-                                "Ref": "securityGroupNGF"
+                                "Ref": "securityGroupCGF"
                             }
                         ],
                         "AssociatePublicIpAddress": "true"
@@ -694,7 +694,7 @@
                                     {
                                         "Ref": "Prefix"
                                     },
-                                    "-NGF2"
+                                    "-CGF2"
                                 ]
                             ]
                         }
@@ -718,7 +718,7 @@
                                 "cat << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 ". /etc/phion/bin/cloud-logapi.sh",
                                 "init_log box_Cloud_control aws-eip-shift",
-                                "ilog \"hook script called with $1\"",
+                                "ilog \"hook script called with \\$1\"",
                                 "EOF",
                                 "echo \"[[ \\\"_\\$1\\\" == \\\"_HA-START\\\" ]] && {\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
 
@@ -737,7 +737,7 @@
                                         ]
                                     ]
                                 },
-                                "echo \"ilog \\\"EIP shifting to secondary initiated: ${aws_handle}\\\"\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "echo \"ilog \\\"EIP shifting to secondary initiated: \\${aws_handle}\\\"\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "chmod +x /opt/phion/hooks/ha/aws-shift-eip.sh",
 
@@ -777,7 +777,7 @@
         },
         "InitialPassword": {
             "Description": "Initial password for firewall management",
-            "Value": { "Ref": "instanceNGF1" }
+            "Value": { "Ref": "instanceCGF1" }
         }
     }
 }
