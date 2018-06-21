@@ -572,7 +572,7 @@
                                     ]
                                 },
 
-                                "echo << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "cat << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 ". /etc/phion/bin/cloud-logapi.sh",
                                 "init_log box_Cloud_control aws-eip-shift",
                                 "ilog \"hook script called with $1\"",
@@ -597,7 +597,7 @@
                                 "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "chmod +x /opt/phion/hooks/ha/aws-shift-eip.sh",
 
-                                "echo << EOF >> /opt/phion/bin/xcloud-aws-check-eip-assoc.sh",
+                                "cat << EOF >> /opt/phion/bin/xcloud-aws-check-eip-assoc.sh",
                                 "if [ \"down\" != $(head -1 /opt/phion/run/server.ctrl | cut -d \" \" -f 3) ]; then",
                                 "MY_ID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`",
                                 "MY_IP=`/opt/aws/bin/aws ec2 describe-instances --instance-id $MY_ID --output text | grep ASSOC | head -1 | cut -d $'\t' -f 4`",
@@ -715,7 +715,7 @@
                                 "/opt/phion/bin/editconf -f /opt/phion/config/active/boxadm.conf -p RPASSWDENFORCE -v 0",
                                 "/opt/phion/bin/editconf -f /opt/phion/config/configroot/boxadm.conf -p RPASSWDENFORCE -v 0",
 
-                                "echo << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
+                                "cat << EOF >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 ". /etc/phion/bin/cloud-logapi.sh",
                                 "init_log box_Cloud_control aws-eip-shift",
                                 "ilog \"hook script called with $1\"",
@@ -741,7 +741,7 @@
                                 "echo \"}\" >> /opt/phion/hooks/ha/aws-shift-eip.sh",
                                 "chmod +x /opt/phion/hooks/ha/aws-shift-eip.sh",
 
-                                "echo << EOF >> /opt/phion/bin/xcloud-aws-check-eip-assoc.sh",
+                                "cat << EOF >> /opt/phion/bin/xcloud-aws-check-eip-assoc.sh",
                                 "if [ \"down\" != $(head -1 /opt/phion/run/server.ctrl | cut -d \" \" -f 3) ]; then",
                                 "MY_ID=`/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id`",
                                 "MY_IP=`/opt/aws/bin/aws ec2 describe-instances --instance-id $MY_ID --output text | grep ASSOC | head -1 | cut -d $'\t' -f 4`",
