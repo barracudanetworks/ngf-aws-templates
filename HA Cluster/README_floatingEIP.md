@@ -52,5 +52,10 @@ Use CGF_HA_floatingEIP.json file to launch the solution or click the link below 
 
 For additional instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
+## Next Steps
+Barracuda CloudGen firewalls can be managed via a Web Interface or using a dedicated tool: Firewall Admin (for Windows). Your cluster is deployed to use the latter method. Download Firewall Admin application from [Barracuda Download Portal](https://dlportal.barracudanetworks.com/#/search?page=1&type=3)
+
+If you decided to use BYOL licensing, you need to acquire your license tokens. If you haven't purchased any, you can request free evaluation tokens using [Evaluation Request form](https://www.barracuda.com/purchase/evaluation/product/BNGCAW). Remember, you will need two tokens for two firewalls. More information on licensing and activation can be found in [Barracuda Campus](https://campus.barracuda.com/doc/73719711/). If you deployed Hourly or MeteredBilling versions, you do not need to take any additional steps for licensing.
+
 ## Additional Resources
 [AWS Reference Architecture - CloudGen Firewall High Availability Cluster with Route Shifting](https://campus.barracuda.com/product/nextgenfirewallf/doc/54264714/aws-reference-architecture-nextgen-firewall-high-availability-cluster-with-route-shifting/)
