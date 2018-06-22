@@ -35,7 +35,7 @@ Following resources will be created by the template:
 - Two Barracuda CloudGen Firewalls
 - Security Group allowing all traffic - we recommend to use an "Allow all" SG when filtering traffic using firewalls to streamline configuration and troubleshooting
 
-The firewalls are deployed as a cluster, no additional manual action is required to configure the clustering. Although passive firewall is assigned an ephemeral public IP, it is hardly needed for operating the cluster. Primary node constantly synchronizes all configuration and you should not introduce any changes directly on secondary node.
+The firewalls are deployed preconfigured as a cluster, so no additional manual action is required to configure the clustering. Although passive firewall is assigned an ephemeral public IP, it is hardly needed for operating the cluster after licensing is done (see [How to Activate and License a Standalone High Availability Cluster](https://campus.barracuda.com/doc/73719711/) at Barracuda Campus). Primary node constantly synchronizes all configuration and you should not introduce any changes directly on secondary node.
 
 **Note** The backend subnets and resources are *not* automatically created by the template. This has to be done manually after template deployment has finished.
 
@@ -44,10 +44,9 @@ The firewalls are deployed as a cluster, no additional manual action is required
  - Initial password - initial root password for cluster management (has to be changed upon first log in)
 
 ## Launching the Template
-Use CGF_HA_floatingEIP.json file to launch the solution or click the link below to launch into AWS region you used last:
+Use CGF_HA_floatingEIP.json file to launch the solution or click the link below to launch into the last AWS region you used:
 
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)]
-(https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/cuda-cgf-ami-list/CGF-HA-EIP-shifting.json)
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/cuda-cgf-ami-list/CGF-HA-EIP-shifting.json)
 
 For additional instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
