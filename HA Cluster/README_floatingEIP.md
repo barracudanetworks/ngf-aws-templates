@@ -48,7 +48,7 @@ The firewalls are deployed preconfigured as a cluster, so no additional manual a
 ## Launching the Template
 Use CGF_HA_floatingEIP.json file to launch the solution or click the link below to launch into the last AWS region you used:
 
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/cuda-cgf-ami-list/CGF-HA-EIP-shifting.json)
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/cuda-cgf-templates/CGF_HA_floatingEIP.json)
 
 For additional instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
