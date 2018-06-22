@@ -1,7 +1,7 @@
-# HA Cluster of Barracuda NextGen Firewalls
+# HA Cluster of Barracuda CloudGen Firewalls
 
 ## Introduction
-This template deploys a VPC with a multi-AZ High Availability cluster of Barracuda CloudGen Firewalls (stand-alone). The cluster works in active/passive mode, automatically rewriting route table upon failover and reassigning Elastic IP for directing ingress traffic from public Internet.
+This template deploys a VPC with a multi-AZ High Availability cluster of Barracuda CloudGen Firewalls (stand-alone) with a floating EIP. The cluster works in active/passive mode, automatically rewriting route table upon failover and reassigning Elastic IP for directing ingress traffic from public Internet.
 
 The HA Cluster can be used as a starting block for multiple use-cases and architectures including IPSec hub, Secure Remote Access or Transit VPC.
 
@@ -14,6 +14,8 @@ More information on the architecture can be found at [Barracuda Campus](https://
 Both firewall nodes constantly communicate via heartbeat connection and synchronize configuration as well as state data. As soon as the passive node detects active node's absence, it resumes operations and additionally executes following actions in AWS fabric:
 1. rewrites routing table entries pointing to missing instance to itself
 2. reassigns the EIP to itself
+
+The failover time is usually around 10 seconds.
 
 ### Preemption
 Barracuda CloudGen Firewall clusters do not fail back automatically to primary node in order to avoid possible flipping if the issue, which originally caused the HA failover, was not fixed. The cluster with secondary node active and primary node on stand-by is though fully operational and will fail over to primary automatically as soon as secondary is gone. The easiest procedure to achieve fail back in AWS environment is to simply reboot the active node.
@@ -51,4 +53,4 @@ Use CGF_HA_floatingEIP.json file to launch the solution or click the link below 
 For additional instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
 ## Additional Resources
-[AWS Reference Architecture - NextGen Firewall High Availability Cluster with Route Shifting](https://campus.barracuda.com/product/nextgenfirewallf/doc/54264714/aws-reference-architecture-nextgen-firewall-high-availability-cluster-with-route-shifting/)
+[AWS Reference Architecture - CloudGen Firewall High Availability Cluster with Route Shifting](https://campus.barracuda.com/product/nextgenfirewallf/doc/54264714/aws-reference-architecture-nextgen-firewall-high-availability-cluster-with-route-shifting/)
