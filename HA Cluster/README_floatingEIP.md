@@ -46,7 +46,7 @@ The firewalls are deployed preconfigured as a cluster, so no additional manual a
  - Initial password - initial root password for cluster management (has to be changed upon first log in)
 
 ## Launching the Template
-Use CGF_HA_floatingEIP.json file to launch the solution or click the link below to launch into the last AWS region you used:
+Use [CGF_HA_floatingEIP.json](https://s3.eu-central-1.amazonaws.com/cuda-cgf-templates/CGF_HA_floatingEIP.json) file to launch the solution or click the link below to launch into the last AWS region you used:
 
 [![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?#/stacks/create/review?templateURL=https://s3.eu-central-1.amazonaws.com/cuda-cgf-templates/CGF_HA_floatingEIP.json)
 
