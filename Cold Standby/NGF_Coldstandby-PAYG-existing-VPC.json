@@ -1,371 +1,497 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Barracuda NextGen Firewall 7.1.1 - Cold Standby Cluster",
-    "Metadata" : {
-        "AWS::CloudFormation::Interface" : {
-            "ParameterGroups" : [
-              {
-                "Label" : {
-                    "default": "Launch Configuration Settings"
-                },
-                "Parameters" : [
-                    "InstanceType",
-                    "IAMProfile"
-                ]
-              },
-              {
-                "Label": {
-                  "default": "Network Settings"
-                },
-                "Parameters": [
-                  "VpcStackName",
-                  "VpcId",
-                  "PublicSubnetAId",
-                  "PublicSubnetBId",
-                  "PrivateSubnetRouteTableId"
-                ]
-              }
-
-            ],
-            "ParameterLabels": {
-              "InstanceType": {
-                "default": "Instance Type"
-              },
-              "IAMProfile": {
-                "default": "IAM Profile"
-              },
-              "VpcId": {
-                "default": "VPC"
-              },
-              "PublicSubnetAId": {
-                "default": "Primary AZ subnet"
-              },
-              "PublicSubnetBId": {
-                "default": "Secondary AZ subnet"
-              },
-              "PrivateSubnetRouteTableId": {
-                "default": "Route table to be maintained"
-              }
-            }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Barracuda CloudGen Firewall - Cold Standby Cluster",
+  "Metadata": {
+    "AWS::CloudFormation::Interface": {
+      "ParameterGroups": [
+        {
+          "Label": {
+            "default": "Launch Configuration Settings"
+          },
+          "Parameters": [
+            "InstanceType",
+            "IAMProfile",
+            "ReleaseVersion",
+            "LicenceMode"
+          ]
+        },
+        {
+          "Label": {
+            "default": "Network Settings"
+          },
+          "Parameters": [
+            "VpcId",
+            "PublicSubnetAId",
+            "PublicSubnetBId",
+            "PrivateSubnetRouteTableId"
+          ]
         }
-    },
-    "Parameters": {
+      ],
+      "ParameterLabels": {
         "InstanceType": {
-            "Description": "Select the EC2 instance type.",
-            "Type": "String",
-            "Default": "t2.medium",
-            "AllowedValues": [
-                "t2.small",
-                "t2.medium",
-                "t2.large",
-                "t2.xlarge",
-                "t2.2xlarge",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge"
-            ]
+          "default": "Instance Type"
         },
         "IAMProfile": {
-            "Description": "Select the IAM Role for the NextGen Firewall.",
-            "Type": "String",
-            "Default": "NextGenFirewallRole"
+          "default": "IAM Profile"
         },
         "VpcId": {
-          "Description": "VPC to deploy to",
-          "Type": "String",
-          "Default": ""
+          "default": "VPC"
         },
         "PublicSubnetAId": {
-          "Description": "Primary public subnet for firewall.",
-          "Type": "String",
-          "Default": ""
+          "default": "Primary AZ subnet"
         },
         "PublicSubnetBId": {
-          "Description": "Secondary pbulic subnet for firewall.",
-          "Type": "String",
-          "Default": ""
+          "default": "Secondary AZ subnet"
         },
         "PrivateSubnetRouteTableId": {
-          "Description": "Firewall will point default route in this table to itself",
-          "Type": "String",
-          "Default": ""
-        },
-        "VpcStackName": {
-          "Description": "Name of VPC stack if created using attached vpc.json. (If used VPC, Subnets and Route Table parameters will be filled in automatically.)",
-          "Type": "String",
-          "Default": ""
+          "default": "Route table to be maintained"
         }
-    },
-    "Mappings": {
-      "AMINGF": {
-        "ap-south-1": {
-          "PAYG": "ami-e445058b",
-          "BYOL": "ami-0342026c"
-        },
-        "eu-west-2": {
-          "PAYG": "ami-992b39fd",
-          "BYOL": "ami-16253772"
-        },
-        "eu-west-1": {
-          "PAYG": "ami-0643947f",
-          "BYOL": "ami-7445920d"
-        },
-        "ap-northeast-2": {
-          "PAYG": "ami-a32af0cd",
-          "BYOL": "ami-9b2bf1f5"
-        },
-        "ap-northeast-1": {
-          "PAYG": "ami-b95181df",
-          "BYOL": "ami-b65383d0"
-        },
-        "sa-east-1": {
-          "PAYG": "ami-08b6c964",
-          "BYOL": "ami-07b4cb6b"
-        },
-        "ca-central-1": {
-          "PAYG": "ami-13259c77",
-          "BYOL": "ami-ae2891ca"
-        },
-        "ap-southeast-1": {
-          "PAYG": "ami-fa9fe099",
-          "BYOL": "ami-0da1de6e"
-        },
-        "ap-southeast-2": {
-          "PAYG": "ami-17c72475",
-          "BYOL": "ami-2ac52648"
-        },
-        "eu-central-1": {
-          "PAYG": "ami-fdb20f92",
-          "BYOL": "ami-09ad1066"
-        },
-        "us-east-1": {
-          "PAYG": "ami-695a9e13",
-          "BYOL": "ami-af5b9fd5"
-        },
-        "us-east-2": {
-          "PAYG": "ami-ccc5e8a9",
-          "BYOL": "ami-90cae7f5"
-        },
-        "us-west-1": {
-          "PAYG": "ami-e5546785",
-          "BYOL": "ami-77546717"
-        },
-        "us-west-2": {
-          "PAYG": "ami-2d925755",
-          "BYOL": "ami-cf9c59b7"
-        }
-      }
-    },
-    "Conditions": {
-      "VpcFromStack": { "Fn::Not": [ {"Fn::Equals": [ "", { "Ref": "VpcStackName" }]}]}
-    },
-    "Resources": {
-        "PublicSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Security group for the ASG",
-                "VpcId": {
-                    "Fn::If": [
-                      "VpcFromStack",
-                      { "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-VpcId" }},
-                      { "Ref": "VpcId" }
-                    ]
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "-1",
-                        "FromPort": "-1",
-                        "ToPort": "-1",
-                        "CidrIp": "0.0.0.0/0"
-                    }
-                ]
-            }
-        },
-        "ElasticIP": {
-            "Type": "AWS::EC2::EIP",
-            "Properties": {
-                "Domain": "vpc"
-            }
-        },
-        "S3": {
-            "Type": "AWS::S3::Bucket",
-            "Properties": {
-                "AccessControl": "Private",
-                "VersioningConfiguration": {
-                    "Status": "Enabled"
-                }
-            }
-        },
-        "LaunchConfiguration": {
-            "Type": "AWS::AutoScaling::LaunchConfiguration",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AMINGF",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "PAYG"
-                    ]
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "PublicSecurityGroup"
-                    }
-                ],
-                "InstanceType": {
-                    "Ref": "InstanceType"
-                },
-                "AssociatePublicIpAddress": true,
-                "IamInstanceProfile": {
-                    "Ref": "IAMProfile"
-                },
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "\n",
-                            [
-                                "#!/bin/bash",
-                                {
-                                    "Fn::Join": [
-                                        " ",
-                                        [
-                                            "/opt/phion/bin/aws-asg-provision",
-                                            "--bucket",
-                                            {
-                                                "Ref": "S3"
-                                            },
-                                            "--topic",
-                                            {
-                                                "Ref": "AWS::StackName"
-                                            }
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                        " ",
-                                        [
-                                            "/opt/aws/bin/aws ec2 associate-address",
-                                            "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
-                                            "--allocation-id ",
-                                            {
-                                                "Fn::GetAtt": [ "ElasticIP", "AllocationId" ]
-                                            },
-                                            "--allow-reassociation"
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                        " ",
-                                        [
-                                            "/opt/aws/bin/aws ec2 modify-instance-attribute",
-                                            "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
-                                            "--no-source-dest-check"
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                        " ",
-                                        [
-                                            "/opt/aws/bin/aws ec2 replace-route",
-                                            "--route-table-id ",
-                                            {
-                                              "Fn::If": [
-                                                "VpcFromStack",
-                                                { "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-PrivateSubnetRouteTableId" }},
-                                                { "Ref": "PrivateSubnetRouteTableId" }
-                                              ]
-                                            },
-                                            "--destination-cidr-block 0.0.0.0/0 --instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
-                                        ]
-                                    ]
-                                },
-                                {
-                                    "Fn::Join": [
-                                      " ",
-                                      [
-                                        "/opt/aws/bin/cfn-signal --success true --resource ASG ",
-                                        { "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"}
-                                      ]
-                                    ]
-                                }
-                            ]
-                        ]
-                    }
-                }
-            },
-            "DependsOn": "PublicSecurityGroup"
-        },
-        "SNSTopic": {
-            "Type": "AWS::SNS::Topic",
-            "Properties": {
-              "DisplayName": {
-                  "Ref": "AWS::StackName"
-              },
-              "TopicName": {
-                  "Ref": "AWS::StackName"
-              }
-            }
-        },
-        "ASG": {
-            "Type": "AWS::AutoScaling::AutoScalingGroup",
-            "CreationPolicy": {
-              "ResourceSignal": {
-                "Count": "1",
-                "Timeout": "PT15M"
-              }
-            },
-            "Properties": {
-                "VPCZoneIdentifier": [
-                    {
-                      "Fn::If": [
-                        "VpcFromStack",
-                        { "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-PublicSubnetAId" }},
-                        { "Ref": "PublicSubnetAId" }
-                      ]
-                    },
-                    {
-                      "Fn::If": [
-                        "VpcFromStack",
-                        { "Fn::ImportValue": { "Fn::Sub": "${VpcStackName}-PublicSubnetBId" }},
-                        { "Ref": "PublicSubnetBId" }
-                      ]
-                    }
-                ],
-                "LaunchConfigurationName": {
-                    "Ref": "LaunchConfiguration"
-                },
-                "MinSize": 1,
-                "DesiredCapacity": 1,
-                "MaxSize": 1,
-                "HealthCheckGracePeriod": 1800,
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": { "Ref": "AWS::StackName" },
-                        "PropagateAtLaunch": true
-                    }
-                ]
-            },
-            "DependsOn": "LaunchConfiguration"
-        }
-    },
-    "Outputs": {
-      "PublicIP": {
-          "Description": "Firewall Public IP",
-          "Value": {
-              "Ref": "ElasticIP"
-          }
-      },
-      "Password": {
-        "Description" : "",
-        "Value": "For initial management password check __configNodeId tag of your Auto Scaling Group"
       }
     }
+  },
+  "Parameters": {
+    "InstanceType": {
+      "Description": "Select the EC2 instance type.",
+      "Type": "String",
+      "Default": "c5.large",
+      "AllowedValues": [
+        "t2.small",
+        "t2.medium",
+        "t2.large",
+        "t3.small",
+        "t3.medium",
+        "t3.large",
+        "m4.large",
+        "m4.xlarge",
+        "m4.2xlarge",
+        "m5.large",
+        "m5.xlarge",
+        "m5.2xlarge",
+        "c4.large",
+        "c4.xlarge",
+        "c4.2xlarge",
+        "c5.large",
+        "c5.xlarge",
+        "c5.2xlarge"
+      ]
+    },
+    "LicenceMode": {
+      "Description": "Select the license type.",
+      "Type": "String",
+      "Default": "Hourly",
+      "AllowedValues": [
+        "Hourly",
+        "Metered"
+      ]
+    },
+    "ReleaseVersion": {
+      "Description": "Which release do you want to deploy?",
+      "Type": "String",
+      "Default": "8.0.0",
+      "AllowedValues": [
+        "8.0.0",
+        "7.2.2"
+      ]
+    },
+    "IAMProfile": {
+      "Description": "Select the IAM Role for the NextGen Firewall.",
+      "Type": "String",
+      "Default": "NextGenFirewallRole"
+    },
+    "VpcId": {
+      "Description": "VPC to deploy to",
+      "Type": "String",
+      "Default": ""
+    },
+    "PublicSubnetAId": {
+      "Description": "Primary public subnet for firewall.",
+      "Type": "String",
+      "Default": ""
+    },
+    "PublicSubnetBId": {
+      "Description": "Secondary pbulic subnet for firewall.",
+      "Type": "String",
+      "Default": ""
+    },
+    "PrivateSubnetRouteTableId": {
+      "Description": "Firewall will point default route in this table to itself",
+      "Type": "String",
+      "Default": ""
+    }
+  },
+  "Mappings": {
+    "amiMapMap": {
+      "7.2.2": {
+        "mapName": "amiMapv722"
+      },
+      "8.0.0": {
+        "mapName": "amiMapv800"
+      }
+    },
+    "amiMapv722": {
+      "ap-south-1": {
+        "Hourly": "ami-03c7fefc0f6196d1f",
+        "BYOL": "ami-004a941d35e76d1c3",
+        "Metered": "ami-00d03b7382e6e48b7"
+      },
+      "eu-west-3": {
+        "Hourly": "ami-0e5604bcd0bd30b73",
+        "BYOL": "ami-0a403b749fefd8d32",
+        "Metered": "ami-00188af8e0b673fa6"
+      },
+      "eu-west-2": {
+        "Hourly": "ami-0e7b10d0e5047c696",
+        "BYOL": "ami-0db9b61e5420d7e8f",
+        "Metered": "ami-00f38e7da117d5fa3"
+      },
+      "eu-west-1": {
+        "Hourly": "ami-04f99a618a3dca6fa",
+        "BYOL": "ami-0d91aaf7344ac3448",
+        "Metered": "ami-0e3561eacc51f6981"
+      },
+      "ap-northeast-2": {
+        "Hourly": "ami-0245959713fe9da62",
+        "BYOL": "ami-023f33ee67a4b714e",
+        "Metered": "ami-0e47c150c02d05d4c"
+      },
+      "ap-northeast-1": {
+        "Hourly": "ami-0be3432767d410bea",
+        "BYOL": "ami-06cb4c406b6a54e3d",
+        "Metered": "ami-0a92314980937dfb7"
+      },
+      "sa-east-1": {
+        "Hourly": "ami-0a599a8bc4ed4be14",
+        "BYOL": "ami-0716b5eea731dd18f",
+        "Metered": "ami-0a95e2e088fd98b9e"
+      },
+      "ca-central-1": {
+        "Hourly": "ami-05633c0a259a7b578",
+        "BYOL": "ami-02aea8d07ce3e18c5",
+        "Metered": "ami-0532c1c03ba4fea1c"
+      },
+      "ap-southeast-1": {
+        "Hourly": "ami-017a60433bd310059",
+        "BYOL": "ami-034f3aee396a6fee2",
+        "Metered": "ami-0a634e580bc30f62b"
+      },
+      "ap-southeast-2": {
+        "Hourly": "ami-041b2c8c1133b8f45",
+        "BYOL": "ami-05b9344d95079a317",
+        "Metered": "ami-01da023d3661647f4"
+      },
+      "eu-central-1": {
+        "Hourly": "ami-0c36d1410b29b149b",
+        "BYOL": "ami-0e40eeeff781cb1e9",
+        "Metered": "ami-0d98019c163e2ed4e"
+      },
+      "us-east-1": {
+        "Hourly": "ami-003163f417a45d0ab",
+        "BYOL": "ami-048d05819b43ea120",
+        "Metered": "ami-05210ee01708ca581"
+      },
+      "us-east-2": {
+        "Hourly": "ami-0ea524c8384cbd2ce",
+        "BYOL": "ami-0a8ba83843737c4ec",
+        "Metered": "ami-001fdebe1eb56c5df"
+      },
+      "us-west-1": {
+        "Hourly": "ami-007df950d347f2a2c",
+        "BYOL": "ami-015316cd1568230f5",
+        "Metered": "ami-023648de69017df75"
+      },
+      "us-west-2": {
+        "Hourly": "ami-09f1fcc07140a9605",
+        "BYOL": "ami-0a63c20752ee8289b",
+        "Metered": "ami-09cafca128eb8b3ff"
+      }
+    },
+    "amiMapv800": {
+      "ap-south-1": {
+        "Hourly": "ami-05d8947000efde91c",
+        "BYOL": "ami-0c549990baa53a1aa",
+        "Metered": "ami-0ffccdda4badd479d"
+      },
+      "eu-west-3": {
+        "Hourly": "ami-07b65515fb71b3ba0",
+        "BYOL": "ami-075b6bac76319938c",
+        "Metered": "ami-02fa9d680677e819c"
+      },
+      "eu-west-2": {
+        "Hourly": "ami-035b249f052aeb5fb",
+        "BYOL": "ami-0dd2d681e348cd17f",
+        "Metered": "ami-079f0175e689e5097"
+      },
+      "eu-west-1": {
+        "Hourly": "ami-0480b178cd4cb6f27",
+        "BYOL": "ami-06af86e5264e76613",
+        "Metered": "ami-02427823550cbf3f7"
+      },
+      "ap-northeast-2": {
+        "Hourly": "ami-044c938fd28b832a9",
+        "BYOL": "ami-0e27f9dd8e567acd3",
+        "Metered": "ami-0059de278303bc9c4"
+      },
+      "ap-northeast-1": {
+        "Hourly": "ami-0e60d5291d76cf237",
+        "BYOL": "ami-00a7813f5bf439194",
+        "Metered": "ami-0092d8c4c9347a1d7"
+      },
+      "sa-east-1": {
+        "Hourly": "ami-08968a20554149211",
+        "BYOL": "ami-04319c0d9fb25cc54",
+        "Metered": "ami-0b2182bcc3a705fdf"
+      },
+      "ca-central-1": {
+        "Hourly": "ami-0e2e42f2cb5ece765",
+        "BYOL": "ami-07afa625c7ee674d6",
+        "Metered": "ami-0dd0c59294237d3e9"
+      },
+      "ap-southeast-1": {
+        "Hourly": "ami-0a3789acb5bbc33be",
+        "BYOL": "ami-053712db52a534703",
+        "Metered": "ami-05fe67b795f42f893"
+      },
+      "ap-southeast-2": {
+        "Hourly": "ami-0f27e75ee3c9255fb",
+        "BYOL": "ami-0645c60607cf66026",
+        "Metered": "ami-06c5d534c177581c6"
+      },
+      "eu-central-1": {
+        "Hourly": "ami-049e4cc80b4d34754",
+        "BYOL": "ami-0e5e37c8b6fa8a1ba",
+        "Metered": "ami-0fbe71e180243be6a"
+      },
+      "us-east-1": {
+        "Hourly": "ami-091a6c8700573fd21",
+        "BYOL": "ami-0c61a49ad4a308b8e",
+        "Metered": "ami-04abfcd4c2a6d535d"
+      },
+      "us-east-2": {
+        "Hourly": "ami-0b97b7ca6d22e4379",
+        "BYOL": "ami-018ec098aec3c51b7",
+        "Metered": "ami-05a9199138582ef3f"
+      },
+      "us-west-1": {
+        "Hourly": "ami-0039240363fe4342d",
+        "BYOL": "ami-04d226c6d3e3f36d2",
+        "Metered": "ami-0d176d42c7ed1e2d1"
+      },
+      "us-west-2": {
+        "Hourly": "ami-0621f5e9cc28ab030",
+        "BYOL": "ami-0a213fa7b12a5b774",
+        "Metered": "ami-08a338c2a821d1f3c"
+      }
+    }
+  },
+  "Resources": {
+    "PublicSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for the ASG",
+        "VpcId": {
+              "Ref": "VpcId"
+            },
+        "SecurityGroupIngress": [
+          {
+            "IpProtocol": "-1",
+            "FromPort": -1,
+            "ToPort": -1,
+            "CidrIp": "0.0.0.0/0"
+          }
+        ]
+      }
+    },
+    "ElasticIP": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc"
+      }
+    },
+    "S3": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      }
+    },
+    "LaunchConfiguration": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": {
+          "Fn::FindInMap": [
+            {
+              "Fn::FindInMap": [
+                "amiMapMap",
+                {
+                  "Ref": "ReleaseVersion"
+                },
+                "mapName"
+              ]
+            },
+            {
+              "Ref": "AWS::Region"
+            },
+            {
+              "Ref": "LicenceMode"
+            }
+          ]
+        },
+        "SecurityGroups": [
+          {
+            "Ref": "PublicSecurityGroup"
+          }
+        ],
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "AssociatePublicIpAddress": true,
+        "IamInstanceProfile": {
+          "Ref": "IAMProfile"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "\n",
+              [
+                "#!/bin/bash",
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/phion/bin/aws-asg-provision",
+                      "--bucket",
+                      {
+                        "Ref": "S3"
+                      },
+                      "--topic",
+                      {
+                        "Ref": "AWS::StackName"
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/aws/bin/aws ec2 associate-address",
+                      "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
+                      "--allocation-id ",
+                      {
+                        "Fn::GetAtt": [
+                          "ElasticIP",
+                          "AllocationId"
+                        ]
+                      },
+                      "--allow-reassociation"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/aws/bin/aws ec2 modify-instance-attribute",
+                      "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
+                      "--no-source-dest-check"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/aws/bin/aws ec2 replace-route",
+                      "--route-table-id ",
+
+                          {
+                            "Ref": "PrivateSubnetRouteTableId"
+                          },
+
+                      "--destination-cidr-block 0.0.0.0/0 --instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "/opt/aws/bin/cfn-signal --success true --resource ASG ",
+                      {
+                        "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "SNSTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "DisplayName": {
+          "Ref": "AWS::StackName"
+        },
+        "TopicName": {
+          "Ref": "AWS::StackName"
+        }
+      }
+    },
+    "ASG": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "CreationPolicy": {
+        "ResourceSignal": {
+          "Count": "1",
+          "Timeout": "PT15M"
+        }
+      },
+      "Properties": {
+        "VPCZoneIdentifier": [
+
+              {
+                "Ref": "PublicSubnetAId"
+              },
+
+
+              {
+                "Ref": "PublicSubnetBId"
+              }
+
+        ],
+        "LaunchConfigurationName": {
+          "Ref": "LaunchConfiguration"
+        },
+        "MinSize": "1",
+        "DesiredCapacity": "1",
+        "MaxSize": "1",
+        "HealthCheckGracePeriod": 1800,
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "AWS::StackName"
+            },
+            "PropagateAtLaunch": true
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "PublicIP": {
+      "Description": "Firewall Public IP",
+      "Value": {
+        "Ref": "ElasticIP"
+      }
+    },
+    "Password": {
+      "Description": "",
+      "Value": "For initial management password check __configNodeId tag of your Auto Scaling Group"
+    }
+  }
 }
