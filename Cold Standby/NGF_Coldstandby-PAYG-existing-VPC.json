@@ -100,7 +100,7 @@
     },
     "VpcId": {
       "Description": "VPC to deploy to",
-      "Type": "String",
+      "Type": "AWS::EC2::VPC::Id",
       "Default": ""
     },
     "PublicSubnetAId": {
