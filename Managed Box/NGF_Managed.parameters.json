@@ -1,11 +1,11 @@
 [
   {
     "ParameterKey": "LicenceMode",
-    "ParameterValue": "BYOL"
+    "ParameterValue": "Hourly"
   },
   {
     "ParameterKey": "InstanceType",
-    "ParameterValue": "c4.large"
+    "ParameterValue": "c5.large"
   },
   {
     "ParameterKey": "IAMProfile",
@@ -36,10 +36,6 @@
     "ParameterValue": ""
   },
   {
-    "ParameterKey": "VPCId",
-    "ParameterValue": "vpc-1234567"
-  },
-  {
     "ParameterKey": "SubnetId",
     "ParameterValue": "subnet-1234567"
   },
@@ -49,6 +45,6 @@
   },
   {
     "ParameterKey": "ReleaseVer",
-    "ParameterValue": "7.1.1"
+    "ParameterValue": "8.0.0"
   }
 ]

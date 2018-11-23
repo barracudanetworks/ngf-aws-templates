@@ -1,0 +1,78 @@
+"amiMapv722": {
+  "ap-south-1" : {
+      "PAYG" : "ami-03c7fefc0f6196d1f",
+      "BYOL" : "ami-004a941d35e76d1c3",
+      "Metered" : "ami-00d03b7382e6e48b7"
+  },
+  "eu-west-3" : {
+      "PAYG" : "ami-0e5604bcd0bd30b73",
+      "BYOL" : "ami-0a403b749fefd8d32",
+      "Metered" : "ami-00188af8e0b673fa6"
+  },
+  "eu-west-2" : {
+      "PAYG" : "ami-0e7b10d0e5047c696",
+      "BYOL" : "ami-0db9b61e5420d7e8f",
+      "Metered" : "ami-00f38e7da117d5fa3"
+  },
+  "eu-west-1" : {
+      "PAYG" : "ami-04f99a618a3dca6fa",
+      "BYOL" : "ami-0d91aaf7344ac3448",
+      "Metered" : "ami-0e3561eacc51f6981"
+  },
+  "ap-northeast-2" : {
+      "PAYG" : "ami-0245959713fe9da62",
+      "BYOL" : "ami-023f33ee67a4b714e",
+      "Metered" : "ami-0e47c150c02d05d4c"
+  },
+  "ap-northeast-1" : {
+      "PAYG" : "ami-0be3432767d410bea",
+      "BYOL" : "ami-06cb4c406b6a54e3d",
+      "Metered" : "ami-0a92314980937dfb7"
+  },
+  "sa-east-1" : {
+      "PAYG" : "ami-0a599a8bc4ed4be14",
+      "BYOL" : "ami-0716b5eea731dd18f",
+      "Metered" : "ami-0a95e2e088fd98b9e"
+  },
+  "ca-central-1" : {
+      "PAYG" : "ami-05633c0a259a7b578",
+      "BYOL" : "ami-02aea8d07ce3e18c5",
+      "Metered" : "ami-0532c1c03ba4fea1c"
+  },
+  "ap-southeast-1" : {
+      "PAYG" : "ami-017a60433bd310059",
+      "BYOL" : "ami-034f3aee396a6fee2",
+      "Metered" : "ami-0a634e580bc30f62b"
+  },
+  "ap-southeast-2" : {
+      "PAYG" : "ami-041b2c8c1133b8f45",
+      "BYOL" : "ami-05b9344d95079a317",
+      "Metered" : "ami-01da023d3661647f4"
+  },
+  "eu-central-1" : {
+      "PAYG" : "ami-0c36d1410b29b149b",
+      "BYOL" : "ami-0e40eeeff781cb1e9",
+      "Metered" : "ami-0d98019c163e2ed4e"
+  },
+  "us-east-1" : {
+      "PAYG" : "ami-003163f417a45d0ab",
+      "BYOL" : "ami-048d05819b43ea120",
+      "Metered" : "ami-05210ee01708ca581"
+  },
+  "us-east-2" : {
+      "PAYG" : "ami-0ea524c8384cbd2ce",
+      "BYOL" : "ami-0a8ba83843737c4ec",
+      "Metered" : "ami-001fdebe1eb56c5df"
+  },
+  "us-west-1" : {
+      "PAYG" : "ami-007df950d347f2a2c",
+      "BYOL" : "ami-015316cd1568230f5",
+      "Metered" : "ami-023648de69017df75"
+  },
+  "us-west-2" : {
+      "PAYG" : "ami-09f1fcc07140a9605",
+      "BYOL" : "ami-0a63c20752ee8289b",
+      "Metered" : "ami-09cafca128eb8b3ff"
+  }
+
+}

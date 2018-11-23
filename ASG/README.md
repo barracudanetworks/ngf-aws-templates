@@ -1,17 +1,17 @@
-# Auto Scaling Group - Barracuda NextGen Firewall Template for AWS
+# Auto Scaling Group - Barracuda CloudGen Firewall Template for AWS
 
 ## Introduction
-This solution deploys to AWS EC2 an auto scaling group of Barracuda NextGen Firewalls (NGF). Firewall instances are synchronized and deployed behind an Elastic Load Balancer, which makes them visible and acting as a single system. The ASG is by default automatically scaled out/in based on number of concurrent VPN connections.
+This solution deploys to AWS EC2 an auto scaling group of Barracuda CloudGen Firewalls (CGF). Firewall instances are synchronized and deployed behind an Elastic Load Balancer, which makes them visible and acting as a single system. The ASG is by default automatically scaled out/in based on number of concurrent VPN connections.
 
 ![ASG architecture diagram](https://campus.barracuda.com/resources/attachments/image/70584069/1/aws_autoscale_cluster_plain-01.png)
 
 ## Prerequisites
 
-Before attempting to deploy the solution you must create an IAM Role for Barracuda NextGen Firewalls. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
+Before attempting to deploy the solution you must create an IAM Role for Barracuda CloudGen Firewalls. See [How to Create an IAM Role for an CloudGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
 
-Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m4** or **c4** series. Using unavailable instance type will result in ASG not meeting the required initial size and thus failing CloudFormation deployment.
+Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m5** or **c5** series for production and **t3** for small workloads or development. Using instance type unavailable in the region will result in ASG not meeting the required initial size and thus failing CloudFormation deployment.
 
-If you plan to use SSLVPN functionality in NGF, you need to provide the solution with ARN of your SSL certificate hosted in AWS Certificate Manager. For details on how to how to use ACM see [Working with Server Certificates](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html) in AWS documentation.
+If you plan to use SSLVPN functionality in CGF, you need to provide the solution with ARN of your SSL certificate hosted in AWS Certificate Manager. For details on how to how to use ACM see [Working with Server Certificates](http://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_server-certs.html) in AWS documentation.
 
 ## Deployed Resources
 
@@ -30,19 +30,19 @@ Following resources will be created by the template:
 | Maximum Size | MaxSize | Maximum size the ASG is allowed to reach. |
 | Scale-out Trigger | HighThreshold | Maximum average VPN clients per instance triggering scaling out of ASG. |
 | Scale-in Trigger | LowThreshold | Minimum average VPN clients per instance triggering scaling in of ASG. |
-| Instance Type | InstanceType | Instance type to use for NGF instances. Please choose one available in your region. |
+| Instance Type | InstanceType | Instance type to use for CGF instances. Please choose one available in your region. |
 | IAM Profile | IAMProfile | IAM profile to be assigned to instances. |
 | VPC Address | VpcAddress | IP address space for newly created VPC. |
-| Private Subnet in Zone A | PrivateSubnetAAddress | Subnet address for hosting NGF instances in zone A. |
-| Private Subnet in Zone B | PrivateSubnetBAddress | Subnet address for hosting NGF instances in zone B. |
+| Private Subnet in Zone A | PrivateSubnetAAddress | Subnet address for hosting CGF instances in zone A. |
+| Private Subnet in Zone B | PrivateSubnetBAddress | Subnet address for hosting CGF instances in zone B. |
 | Public Subnet in Zone A | PublicSubnetAAddress | Subnet address for hosting load balancer internal IPs in zone A. |
 | Public Subnet in Zone B | PublicSubnetBAddress | Subnet address for hosting load balancer internal IPs in zone B. |
 | SSLCertificateId | SSLCertificateId | ARN of certificate hosted in ACM to be used for SSLVPN. |
 
 
 ## Launching the template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
 
 ## Additional Documentation
-[Implementation Guide - NextGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWS/)
-[AWS Reference Architecture - NextGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWSRefAutoScaling/)
+[Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWS/)
+[AWS Reference Architecture - CloudGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWSRefAutoScaling/)

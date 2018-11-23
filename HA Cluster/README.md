@@ -26,7 +26,7 @@ In case both nodes become active at the same time (e.g. due to network split), t
 ## Deployment Prerequisites
 Before attempting to deploy the solution you must create an IAM Role for Barracuda CloudGen Firewalls. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
 
-Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m4** or **c4** series.
+Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m5** or **c5** series for production and **t3** for development purposes.
 
 ## Deployed resources
 Following resources will be created by the template:
