@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Barracuda CloudGen Firewall - HA Cluster with EIP shifting",
+    "Description": "Barracuda CloudGen Firewall - HA Cluster with Eip shifting",
     "Metadata": {
         "AWS::CloudFormation::Interface": {
             "ParameterGroups": [
