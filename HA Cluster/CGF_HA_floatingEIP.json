@@ -906,12 +906,10 @@
                                             {
                                                 "Ref": "instanceCGF2"
                                             },
-                                            "|/opt/phion/bin/create-dha -s S1 -c -o",
+                                            "|/opt/phion/bin/create-dha -c -o",
                                             {
                                                 "Ref": "CGF2MIP"
                                             },
-                                            "-n",
-                                            "24",
                                             "-g",
                                             {
                                                 "Fn::Join": [
