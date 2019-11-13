@@ -56,20 +56,12 @@
       "Default": "c5.large",
       "AllowedValues": [
         "t2.small",
-        "t2.medium",
-        "t2.large",
         "t3.small",
         "t3.medium",
         "t3.large",
-        "m4.large",
-        "m4.xlarge",
-        "m4.2xlarge",
         "m5.large",
         "m5.xlarge",
         "m5.2xlarge",
-        "c4.large",
-        "c4.xlarge",
-        "c4.2xlarge",
         "c5.large",
         "c5.xlarge",
         "c5.2xlarge"
@@ -87,10 +79,10 @@
     "ReleaseVersion": {
       "Description": "Which release do you want to deploy?",
       "Type": "String",
-      "Default": "8.0.0",
+      "Default": "8.0.1",
       "AllowedValues": [
-        "8.0.0",
-        "7.2.2"
+        "8.0.1",
+        "8.0.0"
       ]
     },
     "IAMProfile": {
@@ -121,167 +113,177 @@
   },
   "Mappings": {
     "amiMapMap": {
-      "7.2.2": {
-        "mapName": "amiMapv722"
-      },
       "8.0.0": {
         "mapName": "amiMapv800"
-      }
-    },
-    "amiMapv722": {
-      "ap-south-1": {
-        "Hourly": "ami-03c7fefc0f6196d1f",
-        "BYOL": "ami-004a941d35e76d1c3",
-        "Metered": "ami-00d03b7382e6e48b7"
       },
-      "eu-west-3": {
-        "Hourly": "ami-0e5604bcd0bd30b73",
-        "BYOL": "ami-0a403b749fefd8d32",
-        "Metered": "ami-00188af8e0b673fa6"
-      },
-      "eu-west-2": {
-        "Hourly": "ami-0e7b10d0e5047c696",
-        "BYOL": "ami-0db9b61e5420d7e8f",
-        "Metered": "ami-00f38e7da117d5fa3"
-      },
-      "eu-west-1": {
-        "Hourly": "ami-04f99a618a3dca6fa",
-        "BYOL": "ami-0d91aaf7344ac3448",
-        "Metered": "ami-0e3561eacc51f6981"
-      },
-      "ap-northeast-2": {
-        "Hourly": "ami-0245959713fe9da62",
-        "BYOL": "ami-023f33ee67a4b714e",
-        "Metered": "ami-0e47c150c02d05d4c"
-      },
-      "ap-northeast-1": {
-        "Hourly": "ami-0be3432767d410bea",
-        "BYOL": "ami-06cb4c406b6a54e3d",
-        "Metered": "ami-0a92314980937dfb7"
-      },
-      "sa-east-1": {
-        "Hourly": "ami-0a599a8bc4ed4be14",
-        "BYOL": "ami-0716b5eea731dd18f",
-        "Metered": "ami-0a95e2e088fd98b9e"
-      },
-      "ca-central-1": {
-        "Hourly": "ami-05633c0a259a7b578",
-        "BYOL": "ami-02aea8d07ce3e18c5",
-        "Metered": "ami-0532c1c03ba4fea1c"
-      },
-      "ap-southeast-1": {
-        "Hourly": "ami-017a60433bd310059",
-        "BYOL": "ami-034f3aee396a6fee2",
-        "Metered": "ami-0a634e580bc30f62b"
-      },
-      "ap-southeast-2": {
-        "Hourly": "ami-041b2c8c1133b8f45",
-        "BYOL": "ami-05b9344d95079a317",
-        "Metered": "ami-01da023d3661647f4"
-      },
-      "eu-central-1": {
-        "Hourly": "ami-0c36d1410b29b149b",
-        "BYOL": "ami-0e40eeeff781cb1e9",
-        "Metered": "ami-0d98019c163e2ed4e"
-      },
-      "us-east-1": {
-        "Hourly": "ami-003163f417a45d0ab",
-        "BYOL": "ami-048d05819b43ea120",
-        "Metered": "ami-05210ee01708ca581"
-      },
-      "us-east-2": {
-        "Hourly": "ami-0ea524c8384cbd2ce",
-        "BYOL": "ami-0a8ba83843737c4ec",
-        "Metered": "ami-001fdebe1eb56c5df"
-      },
-      "us-west-1": {
-        "Hourly": "ami-007df950d347f2a2c",
-        "BYOL": "ami-015316cd1568230f5",
-        "Metered": "ami-023648de69017df75"
-      },
-      "us-west-2": {
-        "Hourly": "ami-09f1fcc07140a9605",
-        "BYOL": "ami-0a63c20752ee8289b",
-        "Metered": "ami-09cafca128eb8b3ff"
+      "8.0.1": {
+        "mapName": "amiMapv801"
       }
     },
     "amiMapv800": {
-      "ap-south-1": {
-        "Hourly": "ami-05d8947000efde91c",
-        "BYOL": "ami-0c549990baa53a1aa",
-        "Metered": "ami-0ffccdda4badd479d"
+      "eu-north-1" : {
+          "Hourly" : "ami-b634bac8",
+          "BYOL" : "ami-aca729d2",
+          "Metered" : "ami-5b32bc25"
       },
-      "eu-west-3": {
-        "Hourly": "ami-07b65515fb71b3ba0",
-        "BYOL": "ami-075b6bac76319938c",
-        "Metered": "ami-02fa9d680677e819c"
+      "ap-south-1" : {
+          "Hourly" : "ami-05d8947000efde91c",
+          "BYOL" : "ami-0c549990baa53a1aa",
+          "Metered" : "ami-0ffccdda4badd479d"
       },
-      "eu-west-2": {
-        "Hourly": "ami-035b249f052aeb5fb",
-        "BYOL": "ami-0dd2d681e348cd17f",
-        "Metered": "ami-079f0175e689e5097"
+      "eu-west-3" : {
+          "Hourly" : "ami-08d4f09d195f65cff",
+          "BYOL" : "ami-0be502f7260dff134",
+          "Metered" : "ami-0d94bd0757df22ed5"
       },
-      "eu-west-1": {
-        "Hourly": "ami-0480b178cd4cb6f27",
-        "BYOL": "ami-06af86e5264e76613",
-        "Metered": "ami-02427823550cbf3f7"
+      "eu-west-2" : {
+          "Hourly" : "ami-035b249f052aeb5fb",
+          "BYOL" : "ami-0de48be72df38213f",
+          "Metered" : "ami-079f0175e689e5097"
       },
-      "ap-northeast-2": {
-        "Hourly": "ami-044c938fd28b832a9",
-        "BYOL": "ami-0e27f9dd8e567acd3",
-        "Metered": "ami-0059de278303bc9c4"
+      "eu-west-1" : {
+          "Hourly" : "ami-05adfe52ef7ec4044",
+          "BYOL" : "ami-0f5e293b518394d71",
+          "Metered" : "ami-0ada3e53562ebfc1c"
       },
-      "ap-northeast-1": {
-        "Hourly": "ami-0e60d5291d76cf237",
-        "BYOL": "ami-00a7813f5bf439194",
-        "Metered": "ami-0092d8c4c9347a1d7"
+      "ap-northeast-2" : {
+          "Hourly" : "ami-04ceb3fc6278de36d",
+          "BYOL" : "ami-0e27f9dd8e567acd3",
+          "Metered" : "ami-0c2d8a966c5e951f5"
       },
-      "sa-east-1": {
-        "Hourly": "ami-08968a20554149211",
-        "BYOL": "ami-04319c0d9fb25cc54",
-        "Metered": "ami-0b2182bcc3a705fdf"
+      "ap-northeast-1" : {
+          "Hourly" : "ami-0e988e6508948c3d3",
+          "BYOL" : "ami-043687e221594a9a1",
+          "Metered" : "ami-0584f33d006e5a056"
       },
-      "ca-central-1": {
-        "Hourly": "ami-0e2e42f2cb5ece765",
-        "BYOL": "ami-07afa625c7ee674d6",
-        "Metered": "ami-0dd0c59294237d3e9"
+      "sa-east-1" : {
+          "Hourly" : "ami-08968a20554149211",
+          "BYOL" : "ami-044ddf8df19021644",
+          "Metered" : "ami-0fcb14b5b118a13c7"
       },
-      "ap-southeast-1": {
-        "Hourly": "ami-0a3789acb5bbc33be",
-        "BYOL": "ami-053712db52a534703",
-        "Metered": "ami-05fe67b795f42f893"
+      "ca-central-1" : {
+          "Hourly" : "ami-0e2e42f2cb5ece765",
+          "BYOL" : "ami-07afa625c7ee674d6",
+          "Metered" : "ami-0dd0c59294237d3e9"
       },
-      "ap-southeast-2": {
-        "Hourly": "ami-0f27e75ee3c9255fb",
-        "BYOL": "ami-0645c60607cf66026",
-        "Metered": "ami-06c5d534c177581c6"
+      "ap-southeast-1" : {
+          "Hourly" : "ami-0a3ecff76bcda23fc",
+          "BYOL" : "ami-0cb19a962b84d7c3b",
+          "Metered" : "ami-0ed78dcaddb4b49f3"
       },
-      "eu-central-1": {
-        "Hourly": "ami-049e4cc80b4d34754",
-        "BYOL": "ami-0e5e37c8b6fa8a1ba",
-        "Metered": "ami-0fbe71e180243be6a"
+      "ap-southeast-2" : {
+          "Hourly" : "ami-0f27e75ee3c9255fb",
+          "BYOL" : "ami-0d31110314e6d66ed",
+          "Metered" : "ami-06c5d534c177581c6"
       },
-      "us-east-1": {
-        "Hourly": "ami-091a6c8700573fd21",
-        "BYOL": "ami-0c61a49ad4a308b8e",
-        "Metered": "ami-04abfcd4c2a6d535d"
+      "eu-central-1" : {
+          "Hourly" : "ami-049e4cc80b4d34754",
+          "BYOL" : "ami-0e5e37c8b6fa8a1ba",
+          "Metered" : "ami-0fbe71e180243be6a"
       },
-      "us-east-2": {
-        "Hourly": "ami-0b97b7ca6d22e4379",
-        "BYOL": "ami-018ec098aec3c51b7",
-        "Metered": "ami-05a9199138582ef3f"
+      "us-east-1" : {
+          "Hourly" : "ami-091a6c8700573fd21",
+          "BYOL" : "ami-0c61a49ad4a308b8e",
+          "Metered" : "ami-0c4532c1dcbb3e897"
       },
-      "us-west-1": {
-        "Hourly": "ami-0039240363fe4342d",
-        "BYOL": "ami-04d226c6d3e3f36d2",
-        "Metered": "ami-0d176d42c7ed1e2d1"
+      "us-east-2" : {
+          "Hourly" : "ami-0b97b7ca6d22e4379",
+          "BYOL" : "ami-0453af95aab2fe7e1",
+          "Metered" : "ami-05a9199138582ef3f"
       },
-      "us-west-2": {
-        "Hourly": "ami-0621f5e9cc28ab030",
-        "BYOL": "ami-0a213fa7b12a5b774",
-        "Metered": "ami-08a338c2a821d1f3c"
+      "us-west-1" : {
+          "Hourly" : "ami-00d7c4c3401e0dccd",
+          "BYOL" : "ami-04d226c6d3e3f36d2",
+          "Metered" : "ami-0d176d42c7ed1e2d1"
+      },
+      "us-west-2" : {
+          "Hourly" : "ami-095db289b34f76bb8",
+          "BYOL" : "ami-0a213fa7b12a5b774",
+          "Metered" : "ami-0aaf43d17c67db548"
       }
-    }
+  },
+  "amiMapv801": {
+      "eu-north-1" : {
+          "Hourly" : "ami-d5f07aab",
+          "BYOL" : "ami-3ddc5643",
+          "Metered" : "ami-c5de54bb"
+      },
+      "ap-south-1" : {
+          "Hourly" : "ami-0d80990e16203a3ef",
+          "BYOL" : "ami-063bdb93cfeaf488e",
+          "Metered" : "ami-09bfaa45d257c0483"
+      },
+      "eu-west-3" : {
+          "Hourly" : "ami-08587426b7e67d0f0",
+          "BYOL" : "ami-0d99cd1d6c8f1b69d",
+          "Metered" : "ami-0c83cb96ecc4941a7"
+      },
+      "eu-west-2" : {
+          "Hourly" : "ami-07b5a7fc0e47575b0",
+          "BYOL" : "ami-08c8443040da4c2da",
+          "Metered" : "ami-0d84fa76bca5a4070"
+      },
+      "eu-west-1" : {
+          "Hourly" : "ami-0b1daf478ac2778cc",
+          "BYOL" : "ami-0ef66d776e0c21d26",
+          "Metered" : "ami-0d83d89bf9e291142"
+      },
+      "ap-northeast-2" : {
+          "Hourly" : "ami-0f3c47e9693208c24",
+          "BYOL" : "ami-0ef98c31cbc5f57f0",
+          "Metered" : "ami-0818cfbd5cef2e5c8"
+      },
+      "ap-northeast-1" : {
+          "Hourly" : "ami-0cb359e71d439b78d",
+          "BYOL" : "ami-0fc52216e6273910a",
+          "Metered" : "ami-0bc89cf551777952c"
+      },
+      "sa-east-1" : {
+          "Hourly" : "ami-0f4cdaa74cb6d32a0",
+          "BYOL" : "ami-09fee7fe54c56d820",
+          "Metered" : "ami-07849f0a8fdf8631d"
+      },
+      "ca-central-1" : {
+          "Hourly" : "ami-077963ee36ccb0dfd",
+          "BYOL" : "ami-0d7fd2598acd4810a",
+          "Metered" : "ami-085d5bd5b04fd4eb5"
+      },
+      "ap-southeast-1" : {
+          "Hourly" : "ami-0fcb7c270c47407a1",
+          "BYOL" : "ami-0e0aeaa98ae5cc496",
+          "Metered" : "ami-0f7b5f675fd430ba5"
+      },
+      "ap-southeast-2" : {
+          "Hourly" : "ami-079ddf7cbca860096",
+          "BYOL" : "ami-0891a0bfc7876a31b",
+          "Metered" : "ami-09e51871e7c13a979"
+      },
+      "eu-central-1" : {
+          "Hourly" : "ami-0f08140949ba7794f",
+          "BYOL" : "ami-0dd109404d84a3e9f",
+          "Metered" : "ami-0e5418c08efcdcb4d"
+      },
+      "us-east-1" : {
+          "Hourly" : "ami-089e56c253e66699e",
+          "BYOL" : "ami-0b11bb6b69087fd4a",
+          "Metered" : "ami-05c16b05a7bd6bf73"
+      },
+      "us-east-2" : {
+          "Hourly" : "ami-0e2f3c563e8231185",
+          "BYOL" : "ami-079a1fd615d7b0f0b",
+          "Metered" : "ami-0a7730a260dc16c6b"
+      },
+      "us-west-1" : {
+          "Hourly" : "ami-0f08cc03cc240d32b",
+          "BYOL" : "ami-0cc8c8c3e25f83166",
+          "Metered" : "ami-0f825352485dd7318"
+      },
+      "us-west-2" : {
+          "Hourly" : "ami-0d8fb7306df2ac254",
+          "BYOL" : "ami-0c1cfc98591a1c438",
+          "Metered" : "ami-0d330fb73f9765f4f"
+      }
+  }
   },
   "Resources": {
     "PublicSecurityGroup": {

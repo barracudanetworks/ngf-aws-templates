@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Barracuda NextGen Firewall v7.1.1 - Auto Scaling Cluster in ELB Sandwich ",
+    "Description": "Barracuda NextGen Firewall v8.0.1 - Auto Scaling Cluster in ELB Sandwich ",
     "Metadata" : {
         "AWS::CloudFormation::Interface" : {
             "ParameterGroups" : [
@@ -130,19 +130,18 @@
         "InstanceType": {
             "Description": "Select the EC2 instance type.",
             "Type": "String",
-            "Default": "c4.large",
+            "Default": "t3.large",
             "AllowedValues": [
                 "t2.small",
-                "t2.medium",
-                "t2.large",
-                "t2.xlarge",
-                "t2.2xlarge",
-                "m4.large",
-                "m4.xlarge",
-                "m4.2xlarge",
-                "c4.large",
-                "c4.xlarge",
-                "c4.2xlarge"
+                "t3.small",
+                "t3.medium",
+                "t3.large",
+                "m5.large",
+                "m5.xlarge",
+                "m5.2xlarge",
+                "c5.large",
+                "c5.xlarge",
+                "c5.2xlarge"
             ]
         },
         "IAMProfile": {
@@ -208,61 +207,69 @@
     },
     "Mappings": {
       "AMINGF": {
-        "ap-south-1": {
-          "PAYG": "ami-e445058b",
-          "BYOL": "ami-0342026c"
+        "eu-north-1" : {
+            "PAYG" : "ami-d5f07aab",
+            "BYOL" : "ami-3ddc5643"
         },
-        "eu-west-2": {
-          "PAYG": "ami-992b39fd",
-          "BYOL": "ami-16253772"
+        "ap-south-1" : {
+            "PAYG" : "ami-0d80990e16203a3ef",
+            "BYOL" : "ami-063bdb93cfeaf488e"
         },
-        "eu-west-1": {
-          "PAYG": "ami-0643947f",
-          "BYOL": "ami-7445920d"
+        "eu-west-3" : {
+            "PAYG" : "ami-08587426b7e67d0f0",
+            "BYOL" : "ami-0d99cd1d6c8f1b69d"
         },
-        "ap-northeast-2": {
-          "PAYG": "ami-a32af0cd",
-          "BYOL": "ami-9b2bf1f5"
+        "eu-west-2" : {
+            "PAYG" : "ami-07b5a7fc0e47575b0",
+            "BYOL" : "ami-08c8443040da4c2da"
         },
-        "ap-northeast-1": {
-          "PAYG": "ami-b95181df",
-          "BYOL": "ami-b65383d0"
+        "eu-west-1" : {
+            "PAYG" : "ami-0b1daf478ac2778cc",
+            "BYOL" : "ami-0ef66d776e0c21d26"
         },
-        "sa-east-1": {
-          "PAYG": "ami-08b6c964",
-          "BYOL": "ami-07b4cb6b"
+        "ap-northeast-2" : {
+            "PAYG" : "ami-0f3c47e9693208c24",
+            "BYOL" : "ami-0ef98c31cbc5f57f0"
         },
-        "ca-central-1": {
-          "PAYG": "ami-13259c77",
-          "BYOL": "ami-ae2891ca"
+        "ap-northeast-1" : {
+            "PAYG" : "ami-0cb359e71d439b78d",
+            "BYOL" : "ami-0fc52216e6273910a"
         },
-        "ap-southeast-1": {
-          "PAYG": "ami-fa9fe099",
-          "BYOL": "ami-0da1de6e"
+        "sa-east-1" : {
+            "PAYG" : "ami-0f4cdaa74cb6d32a0",
+            "BYOL" : "ami-09fee7fe54c56d820"
         },
-        "ap-southeast-2": {
-          "PAYG": "ami-17c72475",
-          "BYOL": "ami-2ac52648"
+        "ca-central-1" : {
+            "PAYG" : "ami-077963ee36ccb0dfd",
+            "BYOL" : "ami-0d7fd2598acd4810a"
         },
-        "eu-central-1": {
-          "PAYG": "ami-fdb20f92",
-          "BYOL": "ami-09ad1066"
+        "ap-southeast-1" : {
+            "PAYG" : "ami-0fcb7c270c47407a1",
+            "BYOL" : "ami-0e0aeaa98ae5cc496"
         },
-        "us-east-1": {
-          "PAYG": "ami-695a9e13",
-          "BYOL": "ami-af5b9fd5"
+        "ap-southeast-2" : {
+            "PAYG" : "ami-079ddf7cbca860096",
+            "BYOL" : "ami-0891a0bfc7876a31b"
         },
-        "us-east-2": {
-          "PAYG": "ami-ccc5e8a9",
-          "BYOL": "ami-90cae7f5"
+        "eu-central-1" : {
+            "PAYG" : "ami-0f08140949ba7794f",
+            "BYOL" : "ami-0dd109404d84a3e9f"
         },
-        "us-west-1": {
-          "PAYG": "ami-e5546785",
-          "BYOL": "ami-77546717"
+        "us-east-1" : {
+            "PAYG" : "ami-089e56c253e66699e",
+            "BYOL" : "ami-0b11bb6b69087fd4a"
         },
-        "us-west-2": {
-          "PAYG": "ami-2d925755",
-          "BYOL": "ami-cf9c59b7"
+        "us-east-2" : {
+            "PAYG" : "ami-0e2f3c563e8231185",
+            "BYOL" : "ami-079a1fd615d7b0f0b"
+        },
+        "us-west-1" : {
+            "PAYG" : "ami-0f08cc03cc240d32b",
+            "BYOL" : "ami-0cc8c8c3e25f83166"
+        },
+        "us-west-2" : {
+            "PAYG" : "ami-0d8fb7306df2ac254",
+            "BYOL" : "ami-0c1cfc98591a1c438"
         }
       }
     },

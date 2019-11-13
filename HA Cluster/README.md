@@ -15,7 +15,7 @@ Both firewall nodes constantly communicate via heartbeat connection and synchron
 1. rewrites routing table entries pointing to missing instance to itself
 2. reassigns the EIP to itself
 
-The failover time is usually around 10 seconds.
+The failover time is usually around 15 seconds.
 
 ### Preemption
 Barracuda CloudGen Firewall clusters do not fail back automatically to primary node in order to avoid possible flipping if the issue, which originally caused the HA failover, was not fixed. The cluster with secondary node active and primary node on stand-by is though fully operational and will fail over to primary automatically as soon as secondary is gone. The easiest procedure to achieve fail back in AWS environment is to simply reboot the active node.

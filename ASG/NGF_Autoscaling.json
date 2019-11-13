@@ -134,24 +134,16 @@
             "Type": "String",
             "Default": "c5.large",
             "AllowedValues": [
-              "t2.small",
-              "t2.medium",
-              "t2.large",
-              "t3.small",
-              "t3.medium",
-              "t3.large",
-              "m4.large",
-              "m4.xlarge",
-              "m4.2xlarge",
-              "m5.large",
-              "m5.xlarge",
-              "m5.2xlarge",
-              "c4.large",
-              "c4.xlarge",
-              "c4.2xlarge",
-              "c5.large",
-              "c5.xlarge",
-              "c5.2xlarge"
+                "t2.small",
+                "t3.small",
+                "t3.medium",
+                "t3.large",
+                "m5.large",
+                "m5.xlarge",
+                "m5.2xlarge",
+                "c5.large",
+                "c5.xlarge",
+                "c5.2xlarge"
             ]
         },
         "IAMProfile": {
@@ -223,114 +215,120 @@
         "ReleaseVersion": {
         "Description": "Which release do you want to deploy?",
         "Type": "String",
-        "Default": "8.0.0",
+        "Default": "8.0.1",
         "AllowedValues": [
             "8.0.0",
-            "7.2.2"
+            "8.0.1"
         ]
         }
     },
     "Mappings": {
       "amiMapMap": {
-            "7.2.2": {
-                "mapName": "amiMapv722"
+            "8.0.1": {
+                "mapName": "amiMapv801"
             },
             "8.0.0": {
                 "mapName": "amiMapv800"
             }
         },
-        "amiMapv722": {
-            "ap-south-1": {
-                "Hourly": "ami-03c7fefc0f6196d1f"
+        "amiMapv800": {
+            "eu-north-1" : {
+                "Hourly" : "ami-b634bac8"
             },
-            "eu-west-3": {
-                "Hourly": "ami-0e5604bcd0bd30b73"
+            "ap-south-1" : {
+                "Hourly" : "ami-05d8947000efde91c"
             },
-            "eu-west-2": {
-                "Hourly": "ami-0e7b10d0e5047c696"
+            "eu-west-3" : {
+                "Hourly" : "ami-08d4f09d195f65cff"
             },
-            "eu-west-1": {
-                "Hourly": "ami-04f99a618a3dca6fa"
+            "eu-west-2" : {
+                "Hourly" : "ami-035b249f052aeb5fb"
             },
-            "ap-northeast-2": {
-                "Hourly": "ami-0245959713fe9da62"
+            "eu-west-1" : {
+                "Hourly" : "ami-05adfe52ef7ec4044"
             },
-            "ap-northeast-1": {
-                "Hourly": "ami-0be3432767d410bea"
+            "ap-northeast-2" : {
+                "Hourly" : "ami-04ceb3fc6278de36d"
             },
-            "sa-east-1": {
-                "Hourly": "ami-0a599a8bc4ed4be14"
+            "ap-northeast-1" : {
+                "Hourly" : "ami-0e988e6508948c3d3"
             },
-            "ca-central-1": {
-                "Hourly": "ami-05633c0a259a7b578"
+            "sa-east-1" : {
+                "Hourly" : "ami-08968a20554149211"
             },
-            "ap-southeast-1": {
-                "Hourly": "ami-017a60433bd310059"
+            "ca-central-1" : {
+                "Hourly" : "ami-0e2e42f2cb5ece765"
             },
-            "ap-southeast-2": {
-                "Hourly": "ami-041b2c8c1133b8f45"
+            "ap-southeast-1" : {
+                "Hourly" : "ami-0a3ecff76bcda23fc"
             },
-            "eu-central-1": {
-                "Hourly": "ami-0c36d1410b29b149b"
+            "ap-southeast-2" : {
+                "Hourly" : "ami-0f27e75ee3c9255fb"
             },
-            "us-east-1": {
-                "Hourly": "ami-003163f417a45d0ab"
+            "eu-central-1" : {
+                "Hourly" : "ami-049e4cc80b4d34754"
             },
-            "us-east-2": {
-                "Hourly": "ami-0ea524c8384cbd2ce"
+            "us-east-1" : {
+                "Hourly" : "ami-091a6c8700573fd21"
             },
-            "us-west-1": {
-                "Hourly": "ami-007df950d347f2a2c"
+            "us-east-2" : {
+                "Hourly" : "ami-0b97b7ca6d22e4379"
             },
-            "us-west-2": {
-                "Hourly": "ami-09f1fcc07140a9605"
+            "us-west-1" : {
+                "Hourly" : "ami-00d7c4c3401e0dccd"
+            },
+            "us-west-2" : {
+                "Hourly" : "ami-095db289b34f76bb8"
             }
         },
-        "amiMapv800": {
-            "ap-south-1": {
-                "Hourly": "ami-05d8947000efde91c"
+        "amiMapv801": {
+            "eu-north-1" : {
+                "Hourly" : "ami-d5f07aab"
             },
-            "eu-west-3": {
-                "Hourly": "ami-07b65515fb71b3ba0"
+            "ap-south-1" : {
+                "Hourly" : "ami-0d80990e16203a3ef"
             },
-            "eu-west-2": {
-                "Hourly": "ami-035b249f052aeb5fb"
+            "eu-west-3" : {
+                "Hourly" : "ami-08587426b7e67d0f0"
             },
-            "eu-west-1": {
-                "Hourly": "ami-0480b178cd4cb6f27"
+            "eu-west-2" : {
+                "Hourly" : "ami-07b5a7fc0e47575b0"
             },
-            "ap-northeast-2": {
-                "Hourly": "ami-044c938fd28b832a9"
+            "eu-west-1" : {
+                "Hourly" : "ami-0b1daf478ac2778cc"
             },
-            "ap-northeast-1": {
-                "Hourly": "ami-0e60d5291d76cf237"
+            "ap-northeast-2" : {
+                "Hourly" : "ami-0f3c47e9693208c24"
             },
-            "sa-east-1": {
-                "Hourly": "ami-08968a20554149211"
+            "ap-northeast-1" : {
+                "Hourly" : "ami-0cb359e71d439b78d"
             },
-            "ca-central-1": {
-                "Hourly": "ami-0e2e42f2cb5ece765"
+            "sa-east-1" : {
+                "Hourly" : "ami-0f4cdaa74cb6d32a0"
             },
-            "ap-southeast-1": {
-                "Hourly": "ami-0a3789acb5bbc33be"
+            "ca-central-1" : {
+                "Hourly" : "ami-077963ee36ccb0dfd"
             },
-            "ap-southeast-2": {
-                "Hourly": "ami-0f27e75ee3c9255fb"
+            "ap-southeast-1" : {
+                "Hourly" : "ami-0fcb7c270c47407a1"
             },
-            "eu-central-1": {
-                "Hourly": "ami-049e4cc80b4d34754"
+            "ap-southeast-2" : {
+                "Hourly" : "ami-079ddf7cbca860096"
             },
-            "us-east-1": {
-                "Hourly": "ami-091a6c8700573fd21"
+            "eu-central-1" : {
+                "Hourly" : "ami-0f08140949ba7794f"
             },
-            "us-east-2": {
-                "Hourly": "ami-0b97b7ca6d22e4379"
+            "us-east-1" : {
+                "Hourly" : "ami-089e56c253e66699e"
             },
-            "us-west-1": {
-                "Hourly": "ami-0039240363fe4342d"
+            "us-east-2" : {
+                "Hourly" : "ami-0e2f3c563e8231185"
             },
-            "us-west-2": {
-                "Hourly": "ami-0621f5e9cc28ab030"
+            "us-west-1" : {
+                "Hourly" : "ami-0f08cc03cc240d32b"
+            },
+            "us-west-2" : {
+                "Hourly" : "ami-0d8fb7306df2ac254"
             }
         }
     },

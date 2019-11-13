@@ -14,18 +14,18 @@ num_regions=${#ami_regions[@]}
 for i in "${ami_regions[@]}"
 do
 	filter='Name=name,Values=CudaCGFHourly-v'"$VERSION"'*'
-	PAYGAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[*].{ID:ImageId}' --output text)
+	PAYGAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[-1].{ID:ImageId}' --output text)
 	echo "\"$i\" : {"
 	echo "    \"Hourly\" : \"$PAYGAMI\","
 
 	filter='Name=name,Values=CudaCGFBYOL-v'"$VERSION"'*'
 
-	BYOLAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[*].{ID:ImageId}' --output text)
+	BYOLAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[-1].{ID:ImageId}' --output text)
 	echo "    \"BYOL\" : \"$BYOLAMI\","
 
 	filter='Name=name,Values=CudaCGFMetered*v'"$VERSION"'*'
 
-	METEREDAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[*].{ID:ImageId}' --output text)
+	METEREDAMI=$(aws ec2 describe-images --owner aws-marketplace --region $i --filters $filter --query 'Images[-1].{ID:ImageId}' --output text)
 	echo "    \"Metered\" : \"$METEREDAMI\""
 	if [[ $i == ${ami_regions[${#ami_regions[@]}-1]} ]]
 	then
