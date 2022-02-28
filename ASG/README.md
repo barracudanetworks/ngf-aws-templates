@@ -7,7 +7,7 @@ This solution deploys to AWS EC2 an auto scaling group of Barracuda CloudGen Fir
 
 ## Prerequisites
 
-Before attempting to deploy the solution you must create an IAM Role for Barracuda CloudGen Firewalls. See [How to Create an IAM Role for an CloudGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
+Before attempting to deploy the solution you must create an IAM Role for Barracuda CloudGen Firewalls. See [How to Create an IAM Role for an CloudGen Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96026728/) for details.
 
 Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m5** or **c5** series for production and **t3** for small workloads or development. Using instance type unavailable in the region will result in ASG not meeting the required initial size and thus failing CloudFormation deployment.
 
@@ -41,8 +41,8 @@ Following resources will be created by the template:
 
 
 ## Launching the template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/how-to-deploy-a-cloudgen-in-aws-via-cloudformation-template) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/) article in Barracuda Campus.
 
 ## Additional Documentation
-[Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025944/implementation-guide-cloudgen-firewall-in-aws)
-[AWS Reference Architecture - CloudGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025948/aws-reference-architecture-cloudgen-firewall-auto-scaling-cluster)
+[Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025944/)
+[AWS Reference Architecture - CloudGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025948/)
