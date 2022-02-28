@@ -206,59 +206,7 @@
         }
     },
     "Mappings": {
-      "amiMapMap":{
-         "8.0.5":{
-            "mapName":"amiMapv805"
-         },
-         "8.2.1":{
-            "mapName":"amiMapv821"
-         },
-         "8.3.0":{
-            "mapName":"amiMapv830"
-         },
-	  },
-        "amiMapv805": {
-            "us-east-1" : {
-                "Hourly" : "ami-07570d14ecc6d753b",
-            },
-            "us-east-2" : {
-                "Hourly" : "ami-0d77d90f71f12fba8",
-            },
-            "us-west-1" : {
-                "Hourly" : "ami-035cbf9456923d13e",
-            },
-            "us-west-2" : {
-                "Hourly" : "ami-0e5dd9b420e41328b",
-            },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-0102c282132faf2b1",
-            },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-0efef200246fab974",
-            },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-02c97a3294f690c00",
-            },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-08cec4fed243531c1",
-            },
-           "ca-central-1" : {
-                "Hourly" : "ami-02542102565f2e9e9",
-            },
-           "eu-central-1" : {
-                "Hourly" : "ami-0bb8e575294ff0eb9",
-            },
-            "eu-west-1" : {
-                "Hourly" : "ami-0fbb2bb1f9bb94ddd",
-            },
-            "eu-west-2" : {
-                "Hourly" : "ami-008b756cb6590e805",
-            },
-            "sa-east-1" : {
-                "Hourly" : "ami-04db38c5d9e59bbec",
-            },
-        },
-        "amiMapv821": {
+      "AMINGF": {
           "us-east-1" : {
                 "Hourly" : "ami-06626e94a994ebb55",
             },
@@ -298,48 +246,7 @@
             "sa-east-1" : {
                 "Hourly" : "ami-0430115dfd1f17d53",
             },
-        },
-		"amiMapv830":{
-         "us-east-1":{
-            "Hourly":"ami-08502036b50261eff",
-         },
-         "us-east-2":{
-            "Hourly":"ami-01a37ea35aac51fb3",
-         },
-         "us-west-1":{
-            "Hourly":"ami-0ef07a7685a119cc9",
-         },
-         "us-west-2":{
-            "Hourly":"ami-080ba652367fc8a4a",
-         },
-         "ap-northeast-3":{
-            "Hourly":"ami-0a8884db266b4a0cb",
-         },
-         "ap-southeast-1":{
-            "Hourly":"ami-0f98d9860a52e8014",
-         },
-         "ap-southeast-2":{
-            "Hourly":"ami-0ba304cd3db90999e",
-         },
-         "ap-northeast-1":{
-            "Hourly":"ami-06ddc974e8fc4c54d",
-         },
-         "ca-central-1":{
-            "Hourly":"ami-0d3479a5f76c43d89",
-         },
-         "eu-central-1":{
-            "Hourly":"ami-00d8cd5b5c5260a7e",
-         },
-         "eu-west-1":{
-            "Hourly":"ami-062a4698272c02ea9",
-         },
-         "eu-west-2":{
-            "Hourly":"ami-0a2784b738789de80",
-         },
-         "sa-east-1":{
-            "Hourly":"ami-0f7d1ff4d98dc2d1b",
-         }
-      },
+      }
     },
     "Resources": {
         "PublicSecurityGroup": {
@@ -832,7 +739,7 @@
             "Properties": {
                 "ImageId": {
                     "Fn::FindInMap": [
-                        "amiMapMap",
+                        "AMINGF",
                         {
                             "Ref": "AWS::Region"
                         },
