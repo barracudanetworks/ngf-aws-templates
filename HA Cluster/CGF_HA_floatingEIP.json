@@ -88,7 +88,7 @@
          "AllowedValues":[
             "8.0.5",
             "8.2.1",
-			"8.3.0"
+            "8.3.0"
          ]
       },
       "EnableREST":{
@@ -131,7 +131,7 @@
          "ConstraintDescription":"Use valid CIDR notation"
       }
    },
-    "Mappings": {
+   "Mappings":{
       "amiMapMap":{
          "8.0.5":{
             "mapName":"amiMapv805"
@@ -141,171 +141,171 @@
          },
          "8.3.0":{
             "mapName":"amiMapv830"
+         }
+      },
+      "amiMapv805":{
+         "us-east-1":{
+            "Hourly":"ami-07570d14ecc6d753b",
+            "BYOL":"ami-0569830c65eafd424"
          },
-	  },
-        "amiMapv805": {
-            "us-east-1" : {
-                "Hourly" : "ami-07570d14ecc6d753b",
-                "BYOL" : "ami-0569830c65eafd424",
-            },
-            "us-east-2" : {
-                "Hourly" : "ami-0d77d90f71f12fba8",
-                "BYOL" : "ami-00ba624f65f4e9978",
-            },
-            "us-west-1" : {
-                "Hourly" : "ami-035cbf9456923d13e",
-                "BYOL" : "ami-03c116b5ea4390001",
-            },
-            "us-west-2" : {
-                "Hourly" : "ami-0e5dd9b420e41328b",
-                "BYOL" : "ami-06745e2b44b269cf0",
-            },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-0102c282132faf2b1",
-                "BYOL" : "ami-08aa0a3dd2653c27c",
-            },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-0efef200246fab974",
-                "BYOL" : "ami-0e1ad7dfea5ccb743",
-            },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-02c97a3294f690c00",
-                "BYOL" : "ami-081f3635d890c77ba",
-            },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-08cec4fed243531c1",
-                "BYOL" : "ami-0cfd25214276952eb",
-            },
-           "ca-central-1" : {
-                "Hourly" : "ami-02542102565f2e9e9",
-                "BYOL" : "ami-0cfa82a87f4d509a5",
-            },
-           "eu-central-1" : {
-                "Hourly" : "ami-0bb8e575294ff0eb9",
-                "BYOL" : "ami-0f8c7793cf68789d8",
-            },
-            "eu-west-1" : {
-                "Hourly" : "ami-0fbb2bb1f9bb94ddd",
-                "BYOL" : "ami-08f45e2aac7c603ce",
-            },
-            "eu-west-2" : {
-                "Hourly" : "ami-008b756cb6590e805",
-                "BYOL" : "ami-0be81758b47cef977",
-            },
-            "sa-east-1" : {
-                "Hourly" : "ami-04db38c5d9e59bbec",
-                "BYOL" : "ami-03ad6e4f2a0634f31",
-            },
-        },
-        "amiMapv821": {
-          "us-east-1" : {
-                "Hourly" : "ami-06626e94a994ebb55",
-                "BYOL" : "ami-06ccb7d96ef307528",
-            },
-            "us-east-2" : {
-                "Hourly" : "ami-078ed482a8f9491d4",
-                "BYOL" : "ami-049f1c062bb15c3c3",
-            },
-            "us-west-1" : {
-                "Hourly" : "ami-07a4e430871439bd3",
-                "BYOL" : "ami-0c388f75a4ef7e81c",
-            },
-            "us-west-2" : {
-                "Hourly" : "ami-0c5a6d0536959f26a",
-                "BYOL" : "ami-0cc071cf047b42c97",
-            },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-065eac356de75eb0c",
-                "BYOL" : "ami-0526bddabeb47b68e",
-            },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-09f3afbc3b694c882",
-                "BYOL" : "ami-04355821a06841826",
-            },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-055902f1e1c7d3fe7",
-                "BYOL" : "ami-090841fa54dd58d0a",
-            },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-000d04af5c900a649",
-                "BYOL" : "ami-051e6cdac669c44c1",
-            },
-           "ca-central-1" : {
-                "Hourly" : "ami-0df68afa8277df8b3",
-                "BYOL" : "ami-0dd0482612d5724ba",
-            },
-           "eu-central-1" : {
-                "Hourly" : "ami-08183a86c2102371c",
-                "BYOL" : "ami-03a7e2b5cd9e295af",
-            },
-            "eu-west-1" : {
-                "Hourly" : "ami-080f56021f42687be",
-                "BYOL" : "ami-0e0dac9a920663dd8",
-            },
-            "eu-west-2" : {
-                "Hourly" : "ami-0ea695b18dcc775e2",
-                "BYOL" : "ami-06f4a60ebad16e1fe",
-            },
-            "sa-east-1" : {
-                "Hourly" : "ami-0430115dfd1f17d53",
-                "BYOL" : "ami-0ef9dd4b0a6be4e7f",
-            },
-        },
-		"amiMapv830":{
+         "us-east-2":{
+            "Hourly":"ami-0d77d90f71f12fba8",
+            "BYOL":"ami-00ba624f65f4e9978"
+         },
+         "us-west-1":{
+            "Hourly":"ami-035cbf9456923d13e",
+            "BYOL":"ami-03c116b5ea4390001"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0e5dd9b420e41328b",
+            "BYOL":"ami-06745e2b44b269cf0"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-0102c282132faf2b1",
+            "BYOL":"ami-08aa0a3dd2653c27c"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0efef200246fab974",
+            "BYOL":"ami-0e1ad7dfea5ccb743"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-02c97a3294f690c00",
+            "BYOL":"ami-081f3635d890c77ba"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-08cec4fed243531c1",
+            "BYOL":"ami-0cfd25214276952eb"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-02542102565f2e9e9",
+            "BYOL":"ami-0cfa82a87f4d509a5"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-0bb8e575294ff0eb9",
+            "BYOL":"ami-0f8c7793cf68789d8"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-0fbb2bb1f9bb94ddd",
+            "BYOL":"ami-08f45e2aac7c603ce"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-008b756cb6590e805",
+            "BYOL":"ami-0be81758b47cef977"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-04db38c5d9e59bbec",
+            "BYOL":"ami-03ad6e4f2a0634f31"
+         }
+      },
+      "amiMapv821":{
+         "us-east-1":{
+            "Hourly":"ami-06626e94a994ebb55",
+            "BYOL":"ami-06ccb7d96ef307528"
+         },
+         "us-east-2":{
+            "Hourly":"ami-078ed482a8f9491d4",
+            "BYOL":"ami-049f1c062bb15c3c3"
+         },
+         "us-west-1":{
+            "Hourly":"ami-07a4e430871439bd3",
+            "BYOL":"ami-0c388f75a4ef7e81c"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0c5a6d0536959f26a",
+            "BYOL":"ami-0cc071cf047b42c97"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-065eac356de75eb0c",
+            "BYOL":"ami-0526bddabeb47b68e"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-09f3afbc3b694c882",
+            "BYOL":"ami-04355821a06841826"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-055902f1e1c7d3fe7",
+            "BYOL":"ami-090841fa54dd58d0a"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-000d04af5c900a649",
+            "BYOL":"ami-051e6cdac669c44c1"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0df68afa8277df8b3",
+            "BYOL":"ami-0dd0482612d5724ba"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-08183a86c2102371c",
+            "BYOL":"ami-03a7e2b5cd9e295af"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-080f56021f42687be",
+            "BYOL":"ami-0e0dac9a920663dd8"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0ea695b18dcc775e2",
+            "BYOL":"ami-06f4a60ebad16e1fe"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0430115dfd1f17d53",
+            "BYOL":"ami-0ef9dd4b0a6be4e7f"
+         }
+      },
+      "amiMapv830":{
          "us-east-1":{
             "Hourly":"ami-08502036b50261eff",
-			"BYOL" : "ami-0eb58079ea6067538",
+            "BYOL":"ami-0eb58079ea6067538"
          },
          "us-east-2":{
             "Hourly":"ami-01a37ea35aac51fb3",
-			"BYOL" : "ami-0a9359e96131989fe",
+            "BYOL":"ami-0a9359e96131989fe"
          },
          "us-west-1":{
             "Hourly":"ami-0ef07a7685a119cc9",
-			"BYOL" : "ami-007d0429e8b88a6c4",
+            "BYOL":"ami-007d0429e8b88a6c4"
          },
          "us-west-2":{
             "Hourly":"ami-080ba652367fc8a4a",
-			"BYOL" : "ami-078622545858d6044",
+            "BYOL":"ami-078622545858d6044"
          },
          "ap-northeast-3":{
             "Hourly":"ami-0a8884db266b4a0cb",
-			"BYOL" : "ami-00e091d4e096d5fcb",
+            "BYOL":"ami-00e091d4e096d5fcb"
          },
          "ap-southeast-1":{
             "Hourly":"ami-0f98d9860a52e8014",
-			"BYOL" : "ami-0ee9be9adcf7a66d3",
+            "BYOL":"ami-0ee9be9adcf7a66d3"
          },
          "ap-southeast-2":{
             "Hourly":"ami-0ba304cd3db90999e",
-			"BYOL" : "ami-02fc5cbb79145665f",
+            "BYOL":"ami-02fc5cbb79145665f"
          },
          "ap-northeast-1":{
             "Hourly":"ami-06ddc974e8fc4c54d",
-			"BYOL" : "ami-0bfb140902ba7faec",
+            "BYOL":"ami-0bfb140902ba7faec"
          },
          "ca-central-1":{
             "Hourly":"ami-0d3479a5f76c43d89",
-			"BYOL" : "ami-0131beba122852be6",
+            "BYOL":"ami-0131beba122852be6"
          },
          "eu-central-1":{
             "Hourly":"ami-00d8cd5b5c5260a7e",
-			"BYOL" : "ami-00200d6f3a8fec98d",
+            "BYOL":"ami-00200d6f3a8fec98d"
          },
          "eu-west-1":{
             "Hourly":"ami-062a4698272c02ea9",
-			"BYOL" : "ami-02da70bb6f3de83ac",
+            "BYOL":"ami-02da70bb6f3de83ac"
          },
          "eu-west-2":{
             "Hourly":"ami-0a2784b738789de80",
-			"BYOL" : "ami-058d915a3cc0eb01b",
+            "BYOL":"ami-058d915a3cc0eb01b"
          },
          "sa-east-1":{
             "Hourly":"ami-0f7d1ff4d98dc2d1b",
-			"BYOL" : "ami-0098ee5ecd3cabd56",
+            "BYOL":"ami-0098ee5ecd3cabd56"
          }
-      },
-    },
+      }
+   },
    "Conditions":{
       "EnableRESTCondition":{
          "Fn::Equals":[

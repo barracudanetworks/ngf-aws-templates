@@ -1,81 +1,81 @@
 {
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Barracuda CloudGen Firewall - Cold Standby Cluster",
-  "Metadata": {
-    "AWS::CloudFormation::Interface": {
-      "ParameterGroups": [
-        {
-          "Label": {
-            "default": "Launch Configuration Settings"
-          },
-          "Parameters": [
-            "InstanceType",
-            "IAMProfile",
-            "ReleaseVersion",
-            "LicenceMode"
-          ]
-        },
-        {
-          "Label": {
-            "default": "Network Settings"
-          },
-          "Parameters": [
-            "VpcId",
-            "PublicSubnetAId",
-            "PublicSubnetBId",
-            "PrivateSubnetRouteTableId"
-          ]
-        }
-      ],
-      "ParameterLabels": {
-        "InstanceType": {
-          "default": "Instance Type"
-        },
-        "IAMProfile": {
-          "default": "IAM Profile"
-        },
-        "VpcId": {
-          "default": "VPC"
-        },
-        "PublicSubnetAId": {
-          "default": "Primary AZ subnet"
-        },
-        "PublicSubnetBId": {
-          "default": "Secondary AZ subnet"
-        },
-        "PrivateSubnetRouteTableId": {
-          "default": "Route table to be maintained"
-        }
+   "AWSTemplateFormatVersion":"2010-09-09",
+   "Description":"Barracuda CloudGen Firewall - Cold Standby Cluster",
+   "Metadata":{
+      "AWS::CloudFormation::Interface":{
+         "ParameterGroups":[
+            {
+               "Label":{
+                  "default":"Launch Configuration Settings"
+               },
+               "Parameters":[
+                  "InstanceType",
+                  "IAMProfile",
+                  "ReleaseVersion",
+                  "LicenceMode"
+               ]
+            },
+            {
+               "Label":{
+                  "default":"Network Settings"
+               },
+               "Parameters":[
+                  "VpcId",
+                  "PublicSubnetAId",
+                  "PublicSubnetBId",
+                  "PrivateSubnetRouteTableId"
+               ]
+            }
+         ],
+         "ParameterLabels":{
+            "InstanceType":{
+               "default":"Instance Type"
+            },
+            "IAMProfile":{
+               "default":"IAM Profile"
+            },
+            "VpcId":{
+               "default":"VPC"
+            },
+            "PublicSubnetAId":{
+               "default":"Primary AZ subnet"
+            },
+            "PublicSubnetBId":{
+               "default":"Secondary AZ subnet"
+            },
+            "PrivateSubnetRouteTableId":{
+               "default":"Route table to be maintained"
+            }
+         }
       }
-    }
-  },
-  "Parameters": {
-    "InstanceType": {
-      "Description": "Select the EC2 instance type.",
-      "Type": "String",
-      "Default": "c5.large",
-      "AllowedValues": [
-        "t2.small",
-        "t3.small",
-        "t3.medium",
-        "t3.large",
-        "m5.large",
-        "m5.xlarge",
-        "m5.2xlarge",
-        "c5.large",
-        "c5.xlarge",
-        "c5.2xlarge"
-      ]
-    },
-    "LicenceMode": {
-      "Description": "Select the license type.",
-      "Type": "String",
-      "Default": "Hourly",
-      "AllowedValues": [
-        "Hourly",
-        "BYOL"
-      ]
-    },
+   },
+   "Parameters":{
+      "InstanceType":{
+         "Description":"Select the EC2 instance type.",
+         "Type":"String",
+         "Default":"c5.large",
+         "AllowedValues":[
+            "t2.small",
+            "t3.small",
+            "t3.medium",
+            "t3.large",
+            "m5.large",
+            "m5.xlarge",
+            "m5.2xlarge",
+            "c5.large",
+            "c5.xlarge",
+            "c5.2xlarge"
+         ]
+      },
+      "LicenceMode":{
+         "Description":"Select the license type.",
+         "Type":"String",
+         "Default":"Hourly",
+         "AllowedValues":[
+            "Hourly",
+            "BYOL"
+         ]
+      },
       "ReleaseVersion":{
          "Description":"Which release do you want to deploy?",
          "Type":"String",
@@ -83,36 +83,36 @@
          "AllowedValues":[
             "8.0.5",
             "8.2.1",
-			"8.3.0"
+            "8.3.0"
          ]
       },
-    "IAMProfile": {
-      "Description": "Select the IAM Role for the NextGen Firewall.",
-      "Type": "String",
-      "Default": "NextGenFirewallRole"
-    },
-    "VpcId": {
-      "Description": "VPC to deploy to",
-      "Type": "AWS::EC2::VPC::Id",
-      "Default": ""
-    },
-    "PublicSubnetAId": {
-      "Description": "Primary public subnet for firewall.",
-      "Type": "String",
-      "Default": ""
-    },
-    "PublicSubnetBId": {
-      "Description": "Secondary pbulic subnet for firewall.",
-      "Type": "String",
-      "Default": ""
-    },
-    "PrivateSubnetRouteTableId": {
-      "Description": "Firewall will point default route in this table to itself",
-      "Type": "String",
-      "Default": ""
-    }
-  },
-    "Mappings": {
+      "IAMProfile":{
+         "Description":"Select the IAM Role for the NextGen Firewall.",
+         "Type":"String",
+         "Default":"NextGenFirewallRole"
+      },
+      "VpcId":{
+         "Description":"VPC to deploy to",
+         "Type":"AWS::EC2::VPC::Id",
+         "Default":""
+      },
+      "PublicSubnetAId":{
+         "Description":"Primary public subnet for firewall.",
+         "Type":"String",
+         "Default":""
+      },
+      "PublicSubnetBId":{
+         "Description":"Secondary pbulic subnet for firewall.",
+         "Type":"String",
+         "Default":""
+      },
+      "PrivateSubnetRouteTableId":{
+         "Description":"Firewall will point default route in this table to itself",
+         "Type":"String",
+         "Default":""
+      }
+   },
+   "Mappings":{
       "amiMapMap":{
          "8.0.5":{
             "mapName":"amiMapv805"
@@ -122,380 +122,374 @@
          },
          "8.3.0":{
             "mapName":"amiMapv830"
+         }
+      },
+      "amiMapv805":{
+         "us-east-1":{
+            "Hourly":"ami-07570d14ecc6d753b",
+            "BYOL":"ami-0569830c65eafd424"
          },
-	  },
-        "amiMapv805": {
-            "us-east-1" : {
-                "Hourly" : "ami-07570d14ecc6d753b",
-                "BYOL" : "ami-0569830c65eafd424",
-            },
-            "us-east-2" : {
-                "Hourly" : "ami-0d77d90f71f12fba8",
-                "BYOL" : "ami-00ba624f65f4e9978",
-            },
-            "us-west-1" : {
-                "Hourly" : "ami-035cbf9456923d13e",
-                "BYOL" : "ami-03c116b5ea4390001",
-            },
-            "us-west-2" : {
-                "Hourly" : "ami-0e5dd9b420e41328b",
-                "BYOL" : "ami-06745e2b44b269cf0",
-            },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-0102c282132faf2b1",
-                "BYOL" : "ami-08aa0a3dd2653c27c",
-            },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-0efef200246fab974",
-                "BYOL" : "ami-0e1ad7dfea5ccb743",
-            },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-02c97a3294f690c00",
-                "BYOL" : "ami-081f3635d890c77ba",
-            },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-08cec4fed243531c1",
-                "BYOL" : "ami-0cfd25214276952eb",
-            },
-           "ca-central-1" : {
-                "Hourly" : "ami-02542102565f2e9e9",
-                "BYOL" : "ami-0cfa82a87f4d509a5",
-            },
-           "eu-central-1" : {
-                "Hourly" : "ami-0bb8e575294ff0eb9",
-                "BYOL" : "ami-0f8c7793cf68789d8",
-            },
-            "eu-west-1" : {
-                "Hourly" : "ami-0fbb2bb1f9bb94ddd",
-                "BYOL" : "ami-08f45e2aac7c603ce",
-            },
-            "eu-west-2" : {
-                "Hourly" : "ami-008b756cb6590e805",
-                "BYOL" : "ami-0be81758b47cef977",
-            },
-            "sa-east-1" : {
-                "Hourly" : "ami-04db38c5d9e59bbec",
-                "BYOL" : "ami-03ad6e4f2a0634f31",
-            },
-        },
-        "amiMapv821": {
-          "us-east-1" : {
-                "Hourly" : "ami-06626e94a994ebb55",
-                "BYOL" : "ami-06ccb7d96ef307528",
-            },
-            "us-east-2" : {
-                "Hourly" : "ami-078ed482a8f9491d4",
-                "BYOL" : "ami-049f1c062bb15c3c3",
-            },
-            "us-west-1" : {
-                "Hourly" : "ami-07a4e430871439bd3",
-                "BYOL" : "ami-0c388f75a4ef7e81c",
-            },
-            "us-west-2" : {
-                "Hourly" : "ami-0c5a6d0536959f26a",
-                "BYOL" : "ami-0cc071cf047b42c97",
-            },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-065eac356de75eb0c",
-                "BYOL" : "ami-0526bddabeb47b68e",
-            },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-09f3afbc3b694c882",
-                "BYOL" : "ami-04355821a06841826",
-            },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-055902f1e1c7d3fe7",
-                "BYOL" : "ami-090841fa54dd58d0a",
-            },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-000d04af5c900a649",
-                "BYOL" : "ami-051e6cdac669c44c1",
-            },
-           "ca-central-1" : {
-                "Hourly" : "ami-0df68afa8277df8b3",
-                "BYOL" : "ami-0dd0482612d5724ba",
-            },
-           "eu-central-1" : {
-                "Hourly" : "ami-08183a86c2102371c",
-                "BYOL" : "ami-03a7e2b5cd9e295af",
-            },
-            "eu-west-1" : {
-                "Hourly" : "ami-080f56021f42687be",
-                "BYOL" : "ami-0e0dac9a920663dd8",
-            },
-            "eu-west-2" : {
-                "Hourly" : "ami-0ea695b18dcc775e2",
-                "BYOL" : "ami-06f4a60ebad16e1fe",
-            },
-            "sa-east-1" : {
-                "Hourly" : "ami-0430115dfd1f17d53",
-                "BYOL" : "ami-0ef9dd4b0a6be4e7f",
-            },
-        },
-		"amiMapv830":{
+         "us-east-2":{
+            "Hourly":"ami-0d77d90f71f12fba8",
+            "BYOL":"ami-00ba624f65f4e9978"
+         },
+         "us-west-1":{
+            "Hourly":"ami-035cbf9456923d13e",
+            "BYOL":"ami-03c116b5ea4390001"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0e5dd9b420e41328b",
+            "BYOL":"ami-06745e2b44b269cf0"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-0102c282132faf2b1",
+            "BYOL":"ami-08aa0a3dd2653c27c"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0efef200246fab974",
+            "BYOL":"ami-0e1ad7dfea5ccb743"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-02c97a3294f690c00",
+            "BYOL":"ami-081f3635d890c77ba"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-08cec4fed243531c1",
+            "BYOL":"ami-0cfd25214276952eb"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-02542102565f2e9e9",
+            "BYOL":"ami-0cfa82a87f4d509a5"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-0bb8e575294ff0eb9",
+            "BYOL":"ami-0f8c7793cf68789d8"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-0fbb2bb1f9bb94ddd",
+            "BYOL":"ami-08f45e2aac7c603ce"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-008b756cb6590e805",
+            "BYOL":"ami-0be81758b47cef977"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-04db38c5d9e59bbec",
+            "BYOL":"ami-03ad6e4f2a0634f31"
+         }
+      },
+      "amiMapv821":{
+         "us-east-1":{
+            "Hourly":"ami-06626e94a994ebb55",
+            "BYOL":"ami-06ccb7d96ef307528"
+         },
+         "us-east-2":{
+            "Hourly":"ami-078ed482a8f9491d4",
+            "BYOL":"ami-049f1c062bb15c3c3"
+         },
+         "us-west-1":{
+            "Hourly":"ami-07a4e430871439bd3",
+            "BYOL":"ami-0c388f75a4ef7e81c"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0c5a6d0536959f26a",
+            "BYOL":"ami-0cc071cf047b42c97"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-065eac356de75eb0c",
+            "BYOL":"ami-0526bddabeb47b68e"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-09f3afbc3b694c882",
+            "BYOL":"ami-04355821a06841826"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-055902f1e1c7d3fe7",
+            "BYOL":"ami-090841fa54dd58d0a"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-000d04af5c900a649",
+            "BYOL":"ami-051e6cdac669c44c1"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0df68afa8277df8b3",
+            "BYOL":"ami-0dd0482612d5724ba"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-08183a86c2102371c",
+            "BYOL":"ami-03a7e2b5cd9e295af"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-080f56021f42687be",
+            "BYOL":"ami-0e0dac9a920663dd8"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0ea695b18dcc775e2",
+            "BYOL":"ami-06f4a60ebad16e1fe"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0430115dfd1f17d53",
+            "BYOL":"ami-0ef9dd4b0a6be4e7f"
+         }
+      },
+      "amiMapv830":{
          "us-east-1":{
             "Hourly":"ami-08502036b50261eff",
-			"BYOL" : "ami-0eb58079ea6067538",
+            "BYOL":"ami-0eb58079ea6067538"
          },
          "us-east-2":{
             "Hourly":"ami-01a37ea35aac51fb3",
-			"BYOL" : "ami-0a9359e96131989fe",
+            "BYOL":"ami-0a9359e96131989fe"
          },
          "us-west-1":{
             "Hourly":"ami-0ef07a7685a119cc9",
-			"BYOL" : "ami-007d0429e8b88a6c4",
+            "BYOL":"ami-007d0429e8b88a6c4"
          },
          "us-west-2":{
             "Hourly":"ami-080ba652367fc8a4a",
-			"BYOL" : "ami-078622545858d6044",
+            "BYOL":"ami-078622545858d6044"
          },
          "ap-northeast-3":{
             "Hourly":"ami-0a8884db266b4a0cb",
-			"BYOL" : "ami-00e091d4e096d5fcb",
+            "BYOL":"ami-00e091d4e096d5fcb"
          },
          "ap-southeast-1":{
             "Hourly":"ami-0f98d9860a52e8014",
-			"BYOL" : "ami-0ee9be9adcf7a66d3",
+            "BYOL":"ami-0ee9be9adcf7a66d3"
          },
          "ap-southeast-2":{
             "Hourly":"ami-0ba304cd3db90999e",
-			"BYOL" : "ami-02fc5cbb79145665f",
+            "BYOL":"ami-02fc5cbb79145665f"
          },
          "ap-northeast-1":{
             "Hourly":"ami-06ddc974e8fc4c54d",
-			"BYOL" : "ami-0bfb140902ba7faec",
+            "BYOL":"ami-0bfb140902ba7faec"
          },
          "ca-central-1":{
             "Hourly":"ami-0d3479a5f76c43d89",
-			"BYOL" : "ami-0131beba122852be6",
+            "BYOL":"ami-0131beba122852be6"
          },
          "eu-central-1":{
             "Hourly":"ami-00d8cd5b5c5260a7e",
-			"BYOL" : "ami-00200d6f3a8fec98d",
+            "BYOL":"ami-00200d6f3a8fec98d"
          },
          "eu-west-1":{
             "Hourly":"ami-062a4698272c02ea9",
-			"BYOL" : "ami-02da70bb6f3de83ac",
+            "BYOL":"ami-02da70bb6f3de83ac"
          },
          "eu-west-2":{
             "Hourly":"ami-0a2784b738789de80",
-			"BYOL" : "ami-058d915a3cc0eb01b",
+            "BYOL":"ami-058d915a3cc0eb01b"
          },
          "sa-east-1":{
             "Hourly":"ami-0f7d1ff4d98dc2d1b",
-			"BYOL" : "ami-0098ee5ecd3cabd56",
+            "BYOL":"ami-0098ee5ecd3cabd56"
+         }
+      }
+   },
+   "Resources":{
+      "PublicSecurityGroup":{
+         "Type":"AWS::EC2::SecurityGroup",
+         "Properties":{
+            "GroupDescription":"Security group for the ASG",
+            "VpcId":{
+               "Ref":"VpcId"
+            },
+            "SecurityGroupIngress":[
+               {
+                  "IpProtocol":"-1",
+                  "FromPort":-1,
+                  "ToPort":-1,
+                  "CidrIp":"0.0.0.0/0"
+               }
+            ]
          }
       },
-    },
-  "Resources": {
-    "PublicSecurityGroup": {
-      "Type": "AWS::EC2::SecurityGroup",
-      "Properties": {
-        "GroupDescription": "Security group for the ASG",
-        "VpcId": {
-              "Ref": "VpcId"
-            },
-        "SecurityGroupIngress": [
-          {
-            "IpProtocol": "-1",
-            "FromPort": -1,
-            "ToPort": -1,
-            "CidrIp": "0.0.0.0/0"
-          }
-        ]
-      }
-    },
-    "ElasticIP": {
-      "Type": "AWS::EC2::EIP",
-      "Properties": {
-        "Domain": "vpc"
-      }
-    },
-    "S3": {
-      "Type": "AWS::S3::Bucket",
-      "Properties": {
-        "AccessControl": "Private",
-        "VersioningConfiguration": {
-          "Status": "Enabled"
-        }
-      }
-    },
-    "LaunchConfiguration": {
-      "Type": "AWS::AutoScaling::LaunchConfiguration",
-      "Properties": {
-        "ImageId": {
-          "Fn::FindInMap": [
-            {
-              "Fn::FindInMap": [
-                "amiMapMap",
-                {
-                  "Ref": "ReleaseVersion"
-                },
-                "mapName"
-              ]
-            },
-            {
-              "Ref": "AWS::Region"
-            },
-            {
-              "Ref": "LicenceMode"
-            }
-          ]
-        },
-        "SecurityGroups": [
-          {
-            "Ref": "PublicSecurityGroup"
-          }
-        ],
-        "InstanceType": {
-          "Ref": "InstanceType"
-        },
-        "AssociatePublicIpAddress": true,
-        "IamInstanceProfile": {
-          "Ref": "IAMProfile"
-        },
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "\n",
-              [
-                "#!/bin/bash",
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "/opt/phion/bin/aws-asg-provision",
-                      "--bucket",
-                      {
-                        "Ref": "S3"
-                      },
-                      "--topic",
-                      {
-                        "Ref": "AWS::StackName"
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "/opt/aws/bin/aws ec2 associate-address",
-                      "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
-                      "--allocation-id ",
-                      {
-                        "Fn::GetAtt": [
-                          "ElasticIP",
-                          "AllocationId"
-                        ]
-                      },
-                      "--allow-reassociation"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "/opt/aws/bin/aws ec2 modify-instance-attribute",
-                      "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
-                      "--no-source-dest-check"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "/opt/aws/bin/aws ec2 replace-route",
-                      "--route-table-id ",
-
-                          {
-                            "Ref": "PrivateSubnetRouteTableId"
-                          },
-
-                      "--destination-cidr-block 0.0.0.0/0 --instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "/opt/aws/bin/cfn-signal --success true --resource ASG ",
-                      {
-                        "Fn::Sub": "--stack ${AWS::StackName} --region ${AWS::Region}"
-                      }
-                    ]
-                  ]
-                }
-              ]
-            ]
-          }
-        }
-      }
-    },
-    "SNSTopic": {
-      "Type": "AWS::SNS::Topic",
-      "Properties": {
-        "DisplayName": {
-          "Ref": "AWS::StackName"
-        },
-        "TopicName": {
-          "Ref": "AWS::StackName"
-        }
-      }
-    },
-    "ASG": {
-      "Type": "AWS::AutoScaling::AutoScalingGroup",
-      "CreationPolicy": {
-        "ResourceSignal": {
-          "Count": "1",
-          "Timeout": "PT15M"
-        }
+      "ElasticIP":{
+         "Type":"AWS::EC2::EIP",
+         "Properties":{
+            "Domain":"vpc"
+         }
       },
-      "Properties": {
-        "VPCZoneIdentifier": [
-
-              {
-                "Ref": "PublicSubnetAId"
-              },
-
-
-              {
-                "Ref": "PublicSubnetBId"
-              }
-
-        ],
-        "LaunchConfigurationName": {
-          "Ref": "LaunchConfiguration"
-        },
-        "MinSize": "1",
-        "DesiredCapacity": "1",
-        "MaxSize": "1",
-        "HealthCheckGracePeriod": 1800,
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "AWS::StackName"
+      "S3":{
+         "Type":"AWS::S3::Bucket",
+         "Properties":{
+            "AccessControl":"Private",
+            "VersioningConfiguration":{
+               "Status":"Enabled"
+            }
+         }
+      },
+      "LaunchConfiguration":{
+         "Type":"AWS::AutoScaling::LaunchConfiguration",
+         "Properties":{
+            "ImageId":{
+               "Fn::FindInMap":[
+                  {
+                     "Fn::FindInMap":[
+                        "amiMapMap",
+                        {
+                           "Ref":"ReleaseVersion"
+                        },
+                        "mapName"
+                     ]
+                  },
+                  {
+                     "Ref":"AWS::Region"
+                  },
+                  {
+                     "Ref":"LicenceMode"
+                  }
+               ]
             },
-            "PropagateAtLaunch": true
-          }
-        ]
+            "SecurityGroups":[
+               {
+                  "Ref":"PublicSecurityGroup"
+               }
+            ],
+            "InstanceType":{
+               "Ref":"InstanceType"
+            },
+            "AssociatePublicIpAddress":true,
+            "IamInstanceProfile":{
+               "Ref":"IAMProfile"
+            },
+            "UserData":{
+               "Fn::Base64":{
+                  "Fn::Join":[
+                     "\n",
+                     [
+                        "#!/bin/bash",
+                        {
+                           "Fn::Join":[
+                              " ",
+                              [
+                                 "/opt/phion/bin/aws-asg-provision",
+                                 "--bucket",
+                                 {
+                                    "Ref":"S3"
+                                 },
+                                 "--topic",
+                                 {
+                                    "Ref":"AWS::StackName"
+                                 }
+                              ]
+                           ]
+                        },
+                        {
+                           "Fn::Join":[
+                              " ",
+                              [
+                                 "/opt/aws/bin/aws ec2 associate-address",
+                                 "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
+                                 "--allocation-id ",
+                                 {
+                                    "Fn::GetAtt":[
+                                       "ElasticIP",
+                                       "AllocationId"
+                                    ]
+                                 },
+                                 "--allow-reassociation"
+                              ]
+                           ]
+                        },
+                        {
+                           "Fn::Join":[
+                              " ",
+                              [
+                                 "/opt/aws/bin/aws ec2 modify-instance-attribute",
+                                 "--instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)",
+                                 "--no-source-dest-check"
+                              ]
+                           ]
+                        },
+                        {
+                           "Fn::Join":[
+                              " ",
+                              [
+                                 "/opt/aws/bin/aws ec2 replace-route",
+                                 "--route-table-id ",
+                                 {
+                                    "Ref":"PrivateSubnetRouteTableId"
+                                 },
+                                 "--destination-cidr-block 0.0.0.0/0 --instance-id $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
+                              ]
+                           ]
+                        },
+                        {
+                           "Fn::Join":[
+                              " ",
+                              [
+                                 "/opt/aws/bin/cfn-signal --success true --resource ASG ",
+                                 {
+                                    "Fn::Sub":"--stack ${AWS::StackName} --region ${AWS::Region}"
+                                 }
+                              ]
+                           ]
+                        }
+                     ]
+                  ]
+               }
+            }
+         }
+      },
+      "SNSTopic":{
+         "Type":"AWS::SNS::Topic",
+         "Properties":{
+            "DisplayName":{
+               "Ref":"AWS::StackName"
+            },
+            "TopicName":{
+               "Ref":"AWS::StackName"
+            }
+         }
+      },
+      "ASG":{
+         "Type":"AWS::AutoScaling::AutoScalingGroup",
+         "CreationPolicy":{
+            "ResourceSignal":{
+               "Count":"1",
+               "Timeout":"PT15M"
+            }
+         },
+         "Properties":{
+            "VPCZoneIdentifier":[
+               {
+                  "Ref":"PublicSubnetAId"
+               },
+               {
+                  "Ref":"PublicSubnetBId"
+               }
+            ],
+            "LaunchConfigurationName":{
+               "Ref":"LaunchConfiguration"
+            },
+            "MinSize":"1",
+            "DesiredCapacity":"1",
+            "MaxSize":"1",
+            "HealthCheckGracePeriod":1800,
+            "Tags":[
+               {
+                  "Key":"Name",
+                  "Value":{
+                     "Ref":"AWS::StackName"
+                  },
+                  "PropagateAtLaunch":true
+               }
+            ]
+         }
       }
-    }
-  },
-  "Outputs": {
-    "PublicIP": {
-      "Description": "Firewall Public IP",
-      "Value": {
-        "Ref": "ElasticIP"
+   },
+   "Outputs":{
+      "PublicIP":{
+         "Description":"Firewall Public IP",
+         "Value":{
+            "Ref":"ElasticIP"
+         }
+      },
+      "Password":{
+         "Description":"",
+         "Value":"For initial management password check __configNodeId tag of your Auto Scaling Group"
       }
-    },
-    "Password": {
-      "Description": "",
-      "Value": "For initial management password check __configNodeId tag of your Auto Scaling Group"
-    }
-  }
+   }
 }
