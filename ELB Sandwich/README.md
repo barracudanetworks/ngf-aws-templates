@@ -38,6 +38,6 @@ Private Subnet in Zone B | PrivateSubnetBAddress | Private subnet hosting firewa
 Public Subnet in Zone B | PublicSubnetBAddress | Public helper subnet in B zone. Must be within VPC address space.
 
 ## Launching the Template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/how-to-deploy-a-cloudgen-in-aws-via-cloudformation-template) article in Barracuda Campus.
 
 ## Additional Resources
