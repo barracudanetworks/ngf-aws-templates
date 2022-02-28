@@ -36,6 +36,6 @@ Control Center Password/key | CCPassword | Password to use to authenticate again
 
 
 ## Launching the Template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/96026606/) article in Barracuda Campus.
 
 ## Additional Resources

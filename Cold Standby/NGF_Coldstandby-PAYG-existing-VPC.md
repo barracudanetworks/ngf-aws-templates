@@ -19,7 +19,7 @@ You can create a VPC meeting above reuqirements using [vpc.json](vpc.json) templ
 Parameter name | Default value | Description
 ---------------|-------------|---
 InstanceType | t2.medium | Type of instance, make sure the selected type is available in your region (template cannot check it itself)
-IAMProfile | NextGenFirewallRole | Type in the name you used when creating the IAM role. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
+IAMProfile | NextGenFirewallRole | Type in the name you used when creating the IAM role. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96026728/) for details.
 VpcStackName | | Name of stack you used to create a VPC if you want optional exports (see optional prerequisites above) to be cross-referenced between stacks. Leave empty and fill in rest of parameters for manual matching
 VpcId | | Id of VPC to deploy to
 PublicSubnetAId | | Id of subnet in first AZ to deploy to

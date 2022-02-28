@@ -1,936 +1,1065 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Barracuda NextGen Firewall v8.2.1 - Auto Scaling Cluster in ELB Sandwich ",
-    "Metadata" : {
-        "AWS::CloudFormation::Interface" : {
-            "ParameterGroups" : [
-              {
-                "Label" : {
-                    "default": "Auto Scaling Group Settings"
-                },
-                "Parameters" : [
-                    "InitialSize",
-                    "MaxSize",
-                    "HighThreshold",
-                    "LowThreshold"
-                ]
-              },
-              {
-                "Label" : {
-                    "default": "Launch Configuration Settings"
-                },
-                "Parameters" : [
-                    "InstanceType",
-                    "IAMProfile"
-                ]
-              },
-              {
-                "Label": {
-                  "default": "Networking - VPC"
-                },
-                "Parameters": [
+   "AWSTemplateFormatVersion":"2010-09-09",
+   "Description":"Barracuda NextGen Firewall v8.3.0 - Auto Scaling Cluster in ELB Sandwich ",
+   "Metadata":{
+      "AWS::CloudFormation::Interface":{
+         "ParameterGroups":[
+            {
+               "Label":{
+                  "default":"Auto Scaling Group Settings"
+               },
+               "Parameters":[
+                  "InitialSize",
+                  "MaxSize",
+                  "HighThreshold",
+                  "LowThreshold"
+               ]
+            },
+            {
+               "Label":{
+                  "default":"Launch Configuration Settings"
+               },
+               "Parameters":[
+                  "InstanceType",
+                  "IAMProfile",
+                  "ReleaseVersion"
+               ]
+            },
+            {
+               "Label":{
+                  "default":"Networking - VPC"
+               },
+               "Parameters":[
                   "VpcAddress"
-                ]
-              },
-              {
-                "Label": {
-                  "default": "Networking - Zone A"
-                },
-                "Parameters": [
+               ]
+            },
+            {
+               "Label":{
+                  "default":"Networking - Zone A"
+               },
+               "Parameters":[
                   "PrivateSubnetAAddress",
                   "PublicSubnetAAddress",
                   "ZoneA"
-                ]
-              },
-              {
-                "Label": {
-                  "default": "Networking - Zone B"
-                },
-                "Parameters": [
+               ]
+            },
+            {
+               "Label":{
+                  "default":"Networking - Zone B"
+               },
+               "Parameters":[
                   "PrivateSubnetBAddress",
                   "PublicSubnetBAddress",
                   "ZoneB"
-                ]
-              }
-            ],
-            "ParameterLabels" : {
-              "ILBName": {
-                "default": "Internal Load Balancer name"
-              },
-              "InitialSize": {
-                "default": "Minimum Size"
-              },
-              "MaxSize": {
-                "default": "Maximum Size"
-              },
-              "HighThreshold": {
-                "default": "Scale-out Trigger"
-              },
-              "LowThreshold": {
-                "default": "Scale-In Trigger"
-              },
-              "InstanceType": {
-                "default": "Instance Type"
-              },
-              "IAMProfile": {
-                "default": "IAM Profile"
-              },
-              "VpcAddress": {
-                "default": "VPC Address"
-              },
-              "PrivateSubnetAAddress": {
-                "default": "Private Subnet in Zone A"
-              },
-              "PrivateSubnetBAddress": {
-                "default": "Private Subnet in Zone B"
-              },
-              "PublicSubnetAAddress": {
-                "default": "Public Subnet in Zone A"
-              },
-              "PublicSubnetBAddress": {
-                "default": "Public Subnet in Zone B"
-              },
-              "ZoneA": {
-                "default": "Zone (A) to deploy to"
-              },
-              "ZoneB": {
-                "default": "Zone (B) to deploy to"
-              },
-              "MgmtACL": {
-                "default": "Management ACL"
-              }
-
+               ]
             }
-        }
-    },
-
-    "Parameters": {
-        "ILBName": {
-            "Description": "Name of the internal Load Balancer. Must not be longer than 15 characters.",
-            "Type": "String",
-            "Default": "NGFsandwich-ILB",
-            "MaxLength": 15,
-            "ConstraintDescription": "ILB name for this architecture is limited to 15 characters."
-        },
-        "InitialSize": {
-            "Description": "Initial size of the Auto Scaling Group.",
-            "Type": "Number",
-            "Default": "1",
-            "MinValue": "1",
-            "ConstraintDescription": "Initial size of the group cannot be less than 1"
-        },
-        "MaxSize": {
-            "Description": "Maximum number of instances in the Auto Scaling Group.",
-            "Type": "Number",
-            "Default": "5",
-            "MinValue": "2",
-            "MaxValue": "248",
-            "ConstraintDescription": "Maximum size of the group must be higher than initial size."
-        },
-        "InstanceType": {
-            "Description": "Select the EC2 instance type.",
-            "Type": "String",
-            "Default": "t3.large",
-            "AllowedValues": [
-                "t2.small",
-                "t3.small",
-                "t3.medium",
-                "t3.large",
-                "m5.large",
-                "m5.xlarge",
-                "m5.2xlarge",
-                "c5.large",
-                "c5.xlarge",
-                "c5.2xlarge"
-            ]
-        },
-        "IAMProfile": {
-            "Description": "Select the IAM Role for the NextGen Firewall.",
-            "Type": "String",
-            "Default": "NextGenFirewallRole"
-        },
-        "HighThreshold": {
-            "Description": "Maximum number of network packets per instance.",
-            "Type": "Number",
-            "Default": "20000"
-        },
-        "LowThreshold": {
-            "Description": "Number of packets per instance to trigger scaling in.",
-            "Type": "Number",
-            "Default": "2000"
-        },
-        "VpcAddress": {
-          "Description": "IP address space for new VPC",
-          "Type": "String",
-          "Default": "192.168.0.0/16",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-          "ConstraintDescription": "Use valid CIDR notation"
-        },
-        "PrivateSubnetAAddress": {
-          "Description": "Private subnet hosting firewalls in A zone. Must be within VPC address space.",
-          "Type": "String",
-          "Default": "192.168.254.0/24",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
-        },
-        "PublicSubnetAAddress": {
-          "Description": "Public helper subnet in A zone. Must be within VPC address space.",
-          "Type": "String",
-          "Default": "192.168.0.0/24",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
-        },
-        "PrivateSubnetBAddress": {
-          "Description": "Private subnet hosting firewalls in B zone. Must be within VPC address space.",
-          "Type": "String",
-          "Default": "192.168.255.0/24",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
-        },
-        "PublicSubnetBAddress": {
-          "Description": "Public helper subnet in B zone. Must be within VPC address space.",
-          "Type": "String",
-          "Default": "192.168.1.0/24",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
-        },
-        "ZoneA": {
-          "Description": "",
-          "Type": "AWS::EC2::AvailabilityZone::Name"
-        },
-        "ZoneB": {
-          "Description": "",
-          "Type": "AWS::EC2::AvailabilityZone::Name"
-        },
-        "MgmtACL": {
-          "Description": "Allow access to management IP only from these addresses (CIDR notation)",
-          "Type": "String",
-          "Default": "0.0.0.0/0",
-          "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
-        }
-    },
-    "Mappings": {
-      "AMINGF": {
-          "us-east-1" : {
-                "Hourly" : "ami-06626e94a994ebb55",
+         ],
+         "ParameterLabels":{
+            "ILBName":{
+               "default":"Internal Load Balancer name"
             },
-            "us-east-2" : {
-                "Hourly" : "ami-078ed482a8f9491d4",
+            "InitialSize":{
+               "default":"Minimum Size"
             },
-            "us-west-1" : {
-                "Hourly" : "ami-07a4e430871439bd3",
+            "MaxSize":{
+               "default":"Maximum Size"
             },
-            "us-west-2" : {
-                "Hourly" : "ami-0c5a6d0536959f26a",
+            "HighThreshold":{
+               "default":"Scale-out Trigger"
             },
-            "ap-northeast-3" : {
-                "Hourly" : "ami-065eac356de75eb0c",
+            "LowThreshold":{
+               "default":"Scale-In Trigger"
             },
-           "ap-southeast-1" : {
-                "Hourly" : "ami-09f3afbc3b694c882",
+            "InstanceType":{
+               "default":"Instance Type"
             },
-           "ap-southeast-2" : {
-                "Hourly" : "ami-055902f1e1c7d3fe7",
+            "IAMProfile":{
+               "default":"IAM Profile"
             },
-            "ap-northeast-1" : {
-                "Hourly" : "ami-000d04af5c900a649",
+            "ReleaseVersion":{
+               "default":"Release Version"
             },
-           "ca-central-1" : {
-                "Hourly" : "ami-0df68afa8277df8b3",
+            "VpcAddress":{
+               "default":"VPC Address"
             },
-           "eu-central-1" : {
-                "Hourly" : "ami-08183a86c2102371c",
+            "PrivateSubnetAAddress":{
+               "default":"Private Subnet in Zone A"
             },
-            "eu-west-1" : {
-                "Hourly" : "ami-080f56021f42687be",
+            "PrivateSubnetBAddress":{
+               "default":"Private Subnet in Zone B"
             },
-            "eu-west-2" : {
-                "Hourly" : "ami-0ea695b18dcc775e2",
+            "PublicSubnetAAddress":{
+               "default":"Public Subnet in Zone A"
             },
-            "sa-east-1" : {
-                "Hourly" : "ami-0430115dfd1f17d53",
+            "PublicSubnetBAddress":{
+               "default":"Public Subnet in Zone B"
             },
+            "ZoneA":{
+               "default":"Zone (A) to deploy to"
+            },
+            "ZoneB":{
+               "default":"Zone (B) to deploy to"
+            },
+            "MgmtACL":{
+               "default":"Management ACL"
+            }
+         }
       }
-    },
-    "Resources": {
-        "PublicSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Security group for the ASG",
-                "VpcId": {
-                    "Ref": "VPC"
-                },
-                "SecurityGroupIngress": [
-                  {
-                      "IpProtocol": "-1",
-                      "FromPort": "-1",
-                      "ToPort": "-1",
-                      "CidrIp": "0.0.0.0/0"
+   },
+   "Parameters":{
+      "ILBName":{
+         "Description":"Name of the internal Load Balancer. Must not be longer than 15 characters.",
+         "Type":"String",
+         "Default":"NGFsandwich-ILB",
+         "MaxLength":15,
+         "ConstraintDescription":"ILB name for this architecture is limited to 15 characters."
+      },
+      "InitialSize":{
+         "Description":"Initial size of the Auto Scaling Group.",
+         "Type":"Number",
+         "Default":"1",
+         "MinValue":"1",
+         "ConstraintDescription":"Initial size of the group cannot be less than 1"
+      },
+      "MaxSize":{
+         "Description":"Maximum number of instances in the Auto Scaling Group.",
+         "Type":"Number",
+         "Default":"5",
+         "MinValue":"2",
+         "MaxValue":"248",
+         "ConstraintDescription":"Maximum size of the group must be higher than initial size."
+      },
+      "InstanceType":{
+         "Description":"Select the EC2 instance type.",
+         "Type":"String",
+         "Default":"t3.large",
+         "AllowedValues":[
+            "t2.small",
+            "t3.small",
+            "t3.medium",
+            "t3.large",
+            "m5.large",
+            "m5.xlarge",
+            "m5.2xlarge",
+            "c5.large",
+            "c5.xlarge",
+            "c5.2xlarge"
+         ]
+      },
+      "IAMProfile":{
+         "Description":"Select the IAM Role for the NextGen Firewall.",
+         "Type":"String",
+         "Default":"NextGenFirewallRole"
+      },
+      "HighThreshold":{
+         "Description":"Maximum number of network packets per instance.",
+         "Type":"Number",
+         "Default":"20000"
+      },
+      "LowThreshold":{
+         "Description":"Number of packets per instance to trigger scaling in.",
+         "Type":"Number",
+         "Default":"2000"
+      },
+      "VpcAddress":{
+         "Description":"IP address space for new VPC",
+         "Type":"String",
+         "Default":"192.168.0.0/16",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+         "ConstraintDescription":"Use valid CIDR notation"
+      },
+      "PrivateSubnetAAddress":{
+         "Description":"Private subnet hosting firewalls in A zone. Must be within VPC address space.",
+         "Type":"String",
+         "Default":"192.168.254.0/24",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+      },
+      "PublicSubnetAAddress":{
+         "Description":"Public helper subnet in A zone. Must be within VPC address space.",
+         "Type":"String",
+         "Default":"192.168.0.0/24",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+      },
+      "PrivateSubnetBAddress":{
+         "Description":"Private subnet hosting firewalls in B zone. Must be within VPC address space.",
+         "Type":"String",
+         "Default":"192.168.255.0/24",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+      },
+      "PublicSubnetBAddress":{
+         "Description":"Public helper subnet in B zone. Must be within VPC address space.",
+         "Type":"String",
+         "Default":"192.168.1.0/24",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+      },
+      "ZoneA":{
+         "Description":"",
+         "Type":"AWS::EC2::AvailabilityZone::Name"
+      },
+      "ZoneB":{
+         "Description":"",
+         "Type":"AWS::EC2::AvailabilityZone::Name"
+      },
+      "MgmtACL":{
+         "Description":"Allow access to management IP only from these addresses (CIDR notation)",
+         "Type":"String",
+         "Default":"0.0.0.0/0",
+         "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
+      },
+      "ReleaseVersion":{
+         "Description":"Which release do you want to deploy?",
+         "Type":"String",
+         "Default":"8.3.0",
+         "AllowedValues":[
+            "8.0.5",
+            "8.2.1",
+            "8.3.0"
+         ]
+      }
+   },
+   "Mappings":{
+      "amiMapMap":{
+         "8.0.5":{
+            "mapName":"amiMapv805"
+         },
+         "8.2.1":{
+            "mapName":"amiMapv821"
+         },
+         "8.3.0":{
+            "mapName":"amiMapv830"
+         }
+      },
+      "amiMapv805":{
+         "us-east-1":{
+            "Hourly":"ami-07570d14ecc6d753b"
+         },
+         "us-east-2":{
+            "Hourly":"ami-0d77d90f71f12fba8"
+         },
+         "us-west-1":{
+            "Hourly":"ami-035cbf9456923d13e"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0e5dd9b420e41328b"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-0102c282132faf2b1"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0efef200246fab974"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-02c97a3294f690c00"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-08cec4fed243531c1"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-02542102565f2e9e9"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-0bb8e575294ff0eb9"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-0fbb2bb1f9bb94ddd"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-008b756cb6590e805"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-04db38c5d9e59bbec"
+         }
+      },
+      "amiMapv821":{
+         "us-east-1":{
+            "Hourly":"ami-06626e94a994ebb55"
+         },
+         "us-east-2":{
+            "Hourly":"ami-078ed482a8f9491d4"
+         },
+         "us-west-1":{
+            "Hourly":"ami-07a4e430871439bd3"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0c5a6d0536959f26a"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-065eac356de75eb0c"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-09f3afbc3b694c882"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-055902f1e1c7d3fe7"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-000d04af5c900a649"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0df68afa8277df8b3"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-08183a86c2102371c"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-080f56021f42687be"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0ea695b18dcc775e2"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0430115dfd1f17d53"
+         }
+      },
+      "amiMapv830":{
+         "us-east-1":{
+            "Hourly":"ami-08502036b50261eff"
+         },
+         "us-east-2":{
+            "Hourly":"ami-01a37ea35aac51fb3"
+         },
+         "us-west-1":{
+            "Hourly":"ami-0ef07a7685a119cc9"
+         },
+         "us-west-2":{
+            "Hourly":"ami-080ba652367fc8a4a"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-0a8884db266b4a0cb"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0f98d9860a52e8014"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-0ba304cd3db90999e"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-06ddc974e8fc4c54d"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0d3479a5f76c43d89"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-00d8cd5b5c5260a7e"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-062a4698272c02ea9"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0a2784b738789de80"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0f7d1ff4d98dc2d1b"
+         }
+      }
+   },
+   "Resources":{
+      "PublicSecurityGroup":{
+         "Type":"AWS::EC2::SecurityGroup",
+         "Properties":{
+            "GroupDescription":"Security group for the ASG",
+            "VpcId":{
+               "Ref":"VPC"
+            },
+            "SecurityGroupIngress":[
+               {
+                  "IpProtocol":"-1",
+                  "FromPort":"-1",
+                  "ToPort":"-1",
+                  "CidrIp":"0.0.0.0/0"
+               }
+            ]
+         }
+      },
+      "MgmtSecurityGroup":{
+         "Type":"AWS::EC2::SecurityGroup",
+         "Properties":{
+            "GroupDescription":"Security group for the Management ELB",
+            "VpcId":{
+               "Ref":"VPC"
+            },
+            "SecurityGroupIngress":[
+               {
+                  "IpProtocol":"TCP",
+                  "FromPort":"807",
+                  "ToPort":"807",
+                  "CidrIp":{
+                     "Ref":"MgmtACL"
                   }
-                ]
-            }
-        },
-        "MgmtSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Security group for the Management ELB",
-                "VpcId": {
-                    "Ref": "VPC"
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "TCP",
-                        "FromPort": "807",
-                        "ToPort": "807",
-                        "CidrIp": { "Ref": "MgmtACL" }
-                    },
-                    {
-                        "IpProtocol": "TCP",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "CidrIp": { "Ref": "MgmtACL" }
-                    }
-                ]
-            }
-        },
-        "NGFSecurityGroup": {
-            "Type": "AWS::EC2::SecurityGroup",
-            "Properties": {
-                "GroupDescription": "Security group for the Management ELB",
-                "VpcId": {
-                    "Ref": "VPC"
-                },
-                "SecurityGroupIngress": [
-                    {
-                        "IpProtocol": "TCP",
-                        "FromPort": "807",
-                        "ToPort": "807",
-                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
-                    },
-                    {
-                        "IpProtocol": "TCP",
-                        "FromPort": "22",
-                        "ToPort": "22",
-                        "SourceSecurityGroupId": { "Ref": "MgmtSecurityGroup" }
-                    },
-                    {
-                      "IpProtocol": "-1",
-                      "FromPort": "-1",
-                      "ToPort": "-1",
-                      "SourceSecurityGroupId": { "Ref": "PublicSecurityGroup" }
-                    }
-                ]
-            },
-            "DependsOn": [
-                "PublicSecurityGroup",
-                "MgmtSecurityGroup"
-            ]
-        },
-        "VPC": {
-            "Type": "AWS::EC2::VPC",
-            "Properties": {
-                "CidrBlock": {
-                    "Ref": "VpcAddress"
-                },
-            "Tags": [
-              {
-                "Key": "Name",
-                "Value": { "Fn::Join": ["-", [{ "Ref": "AWS::StackName" }, "VPC" ]]}
-              }
-            ]
-            }
-        },
-        "PrivateSubnetA": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "AvailabilityZone": {
-                    "Ref": "ZoneA"
-                },
-                "CidrBlock": {
-                  "Ref": "PrivateSubnetAAddress"
-                },
-                "MapPublicIpOnLaunch": false,
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PublicSubnetA": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "AvailabilityZone": {
-                    "Ref": "ZoneA"
-                },
-                "CidrBlock": {
-                  "Ref": "PublicSubnetAAddress"
-                },
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PrivateSubnetB": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "AvailabilityZone": {
-                    "Ref": "ZoneB"
-                },
-                "CidrBlock": {
-                  "Ref": "PrivateSubnetBAddress"
-                },
-                "MapPublicIpOnLaunch": false,
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PublicSubnetB": {
-            "Type": "AWS::EC2::Subnet",
-            "Properties": {
-                "AvailabilityZone": {
-                    "Ref": "ZoneB"
-                },
-                "CidrBlock": {
-                  "Ref": "PublicSubnetBAddress"
-                },
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "IGW": {
-            "Type": "AWS::EC2::InternetGateway"
-        },
-        "IGWAttachment": {
-            "Type": "AWS::EC2::VPCGatewayAttachment",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "VPC"
-                },
-                "InternetGatewayId": {
-                    "Ref": "IGW"
-                }
-            }
-        },
-        "S3": {
-            "Type": "AWS::S3::Bucket",
-            "Properties": {
-                "AccessControl": "Private",
-                "VersioningConfiguration": {
-                    "Status": "Enabled"
-                }
-            }
-        },
-        "ElasticIPA": {
-            "Type": "AWS::EC2::EIP",
-            "Properties": {
-                "Domain": "vpc"
-            },
-            "DependsOn": [
-                "IGWAttachment"
-            ]
-        },
-        "ElasticIPB": {
-            "Type": "AWS::EC2::EIP",
-            "Properties": {
-                "Domain": "vpc"
-            },
-            "DependsOn": [
-                "IGWAttachment"
-            ]
-        },
-        "NATGWA": {
-            "Type": "AWS::EC2::NatGateway",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
-                        "ElasticIPA",
-                        "AllocationId"
-                    ]
-                },
-                "SubnetId": {
-                    "Ref": "PublicSubnetA"
-                }
-            },
-            "DependsOn": [
-                "IGWAttachment"
-            ]
-        },
-        "NATGWB": {
-            "Type": "AWS::EC2::NatGateway",
-            "Properties": {
-                "AllocationId": {
-                    "Fn::GetAtt": [
-                        "ElasticIPB",
-                        "AllocationId"
-                    ]
-                },
-                "SubnetId": {
-                    "Ref": "PublicSubnetB"
-                }
-            },
-            "DependsOn": [
-                "IGWAttachment"
-            ]
-        },
-        "PublicSubnetRouteTable": {
-            "Type": "AWS::EC2::RouteTable",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PrivateSubnetRouteTableA": {
-            "Type": "AWS::EC2::RouteTable",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PrivateSubnetRouteTableB": {
-            "Type": "AWS::EC2::RouteTable",
-            "Properties": {
-                "VpcId": {
-                    "Ref": "VPC"
-                }
-            }
-        },
-        "PublicDefaultRoute": {
-            "Type": "AWS::EC2::Route",
-            "DependsOn": "IGWAttachment",
-            "Properties": {
-                "DestinationCidrBlock": "0.0.0.0/0",
-                "GatewayId": {
-                    "Ref": "IGW"
-                },
-                "RouteTableId": {
-                    "Ref": "PublicSubnetRouteTable"
-                }
-            }
-        },
-        "PrivateDefaultRouteA": {
-            "Type": "AWS::EC2::Route",
-            "DependsOn": "NATGWA",
-            "Properties": {
-                "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": {
-                    "Ref": "NATGWA"
-                },
-                "RouteTableId": {
-                    "Ref": "PrivateSubnetRouteTableA"
-                }
-            }
-        },
-        "PrivateDefaultRouteB": {
-            "Type": "AWS::EC2::Route",
-            "DependsOn": "NATGWB",
-            "Properties": {
-                "DestinationCidrBlock": "0.0.0.0/0",
-                "NatGatewayId": {
-                    "Ref": "NATGWB"
-                },
-                "RouteTableId": {
-                    "Ref": "PrivateSubnetRouteTableB"
-                }
-            }
-        },
-        "PrivateSubnetRouteTableAssocA": {
-            "Type": "AWS::EC2::SubnetRouteTableAssociation",
-            "Properties": {
-                "RouteTableId": {
-                    "Ref": "PrivateSubnetRouteTableA"
-                },
-                "SubnetId": {
-                    "Ref": "PrivateSubnetA"
-                }
-            }
-        },
-        "PrivateSubnetRouteTableAssocB": {
-            "Type": "AWS::EC2::SubnetRouteTableAssociation",
-            "Properties": {
-                "RouteTableId": {
-                    "Ref": "PrivateSubnetRouteTableB"
-                },
-                "SubnetId": {
-                    "Ref": "PrivateSubnetB"
-                }
-            }
-        },
-        "PublicSubnetRouteTableAssocA": {
-            "Type": "AWS::EC2::SubnetRouteTableAssociation",
-            "Properties": {
-                "RouteTableId": {
-                    "Ref": "PublicSubnetRouteTable"
-                },
-                "SubnetId": {
-                    "Ref": "PublicSubnetA"
-                }
-            }
-        },
-        "PublicSubnetRouteTableAssocB": {
-            "Type": "AWS::EC2::SubnetRouteTableAssociation",
-            "Properties": {
-                "RouteTableId": {
-                    "Ref": "PublicSubnetRouteTable"
-                },
-                "SubnetId": {
-                    "Ref": "PublicSubnetB"
-                }
-            }
-        },
-        "LoadBalancer": {
-            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-            "Properties": {
-                "Subnets": [
-                    {
-                        "Ref": "PublicSubnetA"
-                    },
-                    {
-                        "Ref": "PublicSubnetB"
-                    }
-                ],
-                "SecurityGroups": [
-                    {
-                        "Ref": "PublicSecurityGroup"
-                    }
-                ],
-                "CrossZone": "True",
-                "LBCookieStickinessPolicy": [
-                    {
-                        "PolicyName": "LBStickyPolicy",
-                        "CookieExpirationPeriod": "18000"
-                    }
-                ],
-                "ConnectionDrainingPolicy": {
-                    "Enabled": "true",
-                    "Timeout": "300"
-                },
-                "ConnectionSettings": {
-                    "IdleTimeout": 600
-                },
-                "Listeners": [
-                    {
-                        "LoadBalancerPort": 443,
-                        "InstancePort": 443,
-                        "Protocol": "TCP"
-                    },
-                    {
-                        "LoadBalancerPort": 80,
-                        "InstancePort": 80,
-                        "Protocol": "TCP"
-                    }
-                ],
-                "HealthCheck": {
-                    "HealthyThreshold": "3",
-                    "Interval": "60",
-                    "Target": "TCP:807",
-                    "Timeout": "10",
-                    "UnhealthyThreshold": "3"
-                },
-                "Tags": [
-                  {
-                    "Key": "Description",
-                    "Value": "External Service Load Balancer"
+               },
+               {
+                  "IpProtocol":"TCP",
+                  "FromPort":"22",
+                  "ToPort":"22",
+                  "CidrIp":{
+                     "Ref":"MgmtACL"
                   }
-                ]
-            },
-            "DependsOn": [
-                "IGWAttachment",
-                "NATGWA",
-                "NATGWB"
+               }
             ]
-        },
-        "InternalLoadBalancer": {
-            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-            "Properties": {
-                "Subnets": [
-                    {
-                        "Ref": "PrivateSubnetA"
-                    },
-                    {
-                        "Ref": "PrivateSubnetB"
-                    }
-                ],
-                "SecurityGroups": [
-                    {
-                        "Ref": "PublicSecurityGroup"
-                    }
-                ],
-                "CrossZone": "True",
-                "LoadBalancerName": {
-                  "Ref": "ILBName"
-                },
-                "Scheme" : "internal",
-                "ConnectionDrainingPolicy": {
-                    "Enabled": "true",
-                    "Timeout": "300"
-                },
-                "ConnectionSettings": {
-                    "IdleTimeout": 600
-                },
-                "Listeners": [
-                    {
-                        "LoadBalancerPort": 80,
-                        "InstancePort": 80,
-                        "Protocol": "TCP"
-                    },
-                    {
-                      "LoadBalancerPort": 443,
-                      "InstancePort": 443,
-                      "Protocol": "TCP"
-                    }
-                ],
-                "HealthCheck": {
-                    "HealthyThreshold": "3",
-                    "Interval": "60",
-                    "Target": "TCP:80",
-                    "Timeout": "10",
-                    "UnhealthyThreshold": "3"
-                }
-            }
-        },
-        "LoadBalancerMGMT": {
-            "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-            "Properties": {
-                "Subnets": [
-                    {
-                        "Ref": "PublicSubnetA"
-                    },
-                    {
-                        "Ref": "PublicSubnetB"
-                    }
-                ],
-                "SecurityGroups": [
-                    {
-                        "Ref": "MgmtSecurityGroup"
-                    }
-                ],
-                "CrossZone": "True",
-                "ConnectionSettings": {
-                    "IdleTimeout": 1200
-                },
-                "Listeners": [
-                    {
-                        "LoadBalancerPort": 807,
-                        "InstancePort": 807,
-                        "Protocol": "TCP"
-                    }
-                ],
-                "HealthCheck": {
-                    "HealthyThreshold": "3",
-                    "Interval": "60",
-                    "Target": "TCP:22",
-                    "Timeout": "10",
-                    "UnhealthyThreshold": "3"
-                },
-                "Tags": [
-                  {
-                    "Key": "Description",
-                    "Value": "Management load balancer"
+         }
+      },
+      "NGFSecurityGroup":{
+         "Type":"AWS::EC2::SecurityGroup",
+         "Properties":{
+            "GroupDescription":"Security group for the Management ELB",
+            "VpcId":{
+               "Ref":"VPC"
+            },
+            "SecurityGroupIngress":[
+               {
+                  "IpProtocol":"TCP",
+                  "FromPort":"807",
+                  "ToPort":"807",
+                  "SourceSecurityGroupId":{
+                     "Ref":"MgmtSecurityGroup"
                   }
-                ]
-            },
-            "DependsOn": [
-                "IGWAttachment",
-                "NATGWA",
-                "NATGWB"
+               },
+               {
+                  "IpProtocol":"TCP",
+                  "FromPort":"22",
+                  "ToPort":"22",
+                  "SourceSecurityGroupId":{
+                     "Ref":"MgmtSecurityGroup"
+                  }
+               },
+               {
+                  "IpProtocol":"-1",
+                  "FromPort":"-1",
+                  "ToPort":"-1",
+                  "SourceSecurityGroupId":{
+                     "Ref":"PublicSecurityGroup"
+                  }
+               }
             ]
-        },
-        "LaunchConfiguration": {
-            "Type": "AWS::AutoScaling::LaunchConfiguration",
-            "Properties": {
-                "ImageId": {
-                    "Fn::FindInMap": [
-                        "AMINGF",
-                        {
-                            "Ref": "AWS::Region"
-                        },
-                        "PAYG"
-                    ]
-                },
-                "SecurityGroups": [
-                    {
-                        "Ref": "PublicSecurityGroup"
-                    }
-                ],
-                "InstanceType": {
-                    "Ref": "InstanceType"
-                },
-                "AssociatePublicIpAddress": false,
-                "IamInstanceProfile": {
-                    "Ref": "IAMProfile"
-                },
-                "UserData": {
-                    "Fn::Base64": {
-                        "Fn::Join": [
-                            "\n",
-                            [
-                                "#!/bin/bash",
-                                {"Fn::Sub": "/opt/aws/bin/aws s3 ls s3://${S3}/opt/phion/config >> /dev/null ||  curl -s https://raw.githubusercontent.com/barracudanetworks/ngf-aws-templates/master/ELB%20Sandwich/elb-sandwich-placeholder.fwrule | sed 's/placeholder.elb.amazonaws.com/${InternalLoadBalancer.DNSName}/g' > /tmp/active.fwrule && acpfrule check /tmp/active.fwrule && cp /tmp/active.fwrule /opt/phion/config/configroot/servers/S1/services/NGFW/ && cp /tmp/active.fwrule /opt/phion/config/active/servers/S1/services/NGFW/ && /opt/phion/modules/server/firewall/bin/activate"},
-                                {"Fn::Sub": "/opt/phion/bin/aws-asg-provision --bucket ${S3} --topic ${AWS::StackName}"}
-                            ]
+         },
+         "DependsOn":[
+            "PublicSecurityGroup",
+            "MgmtSecurityGroup"
+         ]
+      },
+      "VPC":{
+         "Type":"AWS::EC2::VPC",
+         "Properties":{
+            "CidrBlock":{
+               "Ref":"VpcAddress"
+            },
+            "Tags":[
+               {
+                  "Key":"Name",
+                  "Value":{
+                     "Fn::Join":[
+                        "-",
+                        [
+                           {
+                              "Ref":"AWS::StackName"
+                           },
+                           "VPC"
                         ]
-                    }
-                }
-            }
-        },
-        "SNSTopic": {
-            "Type": "AWS::SNS::Topic",
-            "Properties": {
-                "DisplayName": {
-                    "Ref": "AWS::StackName"
-                },
-                "TopicName": {
-                    "Ref": "AWS::StackName"
-                }
-            }
-        },
-        "ASG": {
-            "Type": "AWS::AutoScaling::AutoScalingGroup",
-            "Properties": {
-                "VPCZoneIdentifier": [
-                    {
-                        "Ref": "PrivateSubnetA"
-                    },
-                    {
-                        "Ref": "PrivateSubnetB"
-                    }
-                ],
-                "LaunchConfigurationName": {
-                    "Ref": "LaunchConfiguration"
-                },
-                "MinSize": {
-                    "Ref": "InitialSize"
-                },
-                "DesiredCapacity": {
-                    "Ref": "InitialSize"
-                },
-                "MaxSize": {
-                    "Ref": "MaxSize"
-                },
-                "MetricsCollection": [
-                    {
-                        "Granularity": "1Minute"
-                    }
-                ],
-                "LoadBalancerNames": [
-                    {
-                        "Ref": "LoadBalancer"
-                    },
-                    {
-                        "Ref": "LoadBalancerMGMT"
-                    }
-                ],
-                "HealthCheckType": "ELB",
-                "HealthCheckGracePeriod": 300
-            },
-            "DependsOn": [
-                "IGWAttachment",
-                "NATGWA",
-                "NATGWB"
+                     ]
+                  }
+               }
             ]
-        },
-        "FirewallScaleUpPolicy": {
-            "Type": "AWS::AutoScaling::ScalingPolicy",
-            "Properties": {
-                "AdjustmentType": "ChangeInCapacity",
-                "AutoScalingGroupName": {
-                    "Ref": "ASG"
-                },
-                "Cooldown": "600",
-                "ScalingAdjustment": "1"
-            }
-        },
-        "FirewallScaleDownPolicy": {
-            "Type": "AWS::AutoScaling::ScalingPolicy",
-            "Properties": {
-                "AdjustmentType": "ChangeInCapacity",
-                "AutoScalingGroupName": {
-                    "Ref": "ASG"
-                },
-                "Cooldown": "1800",
-                "ScalingAdjustment": "-1"
-            }
-        },
-        "PacketsHighAlarm": {
-            "Type": "AWS::CloudWatch::Alarm",
-            "Properties": {
-                "AlarmDescription": "Scale out if lots of network packets",
-                "MetricName": "NetworkPacketsIn",
-                "Namespace": "AWS/EC2",
-                "Statistic": "Average",
-                "Period": "300",
-                "EvaluationPeriods": "1",
-                "Threshold": {
-                    "Ref": "HighThreshold"
-                },
-                "AlarmActions": [
-                    {
-                        "Ref": "FirewallScaleUpPolicy"
-                    }
-                ],
-                "Dimensions": [
-                    {
-                        "Name": "AutoScalingGroupName",
-                        "Value": {
-                          "Ref": "ASG"
-                        }
-                    }
-                ],
-                "ComparisonOperator": "GreaterThanThreshold"
+         }
+      },
+      "PrivateSubnetA":{
+         "Type":"AWS::EC2::Subnet",
+         "Properties":{
+            "AvailabilityZone":{
+               "Ref":"ZoneA"
             },
-            "DependsOn": "FirewallScaleUpPolicy"
-        },
-        "PacketsLowAlarm": {
-            "Type": "AWS::CloudWatch::Alarm",
-            "Properties": {
-                "AlarmDescription": "Scale in if a few network packets",
-                "MetricName": "NetworkPacketsIn",
-                "Namespace": "AWS/EC2",
-                "Statistic": "Maximum",
-                "Period": "300",
-                "EvaluationPeriods": "1",
-                "Threshold": {
-                    "Ref": "LowThreshold"
-                },
-                "AlarmActions": [
-                    {
-                        "Ref": "FirewallScaleDownPolicy"
-                    }
-                ],
-                "Dimensions": [
-                    {
-                        "Name": "AutoScalingGroupName",
-                        "Value": {
-                          "Ref": "ASG"
-                        }
-                    }
-                ],
-                "ComparisonOperator": "LessThanThreshold"
+            "CidrBlock":{
+               "Ref":"PrivateSubnetAAddress"
             },
-            "DependsOn": "FirewallScaleDownPolicy"
-        }
-    },
-    "Outputs": {
-        "ELBFront": {
-            "Description": "Service Elastic Load Balancer FQDN",
-            "Value": {
-                "Fn::GetAtt": [
-                    "LoadBalancer",
-                    "CanonicalHostedZoneName"
-                ]
+            "MapPublicIpOnLaunch":false,
+            "VpcId":{
+               "Ref":"VPC"
             }
-        },
-        "ELBMGMT": {
-            "Description": "Management access FQDN",
-            "Value": {
-                "Fn::GetAtt": [
-                    "LoadBalancerMGMT",
-                    "CanonicalHostedZoneName"
-                ]
+         }
+      },
+      "PublicSubnetA":{
+         "Type":"AWS::EC2::Subnet",
+         "Properties":{
+            "AvailabilityZone":{
+               "Ref":"ZoneA"
+            },
+            "CidrBlock":{
+               "Ref":"PublicSubnetAAddress"
+            },
+            "VpcId":{
+               "Ref":"VPC"
             }
-        },
-        "Password": {
-          "Description" : "",
-          "Value": "For initial management password check __configNodeId tag of your Auto Scaling Group"
-        }
-    }
+         }
+      },
+      "PrivateSubnetB":{
+         "Type":"AWS::EC2::Subnet",
+         "Properties":{
+            "AvailabilityZone":{
+               "Ref":"ZoneB"
+            },
+            "CidrBlock":{
+               "Ref":"PrivateSubnetBAddress"
+            },
+            "MapPublicIpOnLaunch":false,
+            "VpcId":{
+               "Ref":"VPC"
+            }
+         }
+      },
+      "PublicSubnetB":{
+         "Type":"AWS::EC2::Subnet",
+         "Properties":{
+            "AvailabilityZone":{
+               "Ref":"ZoneB"
+            },
+            "CidrBlock":{
+               "Ref":"PublicSubnetBAddress"
+            },
+            "VpcId":{
+               "Ref":"VPC"
+            }
+         }
+      },
+      "IGW":{
+         "Type":"AWS::EC2::InternetGateway"
+      },
+      "IGWAttachment":{
+         "Type":"AWS::EC2::VPCGatewayAttachment",
+         "Properties":{
+            "VpcId":{
+               "Ref":"VPC"
+            },
+            "InternetGatewayId":{
+               "Ref":"IGW"
+            }
+         }
+      },
+      "S3":{
+         "Type":"AWS::S3::Bucket",
+         "Properties":{
+            "AccessControl":"Private",
+            "VersioningConfiguration":{
+               "Status":"Enabled"
+            }
+         }
+      },
+      "ElasticIPA":{
+         "Type":"AWS::EC2::EIP",
+         "Properties":{
+            "Domain":"vpc"
+         },
+         "DependsOn":[
+            "IGWAttachment"
+         ]
+      },
+      "ElasticIPB":{
+         "Type":"AWS::EC2::EIP",
+         "Properties":{
+            "Domain":"vpc"
+         },
+         "DependsOn":[
+            "IGWAttachment"
+         ]
+      },
+      "NATGWA":{
+         "Type":"AWS::EC2::NatGateway",
+         "Properties":{
+            "AllocationId":{
+               "Fn::GetAtt":[
+                  "ElasticIPA",
+                  "AllocationId"
+               ]
+            },
+            "SubnetId":{
+               "Ref":"PublicSubnetA"
+            }
+         },
+         "DependsOn":[
+            "IGWAttachment"
+         ]
+      },
+      "NATGWB":{
+         "Type":"AWS::EC2::NatGateway",
+         "Properties":{
+            "AllocationId":{
+               "Fn::GetAtt":[
+                  "ElasticIPB",
+                  "AllocationId"
+               ]
+            },
+            "SubnetId":{
+               "Ref":"PublicSubnetB"
+            }
+         },
+         "DependsOn":[
+            "IGWAttachment"
+         ]
+      },
+      "PublicSubnetRouteTable":{
+         "Type":"AWS::EC2::RouteTable",
+         "Properties":{
+            "VpcId":{
+               "Ref":"VPC"
+            }
+         }
+      },
+      "PrivateSubnetRouteTableA":{
+         "Type":"AWS::EC2::RouteTable",
+         "Properties":{
+            "VpcId":{
+               "Ref":"VPC"
+            }
+         }
+      },
+      "PrivateSubnetRouteTableB":{
+         "Type":"AWS::EC2::RouteTable",
+         "Properties":{
+            "VpcId":{
+               "Ref":"VPC"
+            }
+         }
+      },
+      "PublicDefaultRoute":{
+         "Type":"AWS::EC2::Route",
+         "DependsOn":"IGWAttachment",
+         "Properties":{
+            "DestinationCidrBlock":"0.0.0.0/0",
+            "GatewayId":{
+               "Ref":"IGW"
+            },
+            "RouteTableId":{
+               "Ref":"PublicSubnetRouteTable"
+            }
+         }
+      },
+      "PrivateDefaultRouteA":{
+         "Type":"AWS::EC2::Route",
+         "DependsOn":"NATGWA",
+         "Properties":{
+            "DestinationCidrBlock":"0.0.0.0/0",
+            "NatGatewayId":{
+               "Ref":"NATGWA"
+            },
+            "RouteTableId":{
+               "Ref":"PrivateSubnetRouteTableA"
+            }
+         }
+      },
+      "PrivateDefaultRouteB":{
+         "Type":"AWS::EC2::Route",
+         "DependsOn":"NATGWB",
+         "Properties":{
+            "DestinationCidrBlock":"0.0.0.0/0",
+            "NatGatewayId":{
+               "Ref":"NATGWB"
+            },
+            "RouteTableId":{
+               "Ref":"PrivateSubnetRouteTableB"
+            }
+         }
+      },
+      "PrivateSubnetRouteTableAssocA":{
+         "Type":"AWS::EC2::SubnetRouteTableAssociation",
+         "Properties":{
+            "RouteTableId":{
+               "Ref":"PrivateSubnetRouteTableA"
+            },
+            "SubnetId":{
+               "Ref":"PrivateSubnetA"
+            }
+         }
+      },
+      "PrivateSubnetRouteTableAssocB":{
+         "Type":"AWS::EC2::SubnetRouteTableAssociation",
+         "Properties":{
+            "RouteTableId":{
+               "Ref":"PrivateSubnetRouteTableB"
+            },
+            "SubnetId":{
+               "Ref":"PrivateSubnetB"
+            }
+         }
+      },
+      "PublicSubnetRouteTableAssocA":{
+         "Type":"AWS::EC2::SubnetRouteTableAssociation",
+         "Properties":{
+            "RouteTableId":{
+               "Ref":"PublicSubnetRouteTable"
+            },
+            "SubnetId":{
+               "Ref":"PublicSubnetA"
+            }
+         }
+      },
+      "PublicSubnetRouteTableAssocB":{
+         "Type":"AWS::EC2::SubnetRouteTableAssociation",
+         "Properties":{
+            "RouteTableId":{
+               "Ref":"PublicSubnetRouteTable"
+            },
+            "SubnetId":{
+               "Ref":"PublicSubnetB"
+            }
+         }
+      },
+      "LoadBalancer":{
+         "Type":"AWS::ElasticLoadBalancing::LoadBalancer",
+         "Properties":{
+            "Subnets":[
+               {
+                  "Ref":"PublicSubnetA"
+               },
+               {
+                  "Ref":"PublicSubnetB"
+               }
+            ],
+            "SecurityGroups":[
+               {
+                  "Ref":"PublicSecurityGroup"
+               }
+            ],
+            "CrossZone":"True",
+            "LBCookieStickinessPolicy":[
+               {
+                  "PolicyName":"LBStickyPolicy",
+                  "CookieExpirationPeriod":"18000"
+               }
+            ],
+            "ConnectionDrainingPolicy":{
+               "Enabled":"true",
+               "Timeout":"300"
+            },
+            "ConnectionSettings":{
+               "IdleTimeout":600
+            },
+            "Listeners":[
+               {
+                  "LoadBalancerPort":443,
+                  "InstancePort":443,
+                  "Protocol":"TCP"
+               },
+               {
+                  "LoadBalancerPort":80,
+                  "InstancePort":80,
+                  "Protocol":"TCP"
+               }
+            ],
+            "HealthCheck":{
+               "HealthyThreshold":"3",
+               "Interval":"60",
+               "Target":"TCP:807",
+               "Timeout":"10",
+               "UnhealthyThreshold":"3"
+            },
+            "Tags":[
+               {
+                  "Key":"Description",
+                  "Value":"External Service Load Balancer"
+               }
+            ]
+         },
+         "DependsOn":[
+            "IGWAttachment",
+            "NATGWA",
+            "NATGWB"
+         ]
+      },
+      "InternalLoadBalancer":{
+         "Type":"AWS::ElasticLoadBalancing::LoadBalancer",
+         "Properties":{
+            "Subnets":[
+               {
+                  "Ref":"PrivateSubnetA"
+               },
+               {
+                  "Ref":"PrivateSubnetB"
+               }
+            ],
+            "SecurityGroups":[
+               {
+                  "Ref":"PublicSecurityGroup"
+               }
+            ],
+            "CrossZone":"True",
+            "LoadBalancerName":{
+               "Ref":"ILBName"
+            },
+            "Scheme":"internal",
+            "ConnectionDrainingPolicy":{
+               "Enabled":"true",
+               "Timeout":"300"
+            },
+            "ConnectionSettings":{
+               "IdleTimeout":600
+            },
+            "Listeners":[
+               {
+                  "LoadBalancerPort":80,
+                  "InstancePort":80,
+                  "Protocol":"TCP"
+               },
+               {
+                  "LoadBalancerPort":443,
+                  "InstancePort":443,
+                  "Protocol":"TCP"
+               }
+            ],
+            "HealthCheck":{
+               "HealthyThreshold":"3",
+               "Interval":"60",
+               "Target":"TCP:80",
+               "Timeout":"10",
+               "UnhealthyThreshold":"3"
+            }
+         }
+      },
+      "LoadBalancerMGMT":{
+         "Type":"AWS::ElasticLoadBalancing::LoadBalancer",
+         "Properties":{
+            "Subnets":[
+               {
+                  "Ref":"PublicSubnetA"
+               },
+               {
+                  "Ref":"PublicSubnetB"
+               }
+            ],
+            "SecurityGroups":[
+               {
+                  "Ref":"MgmtSecurityGroup"
+               }
+            ],
+            "CrossZone":"True",
+            "ConnectionSettings":{
+               "IdleTimeout":1200
+            },
+            "Listeners":[
+               {
+                  "LoadBalancerPort":807,
+                  "InstancePort":807,
+                  "Protocol":"TCP"
+               }
+            ],
+            "HealthCheck":{
+               "HealthyThreshold":"3",
+               "Interval":"60",
+               "Target":"TCP:22",
+               "Timeout":"10",
+               "UnhealthyThreshold":"3"
+            },
+            "Tags":[
+               {
+                  "Key":"Description",
+                  "Value":"Management load balancer"
+               }
+            ]
+         },
+         "DependsOn":[
+            "IGWAttachment",
+            "NATGWA",
+            "NATGWB"
+         ]
+      },
+      "LaunchConfiguration":{
+         "Type":"AWS::AutoScaling::LaunchConfiguration",
+         "Properties":{
+            "ImageId":{
+               "Fn::FindInMap":[
+                  "amiMapMap",
+                  {
+                     "Ref":"ReleaseVersion"
+                  },
+                  "mapName"
+               ]
+            },
+            "SecurityGroups":[
+               {
+                  "Ref":"PublicSecurityGroup"
+               }
+            ],
+            "InstanceType":{
+               "Ref":"InstanceType"
+            },
+            "AssociatePublicIpAddress":false,
+            "IamInstanceProfile":{
+               "Ref":"IAMProfile"
+            },
+            "UserData":{
+               "Fn::Base64":{
+                  "Fn::Join":[
+                     "\n",
+                     [
+                        "#!/bin/bash",
+                        {
+                           "Fn::Sub":"/opt/aws/bin/aws s3 ls s3://${S3}/opt/phion/config >> /dev/null ||  curl -s https://raw.githubusercontent.com/barracudanetworks/ngf-aws-templates/master/ELB%20Sandwich/elb-sandwich-placeholder.fwrule | sed 's/placeholder.elb.amazonaws.com/${InternalLoadBalancer.DNSName}/g' > /tmp/active.fwrule && acpfrule check /tmp/active.fwrule && cp /tmp/active.fwrule /opt/phion/config/configroot/servers/S1/services/NGFW/ && cp /tmp/active.fwrule /opt/phion/config/active/servers/S1/services/NGFW/ && /opt/phion/modules/server/firewall/bin/activate"
+                        },
+                        {
+                           "Fn::Sub":"/opt/phion/bin/aws-asg-provision --bucket ${S3} --topic ${AWS::StackName}"
+                        }
+                     ]
+                  ]
+               }
+            }
+         }
+      },
+      "SNSTopic":{
+         "Type":"AWS::SNS::Topic",
+         "Properties":{
+            "DisplayName":{
+               "Ref":"AWS::StackName"
+            },
+            "TopicName":{
+               "Ref":"AWS::StackName"
+            }
+         }
+      },
+      "ASG":{
+         "Type":"AWS::AutoScaling::AutoScalingGroup",
+         "Properties":{
+            "VPCZoneIdentifier":[
+               {
+                  "Ref":"PrivateSubnetA"
+               },
+               {
+                  "Ref":"PrivateSubnetB"
+               }
+            ],
+            "LaunchConfigurationName":{
+               "Ref":"LaunchConfiguration"
+            },
+            "MinSize":{
+               "Ref":"InitialSize"
+            },
+            "DesiredCapacity":{
+               "Ref":"InitialSize"
+            },
+            "MaxSize":{
+               "Ref":"MaxSize"
+            },
+            "MetricsCollection":[
+               {
+                  "Granularity":"1Minute"
+               }
+            ],
+            "LoadBalancerNames":[
+               {
+                  "Ref":"LoadBalancer"
+               },
+               {
+                  "Ref":"LoadBalancerMGMT"
+               }
+            ],
+            "HealthCheckType":"ELB",
+            "HealthCheckGracePeriod":300
+         },
+         "DependsOn":[
+            "IGWAttachment",
+            "NATGWA",
+            "NATGWB"
+         ]
+      },
+      "FirewallScaleUpPolicy":{
+         "Type":"AWS::AutoScaling::ScalingPolicy",
+         "Properties":{
+            "AdjustmentType":"ChangeInCapacity",
+            "AutoScalingGroupName":{
+               "Ref":"ASG"
+            },
+            "Cooldown":"600",
+            "ScalingAdjustment":"1"
+         }
+      },
+      "FirewallScaleDownPolicy":{
+         "Type":"AWS::AutoScaling::ScalingPolicy",
+         "Properties":{
+            "AdjustmentType":"ChangeInCapacity",
+            "AutoScalingGroupName":{
+               "Ref":"ASG"
+            },
+            "Cooldown":"1800",
+            "ScalingAdjustment":"-1"
+         }
+      },
+      "PacketsHighAlarm":{
+         "Type":"AWS::CloudWatch::Alarm",
+         "Properties":{
+            "AlarmDescription":"Scale out if lots of network packets",
+            "MetricName":"NetworkPacketsIn",
+            "Namespace":"AWS/EC2",
+            "Statistic":"Average",
+            "Period":"300",
+            "EvaluationPeriods":"1",
+            "Threshold":{
+               "Ref":"HighThreshold"
+            },
+            "AlarmActions":[
+               {
+                  "Ref":"FirewallScaleUpPolicy"
+               }
+            ],
+            "Dimensions":[
+               {
+                  "Name":"AutoScalingGroupName",
+                  "Value":{
+                     "Ref":"ASG"
+                  }
+               }
+            ],
+            "ComparisonOperator":"GreaterThanThreshold"
+         },
+         "DependsOn":"FirewallScaleUpPolicy"
+      },
+      "PacketsLowAlarm":{
+         "Type":"AWS::CloudWatch::Alarm",
+         "Properties":{
+            "AlarmDescription":"Scale in if a few network packets",
+            "MetricName":"NetworkPacketsIn",
+            "Namespace":"AWS/EC2",
+            "Statistic":"Maximum",
+            "Period":"300",
+            "EvaluationPeriods":"1",
+            "Threshold":{
+               "Ref":"LowThreshold"
+            },
+            "AlarmActions":[
+               {
+                  "Ref":"FirewallScaleDownPolicy"
+               }
+            ],
+            "Dimensions":[
+               {
+                  "Name":"AutoScalingGroupName",
+                  "Value":{
+                     "Ref":"ASG"
+                  }
+               }
+            ],
+            "ComparisonOperator":"LessThanThreshold"
+         },
+         "DependsOn":"FirewallScaleDownPolicy"
+      }
+   },
+   "Outputs":{
+      "ELBFront":{
+         "Description":"Service Elastic Load Balancer FQDN",
+         "Value":{
+            "Fn::GetAtt":[
+               "LoadBalancer",
+               "CanonicalHostedZoneName"
+            ]
+         }
+      },
+      "ELBMGMT":{
+         "Description":"Management access FQDN",
+         "Value":{
+            "Fn::GetAtt":[
+               "LoadBalancerMGMT",
+               "CanonicalHostedZoneName"
+            ]
+         }
+      },
+      "Password":{
+         "Description":"",
+         "Value":"For initial management password check __configNodeId tag of your Auto Scaling Group"
+      }
+   }
 }

@@ -6,7 +6,7 @@ This template deploys an Auto-Scaling Group of NextGen Firewalls into a new VPC,
 ![ELB Sandwich Network Architecture](aws_remote_access_autoscaling_group.png)
 
 ## Prerequisites
-Before attempting to deploy the solution you must create an IAM Role for Barracuda NextGen Firewalls. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSCreateIAMRoleFW/) for details.
+Before attempting to deploy the solution you must create an IAM Role for Barracuda NextGen Firewalls. See [How to Create an IAM Role for an F-Series Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96026728/) for details.
 
 Solution does not check for availability of requested instance types in a given region. Please consult AWS documentation for instance type availability. Barracuda recommends use of **m4** or **c4** series. Using unavailable instance type will result in ASG not meeting the required initial size and thus failing CloudFormation deployment.
 
@@ -38,6 +38,6 @@ Private Subnet in Zone B | PrivateSubnetBAddress | Private subnet hosting firewa
 Public Subnet in Zone B | PublicSubnetBAddress | Public helper subnet in B zone. Must be within VPC address space.
 
 ## Launching the Template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/) article in Barracuda Campus.
 
 ## Additional Resources
