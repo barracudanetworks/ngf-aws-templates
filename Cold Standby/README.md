@@ -14,12 +14,12 @@ Solution does not check for availability of requested instance types in a given 
 * [*PAYG-existing-VPC](NGF_Coldstandby-PAYG-existing-VPC.md) - deploy into existing VPC
 
 ## Launching the template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/how-to-deploy-a-cloudgen-in-aws-via-cloudformation-template) article in Barracuda Campus.
 
 Note: when terminating the stack, perform the following manually:
 - remove scale-in protection from the instance in ASG
 - empty the S3 bucket
 
 ## Additional Documentation
-* [Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWS/)
-* [AWS Reference Architecture - CloudGen Firewall Cold Standby Cluster](https://campus.barracuda.com/product/nextgenfirewallf/doc/70584745/aws-reference-architecture-nextgen-firewall-cold-standby-cluster/)
+* [Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025944/implementation-guide-cloudgen-firewall-in-aws)
+* [AWS Reference Architecture - CloudGen Firewall Cold Standby Cluster](https://campus.barracuda.com/product/cloudgenfirewall/doc/79462693/aws-reference-architecture-cloudgen-firewall-cold-standby-cluster)

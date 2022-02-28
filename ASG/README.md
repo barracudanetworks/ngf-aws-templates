@@ -3,7 +3,7 @@
 ## Introduction
 This solution deploys to AWS EC2 an auto scaling group of Barracuda CloudGen Firewalls (CGF). Firewall instances are synchronized and deployed behind an Elastic Load Balancer, which makes them visible and acting as a single system. The ASG is by default automatically scaled out/in based on number of concurrent VPN connections.
 
-![ASG architecture diagram](https://campus.barracuda.com/resources/attachments/image/70584069/1/aws_autoscale_cluster_plain-01.png)
+![ASG architecture diagram](https://campus.barracuda.com/resources/attachments/image/96025948/1/aws_autoscale_cluster_plain-01.png)
 
 ## Prerequisites
 
@@ -41,8 +41,8 @@ Following resources will be created by the template:
 
 
 ## Launching the template
-For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/AWSDeployCloudFormationTemplate/) article in Barracuda Campus.
+For instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an CloudGen Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/95259228/how-to-deploy-a-cloudgen-in-aws-via-cloudformation-template) article in Barracuda Campus.
 
 ## Additional Documentation
-[Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWS/)
-[AWS Reference Architecture - CloudGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/nextgenfirewallf/article/NGF71/IGAWSRefAutoScaling/)
+[Implementation Guide - CloudGen Firewall in AWS](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025944/implementation-guide-cloudgen-firewall-in-aws)
+[AWS Reference Architecture - CloudGen Firewall Auto Scaling Cluster](https://campus.barracuda.com/product/cloudgenfirewall/doc/96025948/aws-reference-architecture-cloudgen-firewall-auto-scaling-cluster)

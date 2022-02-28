@@ -113,25 +113,29 @@
         "BYOL"
       ]
     },
-    "ReleaseVersion": {
-      "Description": "Which release do you want to deploy?",
-      "Type": "String",
-      "Default": "8.2.1",
-      "AllowedValues": [
-        "8.0.5",
-        "8.2.1"
-      ]
-    }
+      "ReleaseVersion":{
+         "Description":"Which release do you want to deploy?",
+         "Type":"String",
+         "Default":"8.3.0",
+         "AllowedValues":[
+            "8.0.5",
+            "8.2.1",
+			"8.3.0"
+         ]
+      }
   },
     "Mappings": {
-        "amiMapMap": {
-            "8.0.5": {
-                "mapName": "amiMapv805"
-            },
-            "8.2.1": {
-                "mapName": "amiMapv821"
-            }
-        },
+      "amiMapMap":{
+         "8.0.5":{
+            "mapName":"amiMapv805"
+         },
+         "8.2.1":{
+            "mapName":"amiMapv821"
+         },
+         "8.3.0":{
+            "mapName":"amiMapv830"
+         },
+	  },
         "amiMapv805": {
             "us-east-1" : {
                 "Hourly" : "ami-07570d14ecc6d753b",
@@ -151,9 +155,9 @@
             },
             "ap-northeast-3" : {
                 "Hourly" : "ami-0102c282132faf2b1",
-                "BYOL" : "	ami-08aa0a3dd2653c27c",
+                "BYOL" : "ami-08aa0a3dd2653c27c",
             },
-            "ap-southeast-1" : {
+           "ap-southeast-1" : {
                 "Hourly" : "ami-0efef200246fab974",
                 "BYOL" : "ami-0e1ad7dfea5ccb743",
             },
@@ -203,6 +207,10 @@
                 "Hourly" : "ami-0c5a6d0536959f26a",
                 "BYOL" : "ami-0cc071cf047b42c97",
             },
+            "ap-northeast-3" : {
+                "Hourly" : "ami-065eac356de75eb0c",
+                "BYOL" : "ami-0526bddabeb47b68e",
+            },
            "ap-southeast-1" : {
                 "Hourly" : "ami-09f3afbc3b694c882",
                 "BYOL" : "ami-04355821a06841826",
@@ -235,7 +243,61 @@
                 "Hourly" : "ami-0430115dfd1f17d53",
                 "BYOL" : "ami-0ef9dd4b0a6be4e7f",
             },
-        }
+        },
+		"amiMapv830":{
+         "us-east-1":{
+            "Hourly":"ami-08502036b50261eff",
+			"BYOL" : "ami-0eb58079ea6067538",
+         },
+         "us-east-2":{
+            "Hourly":"ami-01a37ea35aac51fb3",
+			"BYOL" : "ami-0a9359e96131989fe",
+         },
+         "us-west-1":{
+            "Hourly":"ami-0ef07a7685a119cc9",
+			"BYOL" : "ami-007d0429e8b88a6c4",
+         },
+         "us-west-2":{
+            "Hourly":"ami-080ba652367fc8a4a",
+			"BYOL" : "ami-078622545858d6044",
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-0a8884db266b4a0cb",
+			"BYOL" : "ami-00e091d4e096d5fcb",
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0f98d9860a52e8014",
+			"BYOL" : "ami-0ee9be9adcf7a66d3",
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-0ba304cd3db90999e",
+			"BYOL" : "ami-02fc5cbb79145665f",
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-06ddc974e8fc4c54d",
+			"BYOL" : "ami-0bfb140902ba7faec",
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0d3479a5f76c43d89",
+			"BYOL" : "ami-0131beba122852be6",
+         },
+         "eu-central-1":{
+            "Hourly":"ami-00d8cd5b5c5260a7e",
+			"BYOL" : "ami-00200d6f3a8fec98d",
+         },
+         "eu-west-1":{
+            "Hourly":"ami-062a4698272c02ea9",
+			"BYOL" : "ami-02da70bb6f3de83ac",
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0a2784b738789de80",
+			"BYOL" : "ami-058d915a3cc0eb01b",
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0f7d1ff4d98dc2d1b",
+			"BYOL" : "ami-0098ee5ecd3cabd56",
+         }
+      },
     },
   "Resources": {
     "PublicSecurityGroup": {

@@ -227,12 +227,12 @@
          },
          "8.2.1":{
             "mapName":"amiMapv821"
-         }
-		          },
+         },
          "8.3.0":{
             "mapName":"amiMapv830"
-         }
-      },
+         },
+	  },
+   
       "amiMapv805":{
          "us-east-1":{
             "Hourly":"ami-07570d14ecc6d753b"
@@ -314,7 +314,7 @@
          "sa-east-1":{
             "Hourly":"ami-0430115dfd1f17d53"
          }
-      }
+      },
 	  "amiMapv830":{
          "us-east-1":{
             "Hourly":"ami-08502036b50261eff",
@@ -355,8 +355,9 @@
          "sa-east-1":{
             "Hourly":"ami-0f7d1ff4d98dc2d1b",
          }
-      }
+      },
    },
+   
    "Conditions":{
       "SSLVPNCert":{
          "Fn::Not":[
