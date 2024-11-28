@@ -46,7 +46,7 @@ The firewalls are deployed preconfigured as a cluster, so no additional manual a
  - Initial password - initial root password for cluster management (has to be changed upon first log in)
 
 ## Launching the Template
-Use [CGF_HA_floatingEIP.json](https://s3.eu-west-1.amazonaws.com/cuda-cgf-templates/HA%20Cluster/CGF_HA_floatingEIP.json) file to launch the solution:
+Use [CGF_HA_floatingEIP.json](https://github.com/barracudanetworks/ngf-aws-templates/blob/master/HA%20Cluster/CGF_HA_floatingEIP.json) file to launch the solution:
 
 For additional instructions on how to launch a CloudFormation Template, consult AWS documentation or check [How to Deploy an F-Series Firewall in AWS via CloudFormation Template](https://campus.barracuda.com/product/cloudgenfirewall/doc/96026606/) article in Barracuda Campus.
 

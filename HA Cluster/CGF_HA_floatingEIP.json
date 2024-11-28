@@ -58,18 +58,19 @@
       "InstanceType":{
          "Description":"Select the EC2 instance type, Recommended: c5, m5 or t3",
          "Type":"String",
-         "Default":"c5.large",
+         "Default":"c5n.large",
          "AllowedValues":[
             "t2.small",
             "t3.small",
             "t3.medium",
-            "t3.large",
+            "t3.xlarge",
             "m5.large",
             "m5.xlarge",
             "m5.2xlarge",
             "c5.large",
             "c5.xlarge",
-            "c5.2xlarge"
+            "c5.2xlarge",
+            "c5n.large"
          ]
       },
       "LicenceMode":{
@@ -88,7 +89,8 @@
          "AllowedValues":[
             "8.0.5",
             "8.2.1",
-            "8.3.0"
+            "8.3.0",
+            "9.0.2"
          ]
       },
       "EnableREST":{
@@ -141,6 +143,9 @@
          },
          "8.3.0":{
             "mapName":"amiMapv830"
+         },
+         "9.0.2":{
+            "mapName":"amiMapv902"
          }
       },
       "amiMapv805":{
@@ -303,6 +308,68 @@
          "sa-east-1":{
             "Hourly":"ami-0f7d1ff4d98dc2d1b",
             "BYOL":"ami-0098ee5ecd3cabd56"
+         }
+      },
+      "amiMapv902":{
+         "us-east-1":{
+            "Hourly":"ami-08d42d4941d609cd5",
+            "BYOL":"ami-0fd434d6a1c0fb01a"
+         },
+         "us-east-2":{
+            "Hourly":"ami-0a08bcbad876e1841",
+            "BYOL":"ami-0b0bae118b59283b1"
+         },
+         "us-west-1":{
+            "Hourly":"ami-029270a61fe3fb4a0",
+            "BYOL":"ami-0a1ae5df1d2c9e4d5"
+         },
+         "us-west-2":{
+            "Hourly":"ami-0c0479980001c2e55",
+            "BYOL":"ami-0e107c51baec37c9a"
+         },
+         "ap-northeast-3":{
+            "Hourly":"ami-02fb24e1285b71369",
+            "BYOL":"ami-0dcc3aab375825782"
+         },
+         "ap-southeast-1":{
+            "Hourly":"ami-0b92da5e8fbfba37b",
+            "BYOL":"ami-0f0b85168fb4bd1ed"
+         },
+         "ap-southeast-2":{
+            "Hourly":"ami-00789148a8c3e1f5f",
+            "BYOL":"ami-0ebe2f025fd914072"
+         },
+         "ap-northeast-1":{
+            "Hourly":"ami-0f010b8cf0aec7571",
+            "BYOL":"ami-0d4abd6c2b1a02543"
+         },
+         "ca-central-1":{
+            "Hourly":"ami-0caf13df6e21ae488",
+            "BYOL":"ami-07cad53c2f19a7784"
+         },
+         "eu-central-1":{
+            "Hourly":"ami-011dc75fe6f0eb34f",
+            "BYOL":"ami-0ad4f7ef8932f2a0d"
+         },
+         "eu-west-1":{
+            "Hourly":"ami-088f9f9e74c2a4661",
+            "BYOL":"ami-0191289f6250795ed"
+         },
+         "eu-west-2":{
+            "Hourly":"ami-0aa3df6a550dd9082",
+            "BYOL":"ami-0573a7641b333054b"
+         },
+         "eu-west-3":{
+            "Hourly":"ami-0df771017230ef8a6",
+            "BYOL":"ami-070eb02842fcecb68"
+         },
+         "eu-north-1":{
+            "Hourly":"ami-00c9f57e623d509a8",
+            "BYOL":"ami-07e1d44ccf5ca8d0e"
+         },
+         "sa-east-1":{
+            "Hourly":"ami-0986eecc8e9a17651",
+            "BYOL":"ami-0cc1177fd586f6dfc"
          }
       }
    },
