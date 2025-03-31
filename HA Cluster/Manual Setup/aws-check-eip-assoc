@@ -1,0 +1,1 @@
+* * * * * root /opt/phion/bin/xcloud-aws-check-eip-assoc.sh $ELASTICIP
