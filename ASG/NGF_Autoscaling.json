@@ -128,20 +128,22 @@
          "ConstraintDescription":"Maximum size of the group must be higher than initial size."
       },
       "InstanceType":{
-         "Description":"Select the EC2 instance type.",
+         "Description":"Select the EC2 instance type, Recommended: c5, c5n, m5 or t3",
          "Type":"String",
          "Default":"c5.large",
          "AllowedValues":[
-            "t2.small",
             "t3.small",
             "t3.medium",
-            "t3.large",
+            "t3.xlarge",
             "m5.large",
             "m5.xlarge",
             "m5.2xlarge",
             "c5.large",
             "c5.xlarge",
-            "c5.2xlarge"
+            "c5.2xlarge",
+            "c5n.large",
+            "c5n.xlarge",
+            "c5n.2xlarge"
          ]
       },
       "IAMProfile":{
@@ -209,153 +211,132 @@
          "Default":"0.0.0.0/0",
          "AllowedPattern":"(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
       },
-      "ReleaseVersion":{
+   "ReleaseVersion":{
          "Description":"Which release do you want to deploy?",
          "Type":"String",
-         "Default":"8.3.0",
+         "Default":"9.0.4",
          "AllowedValues":[
-            "8.0.5",
-            "8.2.1",
-            "8.3.0"
+            "8.3.3",
+            "9.0.4"
          ]
       }
    },
-   "Mappings":{
+  "Mappings":{
       "amiMapMap":{
-         "8.0.5":{
-            "mapName":"amiMapv805"
+         "8.3.3":{
+            "mapName":"amiMapv833"
          },
-         "8.2.1":{
-            "mapName":"amiMapv821"
-         },
-         "8.3.0":{
-            "mapName":"amiMapv830"
+         "9.0.4":{
+            "mapName":"amiMapv904"
          }
       },
-      "amiMapv805":{
+      "amiMapv833":{
          "us-east-1":{
-            "Hourly":"ami-07570d14ecc6d753b"
+            "Hourly":"ami-0057f77811485311f"
          },
          "us-east-2":{
-            "Hourly":"ami-0d77d90f71f12fba8"
+            "Hourly":"ami-089bbc53d9c9f6b49"
          },
          "us-west-1":{
-            "Hourly":"ami-035cbf9456923d13e"
+            "Hourly":"ami-09b069f5303516d98"
          },
          "us-west-2":{
-            "Hourly":"ami-0e5dd9b420e41328b"
+            "Hourly":"ami-0b8fca301c229702f"
+         },
+         "ap-south-1":{
+            "Hourly":"ami-08fcff2f6b0d184f1"
          },
          "ap-northeast-3":{
-            "Hourly":"ami-0102c282132faf2b1"
+            "Hourly":"ami-027db5b16ea37d059"
+         },
+         "ap-northeast-2":{
+            "Hourly":"ami-07545ae677b1a3780"
          },
          "ap-southeast-1":{
-            "Hourly":"ami-0efef200246fab974"
+            "Hourly":"ami-0db2591b69fb86f98"
          },
          "ap-southeast-2":{
-            "Hourly":"ami-02c97a3294f690c00"
+            "Hourly":"ami-04fa5ae43d41c5c65"
          },
          "ap-northeast-1":{
-            "Hourly":"ami-08cec4fed243531c1"
+            "Hourly":"ami-03f68ba9f81638719"
          },
          "ca-central-1":{
-            "Hourly":"ami-02542102565f2e9e9"
+            "Hourly":"ami-0c087d5e20f963e33"
          },
          "eu-central-1":{
-            "Hourly":"ami-0bb8e575294ff0eb9"
+            "Hourly":"ami-0528a65148741e2df"
          },
          "eu-west-1":{
-            "Hourly":"ami-0fbb2bb1f9bb94ddd"
+            "Hourly":"ami-0db5b1acc6cdefec0"
          },
          "eu-west-2":{
-            "Hourly":"ami-008b756cb6590e805"
+            "Hourly":"ami-07f009686642fc4c4"
+         },
+         "eu-west-3":{
+            "Hourly":"ami-0559d0e00962da209"
+         },
+         "eu-north-1":{
+            "Hourly":"ami-0cb0dddd5353fdb73"
          },
          "sa-east-1":{
-            "Hourly":"ami-04db38c5d9e59bbec"
+            "Hourly":"ami-088fb709e478c6370"
          }
       },
-      "amiMapv821":{
-         "us-east-1":{
-            "Hourly":"ami-06626e94a994ebb55"
-         },
-         "us-east-2":{
-            "Hourly":"ami-078ed482a8f9491d4"
-         },
-         "us-west-1":{
-            "Hourly":"ami-07a4e430871439bd3"
-         },
-         "us-west-2":{
-            "Hourly":"ami-0c5a6d0536959f26a"
-         },
-         "ap-northeast-3":{
-            "Hourly":"ami-065eac356de75eb0c"
-         },
-         "ap-southeast-1":{
-            "Hourly":"ami-09f3afbc3b694c882"
-         },
-         "ap-southeast-2":{
-            "Hourly":"ami-055902f1e1c7d3fe7"
-         },
-         "ap-northeast-1":{
-            "Hourly":"ami-000d04af5c900a649"
-         },
-         "ca-central-1":{
-            "Hourly":"ami-0df68afa8277df8b3"
-         },
-         "eu-central-1":{
-            "Hourly":"ami-08183a86c2102371c"
-         },
-         "eu-west-1":{
-            "Hourly":"ami-080f56021f42687be"
-         },
-         "eu-west-2":{
-            "Hourly":"ami-0ea695b18dcc775e2"
-         },
-         "sa-east-1":{
-            "Hourly":"ami-0430115dfd1f17d53"
-         }
-      },
-      "amiMapv830":{
-         "us-east-1":{
-            "Hourly":"ami-08502036b50261eff"
-         },
-         "us-east-2":{
-            "Hourly":"ami-01a37ea35aac51fb3"
-         },
-         "us-west-1":{
-            "Hourly":"ami-0ef07a7685a119cc9"
-         },
-         "us-west-2":{
-            "Hourly":"ami-080ba652367fc8a4a"
-         },
-         "ap-northeast-3":{
-            "Hourly":"ami-0a8884db266b4a0cb"
-         },
-         "ap-southeast-1":{
-            "Hourly":"ami-0f98d9860a52e8014"
-         },
-         "ap-southeast-2":{
-            "Hourly":"ami-0ba304cd3db90999e"
-         },
-         "ap-northeast-1":{
-            "Hourly":"ami-06ddc974e8fc4c54d"
-         },
-         "ca-central-1":{
-            "Hourly":"ami-0d3479a5f76c43d89"
-         },
-         "eu-central-1":{
-            "Hourly":"ami-00d8cd5b5c5260a7e"
-         },
-         "eu-west-1":{
-            "Hourly":"ami-062a4698272c02ea9"
-         },
-         "eu-west-2":{
-            "Hourly":"ami-0a2784b738789de80"
-         },
-         "sa-east-1":{
-            "Hourly":"ami-0f7d1ff4d98dc2d1b"
-         }
-      }
-   },
+      "amiMapv904":{
+        "us-east-1":{
+           "Hourly":"ami-08895dd0fbaaf57fd"
+        },
+        "us-east-2":{
+           "Hourly":"ami-002ec9e71b7aad9a9"
+        },
+        "us-west-1":{
+           "Hourly":"ami-0ce19ab56fa7b1d66"
+        },
+        "us-west-2":{
+           "Hourly":"ami-0efcd924afddaf0ce"
+        },
+        "ap-south-1":{
+           "Hourly":"ami-05514a781f24fc54e"
+        },
+        "ap-northeast-3":{
+           "Hourly":"ami-06a28b671645266d4"
+        },
+        "ap-northeast-2":{
+           "Hourly":"ami-064ec71dc0c60766f"
+        },
+        "ap-southeast-1":{
+           "Hourly":"ami-01be37ccdbcacaab5"
+        },
+        "ap-southeast-2":{
+           "Hourly":"ami-08b3c926568af5539"
+        },
+        "ap-northeast-1":{
+           "Hourly":"ami-07cbffd74f1716d49"
+        },
+        "ca-central-1":{
+           "Hourly":"ami-0053ce24ffaa71dd3"
+        },
+        "eu-central-1":{
+           "Hourly":"ami-04c0d34e012354fcf"
+        },
+        "eu-west-1":{
+           "Hourly":"ami-0fd5bdcbee51abbb3"
+        },
+        "eu-west-2":{
+           "Hourly":"ami-0f803ead6ae0f80e2"
+        },
+        "eu-west-3":{
+           "Hourly":"ami-06211c9de56731379"
+        },
+        "eu-north-1":{
+           "Hourly":"ami-0019543db566adbeb"
+        },
+        "sa-east-1":{
+           "Hourly":"ami-0f7bcca1da137c3c2"
+        }
+     }
+    },
    "Conditions":{
       "SSLVPNCert":{
          "Fn::Not":[
@@ -880,10 +861,12 @@
             "NATGWB"
          ]
       },
-      "LaunchConfiguration":{
-         "Type":"AWS::AutoScaling::LaunchConfiguration",
-         "Properties":{
-            "ImageId":{
+      "MyLaunchTemplate":{
+         "Type":"AWS::EC2::LaunchTemplate",
+          "Properties":{
+            "LaunchTemplateName":{ "Fn::Sub": "${AWS::StackName}-launch-template" },
+            "LaunchTemplateData":{
+               "ImageId":{
                "Fn::FindInMap":[
                   {
                      "Fn::FindInMap":[
@@ -900,7 +883,7 @@
                   "Hourly"
                ]
             },
-            "SecurityGroups":[
+            "SecurityGroupIds":[
                {
                   "Ref":"NGFSecurityGroup"
                }
@@ -908,9 +891,10 @@
             "InstanceType":{
                "Ref":"InstanceType"
             },
-            "AssociatePublicIpAddress":false,
-            "IamInstanceProfile":{
-               "Ref":"IAMProfile"
+           "IamInstanceProfile":{
+             "Name": {
+               "Ref": "IAMProfile"
+             }   
             },
             "UserData":{
                "Fn::Base64":{
@@ -939,6 +923,7 @@
                }
             }
          }
+      }
       },
       "SNSTopic":{
          "Type":"AWS::SNS::Topic",
@@ -962,8 +947,9 @@
                   "Ref":"PrivateSubnetB"
                }
             ],
-            "LaunchConfigurationName":{
-               "Ref":"LaunchConfiguration"
+           "LaunchTemplate":{
+                        "LaunchTemplateName":{ "Fn::Sub": "${AWS::StackName}-launch-template" },
+                        "Version":1               
             },
             "MinSize":{
                "Ref":"InitialSize"
