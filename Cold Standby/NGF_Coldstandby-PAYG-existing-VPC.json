@@ -51,20 +51,22 @@
    },
    "Parameters":{
       "InstanceType":{
-         "Description":"Select the EC2 instance type.",
+         "Description":"Select the EC2 instance type, Recommended: c5, m5 or t3",
          "Type":"String",
          "Default":"c5.large",
          "AllowedValues":[
-            "t2.small",
             "t3.small",
             "t3.medium",
-            "t3.large",
+            "t3.xlarge",
             "m5.large",
             "m5.xlarge",
             "m5.2xlarge",
             "c5.large",
             "c5.xlarge",
-            "c5.2xlarge"
+            "c5.2xlarge",
+            "c5n.large",
+            "c5n.xlarge",
+            "c5n.2xlarge"
          ]
       },
       "LicenceMode":{
@@ -79,11 +81,10 @@
       "ReleaseVersion":{
          "Description":"Which release do you want to deploy?",
          "Type":"String",
-         "Default":"8.3.0",
+         "Default":"9.0.4",
          "AllowedValues":[
-            "8.0.5",
-            "8.2.1",
-            "8.3.0"
+            "8.3.3",
+            "9.0.4"
          ]
       },
       "IAMProfile":{
@@ -102,7 +103,7 @@
          "Default":""
       },
       "PublicSubnetBId":{
-         "Description":"Secondary pbulic subnet for firewall.",
+         "Description":"Secondary public subnet for firewall.",
          "Type":"String",
          "Default":""
       },
@@ -114,179 +115,154 @@
    },
    "Mappings":{
       "amiMapMap":{
-         "8.0.5":{
-            "mapName":"amiMapv805"
+         "8.3.3":{
+            "mapName":"amiMapv833"
          },
-         "8.2.1":{
-            "mapName":"amiMapv821"
-         },
-         "8.3.0":{
-            "mapName":"amiMapv830"
+         "9.0.4":{
+            "mapName":"amiMapv904"
          }
       },
-      "amiMapv805":{
+      "amiMapv833":{
          "us-east-1":{
-            "Hourly":"ami-07570d14ecc6d753b",
-            "BYOL":"ami-0569830c65eafd424"
+            "Hourly":"ami-0057f77811485311f",
+            "BYOL":"ami-0a87aa89d43dd54b5"
          },
          "us-east-2":{
-            "Hourly":"ami-0d77d90f71f12fba8",
-            "BYOL":"ami-00ba624f65f4e9978"
+            "Hourly":"ami-089bbc53d9c9f6b49",
+            "BYOL":"ami-00fb5b727c1e44e84"
          },
          "us-west-1":{
-            "Hourly":"ami-035cbf9456923d13e",
-            "BYOL":"ami-03c116b5ea4390001"
+            "Hourly":"ami-09b069f5303516d98",
+            "BYOL":"ami-0d01d86b2b63ec1db"
          },
          "us-west-2":{
-            "Hourly":"ami-0e5dd9b420e41328b",
-            "BYOL":"ami-06745e2b44b269cf0"
+            "Hourly":"ami-0b8fca301c229702f",
+            "BYOL":"ami-0be24f6e0aad711bd"
+         },
+         "ap-south-1":{
+            "Hourly":"ami-08fcff2f6b0d184f1",
+            "BYOL":"ami-039f0c4f869cf7418"
          },
          "ap-northeast-3":{
-            "Hourly":"ami-0102c282132faf2b1",
-            "BYOL":"ami-08aa0a3dd2653c27c"
+            "Hourly":"ami-027db5b16ea37d059",
+            "BYOL":"ami-012549169fcd2ac96"
+         },
+         "ap-northeast-2":{
+            "Hourly":"ami-07545ae677b1a3780",
+            "BYOL":"ami-0ceb324f4e9a344df"
          },
          "ap-southeast-1":{
-            "Hourly":"ami-0efef200246fab974",
-            "BYOL":"ami-0e1ad7dfea5ccb743"
+            "Hourly":"ami-0db2591b69fb86f98",
+            "BYOL":"ami-0195b012295a4b099"
          },
          "ap-southeast-2":{
-            "Hourly":"ami-02c97a3294f690c00",
-            "BYOL":"ami-081f3635d890c77ba"
+            "Hourly":"ami-04fa5ae43d41c5c65",
+            "BYOL":"ami-0e05f4218ccc83e19"
          },
          "ap-northeast-1":{
-            "Hourly":"ami-08cec4fed243531c1",
-            "BYOL":"ami-0cfd25214276952eb"
+            "Hourly":"ami-03f68ba9f81638719",
+            "BYOL":"ami-0e35c74d12df3f354"
          },
          "ca-central-1":{
-            "Hourly":"ami-02542102565f2e9e9",
-            "BYOL":"ami-0cfa82a87f4d509a5"
+            "Hourly":"ami-0c087d5e20f963e33",
+            "BYOL":"ami-03882fbcd0756e229"
          },
          "eu-central-1":{
-            "Hourly":"ami-0bb8e575294ff0eb9",
-            "BYOL":"ami-0f8c7793cf68789d8"
+            "Hourly":"ami-0528a65148741e2df",
+            "BYOL":"ami-0b4dce0dad88d9cee"
          },
          "eu-west-1":{
-            "Hourly":"ami-0fbb2bb1f9bb94ddd",
-            "BYOL":"ami-08f45e2aac7c603ce"
+            "Hourly":"ami-0db5b1acc6cdefec0",
+            "BYOL":"ami-06b1112c64e245856"
          },
          "eu-west-2":{
-            "Hourly":"ami-008b756cb6590e805",
-            "BYOL":"ami-0be81758b47cef977"
+            "Hourly":"ami-07f009686642fc4c4",
+            "BYOL":"ami-0cf8135584c0405aa"
+         },
+         "eu-west-3":{
+            "Hourly":"ami-0559d0e00962da209",
+            "BYOL":"ami-0f323a1eaf8d8c278"
+         },
+         "eu-north-1":{
+            "Hourly":"ami-0cb0dddd5353fdb73",
+            "BYOL":"ami-0e09a80ea4b115414"
          },
          "sa-east-1":{
-            "Hourly":"ami-04db38c5d9e59bbec",
-            "BYOL":"ami-03ad6e4f2a0634f31"
+            "Hourly":"ami-088fb709e478c6370",
+            "BYOL":"ami-0a880e7384fcb4ed9"
          }
       },
-      "amiMapv821":{
-         "us-east-1":{
-            "Hourly":"ami-06626e94a994ebb55",
-            "BYOL":"ami-06ccb7d96ef307528"
-         },
-         "us-east-2":{
-            "Hourly":"ami-078ed482a8f9491d4",
-            "BYOL":"ami-049f1c062bb15c3c3"
-         },
-         "us-west-1":{
-            "Hourly":"ami-07a4e430871439bd3",
-            "BYOL":"ami-0c388f75a4ef7e81c"
-         },
-         "us-west-2":{
-            "Hourly":"ami-0c5a6d0536959f26a",
-            "BYOL":"ami-0cc071cf047b42c97"
-         },
-         "ap-northeast-3":{
-            "Hourly":"ami-065eac356de75eb0c",
-            "BYOL":"ami-0526bddabeb47b68e"
-         },
-         "ap-southeast-1":{
-            "Hourly":"ami-09f3afbc3b694c882",
-            "BYOL":"ami-04355821a06841826"
-         },
-         "ap-southeast-2":{
-            "Hourly":"ami-055902f1e1c7d3fe7",
-            "BYOL":"ami-090841fa54dd58d0a"
-         },
-         "ap-northeast-1":{
-            "Hourly":"ami-000d04af5c900a649",
-            "BYOL":"ami-051e6cdac669c44c1"
-         },
-         "ca-central-1":{
-            "Hourly":"ami-0df68afa8277df8b3",
-            "BYOL":"ami-0dd0482612d5724ba"
-         },
-         "eu-central-1":{
-            "Hourly":"ami-08183a86c2102371c",
-            "BYOL":"ami-03a7e2b5cd9e295af"
-         },
-         "eu-west-1":{
-            "Hourly":"ami-080f56021f42687be",
-            "BYOL":"ami-0e0dac9a920663dd8"
-         },
-         "eu-west-2":{
-            "Hourly":"ami-0ea695b18dcc775e2",
-            "BYOL":"ami-06f4a60ebad16e1fe"
-         },
-         "sa-east-1":{
-            "Hourly":"ami-0430115dfd1f17d53",
-            "BYOL":"ami-0ef9dd4b0a6be4e7f"
-         }
-      },
-      "amiMapv830":{
-         "us-east-1":{
-            "Hourly":"ami-08502036b50261eff",
-            "BYOL":"ami-0eb58079ea6067538"
-         },
-         "us-east-2":{
-            "Hourly":"ami-01a37ea35aac51fb3",
-            "BYOL":"ami-0a9359e96131989fe"
-         },
-         "us-west-1":{
-            "Hourly":"ami-0ef07a7685a119cc9",
-            "BYOL":"ami-007d0429e8b88a6c4"
-         },
-         "us-west-2":{
-            "Hourly":"ami-080ba652367fc8a4a",
-            "BYOL":"ami-078622545858d6044"
-         },
-         "ap-northeast-3":{
-            "Hourly":"ami-0a8884db266b4a0cb",
-            "BYOL":"ami-00e091d4e096d5fcb"
-         },
-         "ap-southeast-1":{
-            "Hourly":"ami-0f98d9860a52e8014",
-            "BYOL":"ami-0ee9be9adcf7a66d3"
-         },
-         "ap-southeast-2":{
-            "Hourly":"ami-0ba304cd3db90999e",
-            "BYOL":"ami-02fc5cbb79145665f"
-         },
-         "ap-northeast-1":{
-            "Hourly":"ami-06ddc974e8fc4c54d",
-            "BYOL":"ami-0bfb140902ba7faec"
-         },
-         "ca-central-1":{
-            "Hourly":"ami-0d3479a5f76c43d89",
-            "BYOL":"ami-0131beba122852be6"
-         },
-         "eu-central-1":{
-            "Hourly":"ami-00d8cd5b5c5260a7e",
-            "BYOL":"ami-00200d6f3a8fec98d"
-         },
-         "eu-west-1":{
-            "Hourly":"ami-062a4698272c02ea9",
-            "BYOL":"ami-02da70bb6f3de83ac"
-         },
-         "eu-west-2":{
-            "Hourly":"ami-0a2784b738789de80",
-            "BYOL":"ami-058d915a3cc0eb01b"
-         },
-         "sa-east-1":{
-            "Hourly":"ami-0f7d1ff4d98dc2d1b",
-            "BYOL":"ami-0098ee5ecd3cabd56"
-         }
-      }
-   },
+      "amiMapv904":{
+        "us-east-1":{
+           "Hourly":"ami-08895dd0fbaaf57fd",
+           "BYOL":"ami-0ad4a40df130c7827"
+        },
+        "us-east-2":{
+           "Hourly":"ami-002ec9e71b7aad9a9",
+           "BYOL":"ami-07ae4eeb4113cb64b"
+        },
+        "us-west-1":{
+           "Hourly":"ami-0ce19ab56fa7b1d66",
+           "BYOL":"ami-01f46f5f4bd888c2e"
+        },
+        "us-west-2":{
+           "Hourly":"ami-0efcd924afddaf0ce",
+           "BYOL":"ami-0129daba5c752d495"
+        },
+        "ap-south-1":{
+           "Hourly":"ami-05514a781f24fc54e",
+           "BYOL":"ami-0a3236ee73cd072ba"
+        },
+        "ap-northeast-3":{
+           "Hourly":"ami-06a28b671645266d4",
+           "BYOL":"ami-0254c1771a2aa223f"
+        },
+        "ap-northeast-2":{
+           "Hourly":"ami-064ec71dc0c60766f",
+           "BYOL":"ami-07ffb569192bbe7ff"
+        },
+        "ap-southeast-1":{
+           "Hourly":"ami-01be37ccdbcacaab5",
+           "BYOL":"ami-01a27bc2dc81a8e7e"
+        },
+        "ap-southeast-2":{
+           "Hourly":"ami-08b3c926568af5539",
+           "BYOL":"ami-02dcebbac184a8000"
+        },
+        "ap-northeast-1":{
+           "Hourly":"ami-07cbffd74f1716d49",
+           "BYOL":"ami-0e5532ae5e7d74dfa"
+        },
+        "ca-central-1":{
+           "Hourly":"ami-0053ce24ffaa71dd3",
+           "BYOL":"ami-04f6e199ea58f4b8b"
+        },
+        "eu-central-1":{
+           "Hourly":"ami-04c0d34e012354fcf",
+           "BYOL":"ami-07a54748a43ef62ed"
+        },
+        "eu-west-1":{
+           "Hourly":"ami-0fd5bdcbee51abbb3",
+           "BYOL":"ami-0a2c287f77c554a16"
+        },
+        "eu-west-2":{
+           "Hourly":"ami-0f803ead6ae0f80e2",
+           "BYOL":"ami-05d571b42c670bbaf"
+        },
+        "eu-west-3":{
+           "Hourly":"ami-06211c9de56731379",
+           "BYOL":"ami-0fa8f988bfbcc213c"
+        },
+        "eu-north-1":{
+           "Hourly":"ami-0019543db566adbeb",
+           "BYOL":"ami-01f4638194ea9945e"
+        },
+        "sa-east-1":{
+           "Hourly":"ami-0f7bcca1da137c3c2",
+           "BYOL":"ami-0fda9ac629615610f"
+        }
+     }
+    },
    "Resources":{
       "PublicSecurityGroup":{
          "Type":"AWS::EC2::SecurityGroup",
@@ -320,9 +296,11 @@
             }
          }
       },
-      "LaunchConfiguration":{
-         "Type":"AWS::AutoScaling::LaunchConfiguration",
-         "Properties":{
+      "MyLaunchTemplate":{
+         "Type":"AWS::EC2::LaunchTemplate",
+          "Properties":{
+            "LaunchTemplateName":{ "Fn::Sub": "${AWS::StackName}-launch-template" },
+            "LaunchTemplateData":{
             "ImageId":{
                "Fn::FindInMap":[
                   {
@@ -342,17 +320,24 @@
                   }
                ]
             },
-            "SecurityGroups":[
-               {
-                  "Ref":"PublicSecurityGroup"
-               }
-            ],
             "InstanceType":{
                "Ref":"InstanceType"
             },
-            "AssociatePublicIpAddress":true,
+              "NetworkInterfaces":[
+            {
+             "AssociatePublicIpAddress":true,
+             "DeviceIndex":0,
+             "Groups":[
+                   {    
+                    "Fn::GetAtt":"PublicSecurityGroup.GroupId"
+                   }
+                ]
+            }
+            ],
             "IamInstanceProfile":{
-               "Ref":"IAMProfile"
+               "Name": {
+               "Ref": "IAMProfile"
+             }   
             },
             "UserData":{
                "Fn::Base64":{
@@ -431,6 +416,7 @@
                   ]
                }
             }
+            }
          }
       },
       "SNSTopic":{
@@ -461,8 +447,9 @@
                   "Ref":"PublicSubnetBId"
                }
             ],
-            "LaunchConfigurationName":{
-               "Ref":"LaunchConfiguration"
+           "LaunchTemplate":{
+                        "LaunchTemplateName":{ "Fn::Sub": "${AWS::StackName}-launch-template" },
+                        "Version":1               
             },
             "MinSize":"1",
             "DesiredCapacity":"1",
@@ -477,7 +464,10 @@
                   "PropagateAtLaunch":true
                }
             ]
-         }
+         },
+         "DependsOn":[
+            "MyLaunchTemplate"
+         ]
       }
    },
    "Outputs":{
@@ -493,3 +483,4 @@
       }
    }
 }
+
