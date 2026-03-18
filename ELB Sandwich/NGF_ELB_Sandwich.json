@@ -211,126 +211,183 @@
       "ReleaseVersion":{
          "Description":"Which release do you want to deploy?",
          "Type":"String",
-         "Default":"9.0.4",
+         "Default":"10.0.1",
          "AllowedValues":[
-            "8.3.3",
-            "9.0.4"
+            "9.0.5",
+            "10.0.0",
+            "10.0.1"
          ]
       }
    },
-  "Mappings":{
+ "Mappings":{
       "amiMapMap":{
-         "8.3.3":{
-            "mapName":"amiMapv833"
+         "9.0.5":{
+            "mapName":"amiMapv905"
          },
-         "9.0.4":{
-            "mapName":"amiMapv904"
+         "10.0.0":{
+            "mapName":"amiMapv1000"
+         },
+          "10.0.1":{
+            "mapName":"amiMapv1001"
          }
       },
-      "amiMapv833":{
+      "amiMapv905":{
          "us-east-1":{
-            "Hourly":"ami-0057f77811485311f"
+            "Hourly":"ami-0b5f349ded7dc4396"
          },
          "us-east-2":{
-            "Hourly":"ami-089bbc53d9c9f6b49"
+            "Hourly":"ami-08c94264f341421ad"
          },
          "us-west-1":{
-            "Hourly":"ami-09b069f5303516d98"
+            "Hourly":"ami-0ee1ca86002bd01da" 
          },
          "us-west-2":{
-            "Hourly":"ami-0b8fca301c229702f"
+            "Hourly":"ami-030f65ebf262e6ced"  
          },
          "ap-south-1":{
-            "Hourly":"ami-08fcff2f6b0d184f1"
+            "Hourly":"ami-052e2479635ee681e" 
          },
          "ap-northeast-3":{
-            "Hourly":"ami-027db5b16ea37d059"
+            "Hourly":"ami-0d16590ef3afac1e3"
          },
          "ap-northeast-2":{
-            "Hourly":"ami-07545ae677b1a3780"
+            "Hourly":"ami-00f7f5ba4904ffd7f"
          },
          "ap-southeast-1":{
-            "Hourly":"ami-0db2591b69fb86f98"
+            "Hourly":"ami-031a20c86b962577d"
          },
          "ap-southeast-2":{
-            "Hourly":"ami-04fa5ae43d41c5c65"
+            "Hourly":"ami-03e74bdc247b4ad68"
          },
          "ap-northeast-1":{
-            "Hourly":"ami-03f68ba9f81638719"
+            "Hourly":"ami-0acbfa44ed376fbd1"
          },
          "ca-central-1":{
-            "Hourly":"ami-0c087d5e20f963e33"
+            "Hourly":"ami-05f2d4406d728dd46"
          },
          "eu-central-1":{
-            "Hourly":"ami-0528a65148741e2df"
+            "Hourly":"ami-0d23b6a78d2eb0bc1"
          },
          "eu-west-1":{
-            "Hourly":"ami-0db5b1acc6cdefec0"
+            "Hourly":"ami-0e1ea3603d91bd713"
          },
          "eu-west-2":{
-            "Hourly":"ami-07f009686642fc4c4"
+            "Hourly":"ami-0c0a7dce0cc2a716c"
          },
          "eu-west-3":{
-            "Hourly":"ami-0559d0e00962da209"
+            "Hourly":"ami-05aafe1c76904df3b"
          },
          "eu-north-1":{
-            "Hourly":"ami-0cb0dddd5353fdb73"
+            "Hourly":"ami-0f2169cd884a38c08"
          },
          "sa-east-1":{
-            "Hourly":"ami-088fb709e478c6370"
+            "Hourly":"ami-08e13f0f0828e4692"
          }
       },
-      "amiMapv904":{
+      "amiMapv1000":{
         "us-east-1":{
-           "Hourly":"ami-08895dd0fbaaf57fd"
-         },
+           "Hourly":"ami-0440567d92ca72de0"
+        },
         "us-east-2":{
-           "Hourly":"ami-002ec9e71b7aad9a9"
-         },
+           "Hourly":"ami-0b8501c370b35a5cc"
+        },
         "us-west-1":{
-           "Hourly":"ami-0ce19ab56fa7b1d66"
-         },
+           "Hourly":"ami-0d8833f04e766a912"
+        },
         "us-west-2":{
-           "Hourly":"ami-0efcd924afddaf0ce"
-         },
+           "Hourly":"ami-0eaa1a75b0f1011e2"
+        },
         "ap-south-1":{
-           "Hourly":"ami-05514a781f24fc54e"
+           "Hourly":"ami-090f59e1cd7d7dad8"
         },
         "ap-northeast-3":{
-           "Hourly":"ami-06a28b671645266d4"
+           "Hourly":"ami-00d431b8d8d079f09"
         },
         "ap-northeast-2":{
-           "Hourly":"ami-064ec71dc0c60766f"
+           "Hourly":"ami-04189f72bbcde74f2"
         },
         "ap-southeast-1":{
-           "Hourly":"ami-01be37ccdbcacaab5"
+           "Hourly":"ami-015ad6ff111f7d659"
         },
         "ap-southeast-2":{
-           "Hourly":"ami-08b3c926568af5539"
+           "Hourly":"ami-0d1f1cd40f5f5240c"
         },
         "ap-northeast-1":{
-           "Hourly":"ami-07cbffd74f1716d49"
+           "Hourly":"ami-0828fdec6459100ea"
         },
         "ca-central-1":{
-           "Hourly":"ami-0053ce24ffaa71dd3"
+           "Hourly":"ami-067025515e43aa3da"
         },
         "eu-central-1":{
-           "Hourly":"ami-04c0d34e012354fcf"
+           "Hourly":"ami-02f201a930ab29d60"
         },
         "eu-west-1":{
-           "Hourly":"ami-0fd5bdcbee51abbb3"
+           "Hourly":"ami-00b7d092ecf4f29c9"
         },
         "eu-west-2":{
-           "Hourly":"ami-0f803ead6ae0f80e2"
+           "Hourly":"ami-02ad887404b346a98"
         },
         "eu-west-3":{
-           "Hourly":"ami-06211c9de56731379"
+           "Hourly":"ami-00d30ec296829893c"
         },
         "eu-north-1":{
-           "Hourly":"ami-0019543db566adbeb"
+           "Hourly":"ami-066dcedda6c478475"
         },
         "sa-east-1":{
-           "Hourly":"ami-0f7bcca1da137c3c2"
+           "Hourly":"ami-0e699467f183a322e"
+        }
+     },
+      "amiMapv1001":{
+        "us-east-1":{
+           "Hourly":"ami-031e696024d975c63"
+        },
+        "us-east-2":{
+           "Hourly":"ami-0a3697df761463d4f"
+        },
+        "us-west-1":{
+           "Hourly":"ami-0e6d66b45c2065fa2"
+        },
+        "us-west-2":{
+           "Hourly":"ami-0770a45b62b714589"
+        },
+        "ap-south-1":{
+           "Hourly":"ami-05adcb9deb3b7cd70"
+        },
+        "ap-northeast-3":{
+           "Hourly":"ami-0ab0333effc8dcafd"
+        },
+        "ap-northeast-2":{
+           "Hourly":"ami-093ae256bc00445dd"
+        },
+        "ap-southeast-1":{
+           "Hourly":"ami-0083dcd4259ef98d8"
+        },
+        "ap-southeast-2":{
+           "Hourly":"ami-02ebda42e08c60b52"
+        },
+        "ap-northeast-1":{
+           "Hourly":"ami-0e46b985017c0a9ad"
+        },
+        "ca-central-1":{
+           "Hourly":"ami-01e3ce4759072b24e"
+        },
+        "eu-central-1":{
+           "Hourly":"ami-019e499bcd8d41b17"
+        },
+        "eu-west-1":{
+           "Hourly":"ami-01c3ca9715eb7362f"
+        },
+        "eu-west-2":{
+           "Hourly":"ami-017bb948f79d6c3ed"
+        },
+        "eu-west-3":{
+           "Hourly":"ami-01768fa7a7dad8624"
+        },
+        "eu-north-1":{
+           "Hourly":"ami-0949308386a213ffe"
+        },
+        "sa-east-1":{
+           "Hourly":"ami-0e1009d8ccf5714ce"
         }
      }
     },
