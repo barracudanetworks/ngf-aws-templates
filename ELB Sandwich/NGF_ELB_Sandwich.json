@@ -1,6 +1,6 @@
 {
    "AWSTemplateFormatVersion":"2010-09-09",
-   "Description":"Barracuda NextGen Firewall v10.0.1 - Auto Scaling Cluster in ELB Sandwich ",
+   "Description":"Barracuda NextGen Firewall v9.0.4 - Auto Scaling Cluster in ELB Sandwich ",
    "Metadata":{
       "AWS::CloudFormation::Interface":{
          "ParameterGroups":[
